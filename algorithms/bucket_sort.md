@@ -1,3 +1,8 @@
+---
+title: Bucket sort
+parent: Algorithms
+---
+
 # Bucket sort
 
 Bucket sort is a sorting algorithm that works by distributing the elements of an array into a number of buckets.

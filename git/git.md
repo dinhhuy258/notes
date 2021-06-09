@@ -1,3 +1,8 @@
+---
+title: Git commands
+parent: Git
+---
+
 # Git commands
 
 ## Configuration

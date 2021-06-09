@@ -1,3 +1,8 @@
+---
+title: Web architecture 
+parent: Basic
+---
+
 # Basic
 
 ## Tier

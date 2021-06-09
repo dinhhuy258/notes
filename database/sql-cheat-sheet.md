@@ -1,3 +1,8 @@
+---
+title: SQL cheat sheet
+parent: Database
+---
+
 # SQL cheat sheet
 
 ![](assets/sql-basics-cheat-sheet-1.png)

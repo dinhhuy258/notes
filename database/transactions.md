@@ -1,4 +1,9 @@
-# Database
+---
+title: Transactions
+parent: Database
+---
+
+# Transactions
 
 ## 1. ACID properties
 

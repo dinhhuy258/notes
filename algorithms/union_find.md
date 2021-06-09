@@ -1,3 +1,8 @@
+---
+title: Union find
+parent: Algorithms
+---
+
 # Union find (Disjoint set)
 
 ## Disjoint set in math

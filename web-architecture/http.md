@@ -1,4 +1,9 @@
-# Http
+---
+title: HTTP
+parent: Basic
+---
+
+# HTTP
 
 ## 1) An overview of HTTP
 
@@ -41,23 +46,23 @@ Content-Type: text/html
 
 4. Close or reuse the connection for further requests.
 
-### 1.2) Http messsage
+### 1.2) HTTP messsage
 
 HTTP messages, as defined in HTTP/1.1 and earlier, are human-readable. In HTTP/2, these messages are embedded into a binary structure, a frame, allowing optimizations like compression of headers and multiplexing.
 
-#### 1.2.1) Http Request
+#### 1.2.1) HTTP Request
 
 ![](assets/http-request.png)
 
 Requests consists of the following elements:
 
-- An Http method (GET, POST, PUT, OPTIONS, HEAD...)
+- An HTTP method (GET, POST, PUT, OPTIONS, HEAD...)
 - A path of resource to fetch
-- The version of Http protocol
-- Http request headers that convey additional information for the servers
+- The version of HTTP protocol
+- HTTP request headers that convey additional information for the servers
 - Optionally, a body, for some methods like **POST**, which contain the resource sent
 
-#### 1.2.2) Http Response
+#### 1.2.2) HTTP Response
 
 ![](assets/http-response.png)
 
@@ -66,10 +71,10 @@ Responses consist of the following elements:
 - The version of the HTTP protocol
 - A status code
 - A status message, a non-authoritative short description of the status code
-- Http response headers
+- HTTP response headers
 - Optionally, a body containing the fetched resource.
 
-#### 1.2.3) Http headers
+#### 1.2.3) HTTP headers
 
 HTTP headers allow the client and the server to pass additional information with the request or the response
 
@@ -91,11 +96,11 @@ Example:
 - Access-Control-Allow-Origin: Indicates whether the response can be shared
 - ...
 
-#### 1.2.4) Http status code
+#### 1.2.4) HTTP status code
 
-Http status code are like short notes from server to client. They are messsages from the server letting clients konw how things went when it received requests.
+HTTP status code are like short notes from server to client. They are messsages from the server letting clients konw how things went when it received requests.
 
-Http status codes are grouped in five classed:
+HTTP status codes are grouped in five classed:
 
 1. Information responses (100- 199)
 2. Successful responses (200, 299)
@@ -103,7 +108,7 @@ Http status codes are grouped in five classed:
 4. Client errors (400-499)
 5. Server errors (500-599)
 
-## 2) Http pull
+## 2) HTTP pull
 
 In the HTTP pull method, the client sends a request to the server and the server responds to that request (and the connection is closed). The client pulls the data from the server whenever it requires (by creating a new connection). And it keeps doing it over and over to fetch the updated data.
 
@@ -114,7 +119,7 @@ Also, excessive pulls by the clients have the potential to bring down the server
 
 ![](assets/http-pull.png)
 
-## 3) Http push
+## 3) HTTP push
 
 To overcome the problem with HTTP pull, an HTTP push was introduced. In the HTTP push method, the client opens a connection to the server by requesting a server only the first time and after that server keeps on pushing back updated content to the client, whenever there’s any.
 

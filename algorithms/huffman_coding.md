@@ -1,3 +1,8 @@
+---
+title: Huffman coding
+parent: Algorithms
+---
+
 # Huffman coding
 
 Huffman Coding is a technique of compressing data to reduce its size without losing any of the details.

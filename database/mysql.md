@@ -1,3 +1,8 @@
+---
+title: MySQL
+parent: Database
+---
+
 # MySQL
 
 ## 1. Clustered index and non-clustered index
