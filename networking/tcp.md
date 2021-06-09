@@ -8,7 +8,7 @@ nav_order: 1
 
 ## 1. TCP 3-way handshake
 
-![](assets/tcp-handshake.png)
+![](../assets/images/networking/tcp-handshake.png)
 
 Step 1: The client sends a message with the SYN flag = 1 + random sequence number (SEQ = x) to the server.
 
@@ -21,7 +21,7 @@ Step 3: After receiving the SYN from the server, the client sends a message to s
 
 ## 2. TCP waving 4 times
 
-![](assets/tcp-waving.png)
+![](../assets/images/networking/tcp-waving.png)
 
 Step 1: The client sends to the server a segment with the FIN flag = 1.
 

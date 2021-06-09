@@ -49,7 +49,7 @@ public:
 };
 ```
 
-![](assets/union-find.png)
+![](../assets/images/algorithms/union-find.png)
 
 ## Optimization
 
@@ -61,7 +61,7 @@ The naive find() method is **read-only**, when find() is called for an element i
 
 The idea of path compression is to make the found root as parent of i so that we don’t have to traverse all intermediate nodes again. If i is root of a subtree, then path (to root) from all nodes under i also compresses.
 
-![](assets/path_compression.png)
+![](../assets/images/algorithms/path_compression.png)
 
 Below is the optimized find() method with Path Compression.
 
@@ -94,11 +94,11 @@ In this optimization we will change the `unionSet` method.
 
 In the naive implementation the second tree always got attached to the first one. In practice that can lead to trees containing chains of length O(n).
 
-![](assets/naive_union.png)
+![](../assets/images/algorithms/naive_union.png)
 
 The solution is to always attach smaller depth tree under the root of the deeper tree.
 
-![](assets/union_by_rank.png)
+![](../assets/images/algorithms/union_by_rank.png)
 
 Below is the optimized `unionSet()` method with Union by rank.
 

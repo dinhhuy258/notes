@@ -13,7 +13,7 @@ Bucket sort is mainly useful when input is uniformly distributed over a range.
 
 ## How does bucket sort work?
 
-![](assets/bucket_sort.png)
+![](../assets/images/algorithms/bucket_sort.png)
 
 ## Pseudocode
 
