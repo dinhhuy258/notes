@@ -1,6 +1,7 @@
 ---
 title: Huffman coding
 parent: Algorithms
+nav_order: 1
 ---
 
 # Huffman coding

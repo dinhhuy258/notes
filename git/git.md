@@ -1,6 +1,7 @@
 ---
 title: Git commands
 parent: Git
+nav_order: 3
 ---
 
 # Git commands

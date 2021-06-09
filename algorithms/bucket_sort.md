@@ -1,6 +1,7 @@
 ---
 title: Bucket sort
 parent: Algorithms
+nav_order: 1
 ---
 
 # Bucket sort

@@ -1,6 +1,7 @@
 ---
 title: MySQL
 parent: Database
+nav_order: 2
 ---
 
 # MySQL

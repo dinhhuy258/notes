@@ -1,6 +1,7 @@
 ---
 title: SQL cheat sheet
 parent: Database
+nav_order: 2
 ---
 
 # SQL cheat sheet

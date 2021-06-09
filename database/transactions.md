@@ -1,6 +1,7 @@
 ---
 title: Transactions
 parent: Database
+nav_order: 2
 ---
 
 # Transactions
