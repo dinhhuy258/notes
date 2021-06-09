@@ -1,6 +1,6 @@
 ---
-title: Networking 
-parent: TCP
+title: TCP
+parent: Networking
 nav_order: 1
 ---
 
