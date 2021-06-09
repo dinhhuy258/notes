@@ -1,7 +1,7 @@
 ---
 title: Union find
 parent: Algorithms
-nav_order: 1
+nav_order: 3
 ---
 
 # Union find (Disjoint set)

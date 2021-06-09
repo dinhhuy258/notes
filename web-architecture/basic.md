@@ -1,7 +1,7 @@
 ---
-title: Web architecture 
-parent: Basic
-nav_order: 5
+title: Basic
+parent: Web architecture
+nav_order: 1
 ---
 
 # Basic

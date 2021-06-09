@@ -1,7 +1,7 @@
 ---
 title: HTTP
-parent: Basic
-nav_order: 5
+parent: Web architecture
+nav_order: 2
 ---
 
 # HTTP
