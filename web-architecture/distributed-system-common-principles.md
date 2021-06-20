@@ -63,6 +63,13 @@ An assembly line is manufacturing cars. It takes 8 hours to manufacture a car an
 - The latency is: 8 hours.
 - The throughput is: 120 cars / day or 5 cars / hour.
 
+Sometimes latency and throughput interfere with each other.
+Buses might deliver more people per hour than individually hailed cars (higher throughput), but it takes me personally longer to get downtown because I have to walk to a bus stop and wait for the bus (higher latency).
+
+Source(s) and further reading:
+
+[https://medium.com/@kentbeck_7670/inefficient-efficiency-5b3ab5294791](https://medium.com/@kentbeck_7670/inefficient-efficiency-5b3ab5294791)
+
 ### 2.3) Availability vs consistency
 
 Networks aren’t reliable, so you’ll need to support partition tolerance. According to **CAP Theorem**, you’ll need to make a software tradeoff between consistency and availability.
