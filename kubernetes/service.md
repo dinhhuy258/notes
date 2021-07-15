@@ -14,6 +14,8 @@ It leads to a problem that if set of pods (backend) provides functionality for o
 
 Kubernetes Services provides addresses through which associated pods can be accessed.
 
+![](../assets/images/kubernetes/service.png)
+
 ## 1. Define a service
 
 For example, suppose you have a set of pods where each listens on TCP port `9376` and contains a label `app=MyApp`
@@ -72,3 +74,25 @@ subsets:
     ports:
       - port: 9376
 ```
+
+## 3. Type of service
+
+Kubernetes Services allow you to specify what kind of Service you want. The default is `ClusterIP`.
+
+`Type` values and their behavior are:
+
+- `ClusterIP`: Exposes the service on cluster internal IP. Choosing this makes the Service only reachable from within the cluster.
+
+![](../assets/images/kubernetes/cluster_ip.png)
+
+- `NodePort`: Exposes the service on each Node'IP at a static port. A `ClusterIP` is automatically created. You will be able to reach the NodePort service from outside the cluster, by requesting <NodeIP>:<NodePort>
+
+![](../assets/images/kubernetes/node_port.png)
+
+- `LoadBalancer`: Exposes the Service externally using a cloud provider's load balancer. `NodePort` and `ClusterIP` Services, to which the external load balancer routes, are automatically created.
+
+![](../assets/images/kubernetes/load_balancer.png)
+
+- `ExternalName`: Maps the Service to the content of the `externalName` field.
+
+![](../assets/images/kubernetes/external_name.png)
