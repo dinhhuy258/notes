@@ -1,0 +1,50 @@
+site_name: Notes
+site_url: https://dinhhuy258.github.io/notes/
+repo_url: https://github.com/dinhhuy258/notes
+site_author: Huy Duong
+site_description: Huy Duong's notes
+copyright: Copyright &copy; 2021 - 2021 Huy Duong
+
+# Configuration
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.top
+    - toc.integrate
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+# Page tree
+nav:
+  - Home: index.md
+  - Algorithms:
+    - Bucket sort: algorithms/bucket_sort.md
+    - Huffman coding: algorithms/huffman_coding.md
+    - Union find: algorithms/union_find.md
+  - Database:
+    - SQL cheat sheet: database/sql_cheat_sheet.md
+    - MySQL: database/mysql.md
+    - Transactions: database/transactions.md
+    - NoSQL: database/nosql.md
+  - Git:
+    - Git commands: git/git_commands.md
+  - Networking:
+    - TCP: networking/tcp.md
+  - Web architecture:
+    - HTTP: web_architecture/http.md
+    - Distributed System: web_architecture/distributed_system_common_principles.md
+  - Devops:
+    - Kubernetes:
+      - Pods: devops/kubernetes/pods.md
+      - Workloads: devops/kubernetes/workloads.md
+      - Service: devops/kubernetes/service.md
