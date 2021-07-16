@@ -24,6 +24,9 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
+extra:
+  disqus: huyduong-notes
+
 # Page tree
 nav:
   - Home: index.md
