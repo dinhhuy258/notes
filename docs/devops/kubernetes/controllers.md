@@ -124,3 +124,21 @@ Pros:
 Cons:
 
 - High impact on the user, expect downtime that depends on both shutdown and boot duration of the application.
+
+#### Rolling update
+
+The rolling update deployment strategy consists of slowly rolling out a version of an application by replacing instances one after the other until all the instances are rolled out.
+
+![](../../assets/images/kubernetes/rolling_update_strategy.gif)
+
+Pros:
+
+- Easy to setup
+- Version is slowly released across instances
+- Convenient for stateful applications that can handle rebalancing of the data.
+
+Cons:
+
+- Rollout/rollback can take time.
+- Supporting multiple APIs is hard.
+- No control over traffic.
