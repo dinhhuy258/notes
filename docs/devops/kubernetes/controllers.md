@@ -54,3 +54,64 @@ The `apiVersion`, `kind`, `metadata` fields are mandatory with all k8s objects.
 A ReplicaSet ensures that a specified number of pod replicas are running at any given time. However, a Deployment is a higher-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, k8s recommend using Deployments instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
 
 This actually means that you may never need to manipulate ReplicaSet objects: use a Deployment instead, and define your application in the spec section.
+
+## 2. Deployments
+
+Kubernetes Deployment is the process of providing declarative updates to Pods and ReplicaSets.
+
+### Define a zero-downtime deployment
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-demo-2-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: api
+      service: go-demo-2
+  minReadySeconds: 1
+  progressDeadlineSeconds: 60
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        type: api
+        service: go-demo-2
+        language: go
+    spec:
+      containers:
+      - name: api
+        image: vfarcic/go-demo-2
+        env:
+        - name: DB
+          value: go-demo-2-db
+        readinessProbe:
+          httpGet:
+            path: /demo/hello
+            port: 8080
+          periodSeconds: 1
+        livenessProbe:
+          httpGet:
+            path: /demo/hello
+            port: 8080
+```
+
+- `spec.minReadySeconds`: defines the number of seconds before k8s starts considering the Pod healthy. The default value is `0`, meaning that the Pods will be considered available as soon as they are ready and, when specified `livenessProbe` returns OK.
+- `spec.revisionHistoryLimit`: defines the number of old `ReplicaSet` we can rollback (default value is `10`)
+- `spec.strategy.type`: can be either `RollingUpdate` or `Recreate` type.
+
+### Deployment strategies
+
+#### Recreate
+
+The recreate strategy is a dummy deployment which consists of shutting down version A then deploying version B after version A is turned off. This technique implies downtime of the service that depends on both shutdown and boot duration of the application.
+
+![](../../assets/images/kubernetes/recreate_strategy.gif)
