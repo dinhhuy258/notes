@@ -49,5 +49,5 @@ nav:
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
-      - Workloads: devops/kubernetes/workloads.md
+      - Controllers: devops/kubernetes/controllers.md
       - Service: devops/kubernetes/service.md
