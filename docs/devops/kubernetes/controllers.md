@@ -115,3 +115,12 @@ spec:
 The recreate strategy is a dummy deployment which consists of shutting down version A then deploying version B after version A is turned off. This technique implies downtime of the service that depends on both shutdown and boot duration of the application.
 
 ![](../../assets/images/kubernetes/recreate_strategy.gif)
+
+Pros:
+
+- Easy to setup
+- Application state entirely renewed.
+
+Cons:
+
+- High impact on the user, expect downtime that depends on both shutdown and boot duration of the application.
