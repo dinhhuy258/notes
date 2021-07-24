@@ -1,8 +1,10 @@
 # Volumes
 
+## 1. Description
+
 On-disk file in a container are ephemeral, which presents some problems for non-trivial applications when running in containers. One problem is the loss of files when a container crashes. The kubelet restarts the container but with a clean state. A second problem occurs when sharing files between containers running together in a `Pod`. The k8s `Volumes` solves both of these problems.
 
-## 1. Types of Volumes
+## 2. Types of Volumes
 
 K8s supportes several types of volumes. We can categorize the Kubernetes Volumes based on their lifecycle.
 
