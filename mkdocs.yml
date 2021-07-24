@@ -52,3 +52,4 @@ nav:
       - Controllers: devops/kubernetes/controllers.md
       - Service: devops/kubernetes/service.md
       - Ingress: devops/kubernetes/ingress.md
+      - Volumes: devops/kubernetes/volumes.md
