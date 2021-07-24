@@ -2,7 +2,12 @@
 
 ## 1. Description
 
-On-disk file in a container are ephemeral, which presents some problems for non-trivial applications when running in containers. One problem is the loss of files when a container crashes. The kubelet restarts the container but with a clean state. A second problem occurs when sharing files between containers running together in a `Pod`. The k8s `Volumes` solves both of these problems.
+On-disk file in a container are ephemeral, which presents some problems for non-trivial applications when running in containers.
+
+- One problem is the loss of files when a container crashes. The kubelet restarts the container but with a clean state.
+- A second problem occurs when sharing files between containers running together in a `Pod`.
+
+The k8s `Volumes` solves both of these problems.
 
 ## 2. Types of Volumes
 
@@ -12,6 +17,8 @@ Considering the lifecycle of the volumes, we can have:
 
 - **Ephemeral Volumes**, which are tightly coupled with the lifetime of the Node (for example emptyDir, or hostPath) and they are deleted if the Node goes down.
 - **Persistent Volumes**, which are meant for long-term storage and are independent of the Pods or Nodes lifecycle. These can be cloud volumes (like gcePersistentDisk, awsElasticBlockStore, azureFile or azureDisk), NFS (Network File Systems) or Persistent Volume Claims (a series of abstraction to connect to the underlying cloud provided storage volumes).
+
+## 3. Ephemeral Volumes
 
 ### emptyDir
 
