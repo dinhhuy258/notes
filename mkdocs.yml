@@ -53,3 +53,4 @@ nav:
       - Service: devops/kubernetes/service.md
       - Ingress: devops/kubernetes/ingress.md
       - Volumes: devops/kubernetes/volumes.md
+      - ConfigMaps: devops/kubernetes/config_maps.md
