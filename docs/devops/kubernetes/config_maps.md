@@ -16,7 +16,7 @@ Importantly, ConfigMaps are not suitalbe for storing a confidental data. They do
 
 ## 2. Define a ConfigMap
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -63,7 +63,7 @@ There are four ways that you can use a ConfigMap to configure a container inside
 
 Here's an example Pod that that uses values from the above ConfigMap:
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -120,7 +120,7 @@ If you omit the `items` array entirely, every key in the ConfigMap becomes a fil
 
 ### Pass a ConfigMap entry as a command-line argument
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:

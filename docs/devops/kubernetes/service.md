@@ -14,7 +14,7 @@ Kubernetes Services provides addresses through which associated pods can be acce
 
 For example, suppose you have a set of pods where each listens on TCP port `9376` and contains a label `app=MyApp`
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -43,7 +43,7 @@ Services most commonly abstract access to Kubernetes Pods, but they can also abs
 
 Eg:
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -57,7 +57,7 @@ spec:
 
 Because this Service has no selector, the corresponding Endpoints object is not created automatically. You can manually map the Service to the network address and port where it's running, by adding an Endpoints object manually:
 
-```
+```yaml
 apiVersion: v1
 kind: Endpoints
 metadata:

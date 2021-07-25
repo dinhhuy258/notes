@@ -6,7 +6,7 @@ A ReplicaSet ensures that a specified number of pod replicas are running at any 
 
 Example:
 
-```
+```yaml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -61,7 +61,7 @@ Kubernetes Deployment is the process of providing declarative updates to Pods an
 
 ### Define a zero-downtime deployment
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -40,7 +40,7 @@ Some use cases for an emptyDir are:
 
 Example:
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -59,7 +59,7 @@ spec:
 
 Let’s try applying the YAML file and get into the Pod.
 
-```
+``` sh
 kubectl apply -f emptydir.yml
 pod/test-nginx created
 
@@ -76,7 +76,7 @@ If we see the storage medium used for the `emptyDir` mounted on the container we
 
 If you set the `emptyDir.medium` field to `Memory`. Kubernetes mounts a tmpfs (RAM-backed filesystem) for you instead.
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -107,7 +107,7 @@ Some use cases for an hostPath are:
 
 Example:
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:

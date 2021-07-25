@@ -12,7 +12,7 @@ You must have an Ingress Controller to satisfy an Ingress. Only creating an Ingr
 
 Example:
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -55,7 +55,7 @@ You can secure an Ingress by specifying a Secret that contains a TLS private key
 
 Eg:
 
-```
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -67,7 +67,7 @@ data:
 type: kubernetes.io/tls
 ```
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
