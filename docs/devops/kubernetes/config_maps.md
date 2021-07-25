@@ -110,15 +110,15 @@ For this example, defining a volume and mounting it inside the demo container as
 This is because the Pod definition specifies an `items` array in the `volumes` section.
 If you omit the `items` array entirely, every key in the ConfigMap becomes a file with the same name as the key, and you get 5 files
 
-Pods use ConfigMaps through environment variables and configMap volumes
+### Pods use ConfigMaps through environment variables and configMap volumes
 
 ![](../../assets/images/kubernetes/config_map.png)
 
-Pass ConfigMap entries to a pod as files in a volume
+### Pass ConfigMap entries to a pod as files in a volume
 
 ![](../../assets/images/kubernetes/config_map_file.png)
 
-Pass a ConfigMap entry as a command-line argument
+### Pass a ConfigMap entry as a command-line argument
 
 ```
 apiVersion: v1
