@@ -27,6 +27,13 @@ theme:
 extra:
   disqus: huyduong-notes
 
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+
 # Page tree
 nav:
   - Home: index.md

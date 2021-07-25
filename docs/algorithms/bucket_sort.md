@@ -23,7 +23,7 @@ Step 4: Merge all the bucket
 
 ### Sort a large set of floating point numbers which are in range from 0.0 to 1.0 and are uniformly distributed across the range.
 
-```
+```cpp
 void bucketSort(std::vector<float>& arr, int n) {
     // Create n empty buckets
     std::vector<std::vector<float>> buckets;
@@ -56,7 +56,7 @@ Step 1: Find maximum and minimum elements of the array
 
 Step 2: Calculate the range of each bucket
 
-```
+```cpp
 auto range = (max - min) / n; // n is the number of buckets
 
 ```
@@ -65,7 +65,7 @@ Step 3: Create n buckets of calculated range
 
 Step 4: Scatter the array elements to these buckets
 
-```
+```cpp
 auto bucketIndex = (arr[i] - min) / range;
 ```
 

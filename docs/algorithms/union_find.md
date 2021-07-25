@@ -13,7 +13,7 @@ Union find(Disjoint set) is a data structure that stores a collection of disjoin
 
 Below is the sample code which implements union-find algorithms
 
-```
+```cpp
 class DisjointSet {
 private:
   std::vector<int> parents;
@@ -43,7 +43,7 @@ public:
 };
 ```
 
-![](../assets/images/algorithms/union-find.png)
+![](../assets/images/algorithms/union_find.png)
 
 ## 3. Optimization
 
