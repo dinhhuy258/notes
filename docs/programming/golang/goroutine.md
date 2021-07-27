@@ -104,7 +104,7 @@ v, ok := <-ch
 
 The loop `for i := range c` receives values from the channel repeatedly until it is closed.
 
-## 5. Buffered channels
+## 6. Buffered channels
 
 Buffered channels are channels with a capacity/buffer. They can created with the following syntax:
 
@@ -114,7 +114,7 @@ channelName := make(chan datatype, capacity)
 
 Sends to a buffered channel block only when the buffer is **full**. Receives block when the buffer is **empty**.
 
-## 5. Select
+## 7. Select
 
 The select statement lets a goroutine wait on multiple communication operations.
 
@@ -152,7 +152,7 @@ The empty select will block forever as there is no case statement to execute.
 It is similar to an empty `for {}` statement.
 On most supported Go architectures, the empty select will yield CPU. An empty for-loop won't, i.e. it will "spin" on 100% CPU.
 
-## 6. WaitGroups
+## 8. WaitGroups
 
 A WaitGroup blocks a program an waits for a set of goroutines to finish before moving to the next steps of excutions.
 
@@ -183,3 +183,28 @@ func main() {
     fmt.Println("Finished Execution")
 }
 ```
+
+## 9. Mutex
+
+### Critical section
+
+When a program runs concurrently, the parts of code which modify shared resources should not be accessed by multiple Goroutines at the same time.
+This section of code that modifies shared resources is called critical section
+
+### What is mutex
+
+A mutex prevents other processes from entering a critical section of data while a process occupies it.
+
+Go's standard library provides mutual exclusion with sync.Mutex and its two methods:
+
+- `Lock`
+- `Unlock`
+
+### RWMutex
+
+A RWMutex is a reader/writer mutual exclusion lock. The lock can be held by an arbitrary number of readers or a single writer.
+
+- `Lock`: locks for writing. If the lock is already locked for reading or writing, Lock blocks until the lock is available.
+- `Unlock`: unlocks writing lock.
+- `RLock`: locks for reading. It should not be used for recursive read locking; a blocked Lock call excludes new readers from acquiring the lock.
+- `RUnlock`: RUnlock undoes a single RLock call; it does not affect other simultaneous readers.
