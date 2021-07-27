@@ -151,3 +151,35 @@ select {}
 The empty select will block forever as there is no case statement to execute.
 It is similar to an empty `for {}` statement.
 On most supported Go architectures, the empty select will yield CPU. An empty for-loop won't, i.e. it will "spin" on 100% CPU.
+
+## 6. WaitGroups
+
+A WaitGroup blocks a program an waits for a set of goroutines to finish before moving to the next steps of excutions.
+
+```
+package main
+
+import (
+    "fmt"
+    "sync"
+)
+
+func main() {
+    waitgroup := new(sync.WaitGroup)
+    waitgroup.Add(2)
+
+    go func() {
+        fmt.Println("Hello world 1")
+        waitgroup.Done()
+    }()
+
+    go func() {
+        fmt.Println("Hello world 2")
+        waitgroup.Done()
+    }()
+
+    waitgroup.Wait()
+
+    fmt.Println("Finished Execution")
+}
+```
