@@ -156,7 +156,7 @@ On most supported Go architectures, the empty select will yield CPU. An empty fo
 
 A WaitGroup blocks a program an waits for a set of goroutines to finish before moving to the next steps of excutions.
 
-```
+```go
 package main
 
 import (
