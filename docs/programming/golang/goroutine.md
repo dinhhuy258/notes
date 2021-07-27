@@ -47,8 +47,6 @@ If one thread invokes this method frequently, other threads that also need frequ
 
 A goroutine is a lightweight thread managed by the Go runtime.
 
-### Syntax
-
 You can create a goroutine by using the following syntax
 
 ```go
@@ -62,7 +60,7 @@ The current goroutine evaluates the input parameters to the function which are e
 
 Channel is a pipe between goroutines to synchronize excution and communicate by sending/receiving data
 
-### Syntax
+![](../../assets/images/golang/channel.png)
 
 ```go
 channelName := make(chan datatype)
