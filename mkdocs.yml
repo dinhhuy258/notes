@@ -46,13 +46,14 @@ nav:
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
     - NoSQL: database/nosql.md
-  - Git:
-    - Git commands: git/git_commands.md
   - Networking:
     - TCP: networking/tcp.md
   - Web architecture:
     - HTTP: web_architecture/http.md
     - Distributed System: web_architecture/distributed_system_common_principles.md
+  - Programming:
+    - Golang:
+      - Goroutine: programming/golang/goroutine.md
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
@@ -61,3 +62,5 @@ nav:
       - Ingress: devops/kubernetes/ingress.md
       - Volumes: devops/kubernetes/volumes.md
       - ConfigMaps: devops/kubernetes/config_maps.md
+  - Git:
+    - Git commands: git/git_commands.md
