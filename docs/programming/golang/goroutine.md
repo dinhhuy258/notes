@@ -311,3 +311,250 @@ Creating a sync.Cond requires a sync.Locker object (either a sync.Mutex or a syn
 ```go
 cond := sync.NewCond(&sync.RWMutex{})
 ```
+
+## 10. Concurrency patterns
+
+### Generator function
+
+Generator Pattern is used to generate a sequence of values which is used to produce some output.
+This pattern is widely used to introduce parallelism into loops.
+This allows the consumer of the data produced by the generator to run in parallel when the generator function is busy computing the next value.
+
+```go
+package main
+
+import "fmt"
+
+// Generator func which produces data which might be computationally expensive.
+func fib(n int) chan int {
+	c := make(chan int)
+	go func() {
+		for i, j := 0, 1; i < n; i, j = i+j, i {
+			c <- i
+		}
+		close(c)
+	}()
+	return c
+}
+
+func main() {
+	// fib returns the fibonacci numbers lesser than 1000
+	for i := range fib(1000) {
+		// Consumer which consumes the data produced by the generator, which further does some extra computations
+		v := i * i
+		fmt.Println(v)
+	}
+}
+```
+
+### Futures
+
+A Future indicates any data that is needed in future but its computation can be started in parallel so that it can be fetched from the background when needed.
+
+Example:
+
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+type data struct {
+	Body  []byte
+	Error error
+}
+
+func futureData(url string) <-chan data {
+	c := make(chan data, 1)
+
+	go func() {
+		var body []byte
+		var err error
+
+		resp, err := http.Get(url)
+		defer resp.Body.Close()
+
+		body, err = ioutil.ReadAll(resp.Body)
+
+		c <- data{Body: body, Error: err}
+	}()
+
+	return c
+}
+
+func main() {
+	future := futureData("http://test.future.com")
+
+	// do many other things
+
+	body := <-future
+	fmt.Printf("response: %#v", string(body.Body))
+	fmt.Printf("error: %#v", body.Error)
+}
+```
+
+The actual http request is done asynchronously in a goroutine. The main function can continue doing other things. When the result is needed, we read the result from the channel.
+
+### Fan-in, Fan-out
+
+Fan-in Fan-out is a way of Multiplexing and Demultiplexing in golang.
+
+- Fan-in refers to processing multiple input data and combining into a single entity.
+- Fan-out is the exact opposite, dividing the data into multiple smaller chunks, distributing the work amongst a group of workers to parallelize CPU use and I/O.
+
+![](../../assets/images/golang/fanin_fanout.png)
+
+For example we have a following program:
+
+```go
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func updatePosition(name string) <-chan string {
+	positionChannel := make(chan string)
+
+	go func() {
+		for i := 0; ; i++ {
+			positionChannel <- fmt.Sprintf("%s %d", name, i)
+			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+		}
+	}()
+
+	return positionChannel
+}
+
+func main() {
+	positionChannel1 := updatePosition("Huy")
+	positionChannel2 := updatePosition("Duong")
+
+	for i := 0; i < 5; i++ {
+		fmt.Println(<-positionChannel1)
+		fmt.Println(<-positionChannel2)
+	}
+}
+```
+
+What if the data in `positionChannel2` come first? It needs to wait for the data in positionChannel1. What if we want to get position updates as soon as the data is ready?
+This is where `fan-in` comes into play. By using this technique, we'll combine the inputs from both channels and send them through a single channel.
+
+```
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func updatePosition(name string) <-chan string {
+	positionChannel := make(chan string)
+
+	go func() {
+		for i := 0; ; i++ {
+			positionChannel <- fmt.Sprintf("%s %d", name, i)
+			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+		}
+	}()
+
+	return positionChannel
+}
+
+func fanIn(chan1, chan2 <-chan string) <-chan string {
+	channel := make(chan string)
+	go func() {
+		for {
+			channel <- <-chan1
+		}
+	}()
+	go func() {
+		for {
+			channel <- <-chan2
+		}
+	}()
+
+	return channel
+}
+
+func main() {
+	positionChannel := fanIn(updatePosition("Huy"), updatePosition("Duong"))
+
+	for i := 0; i < 10; i++ {
+		fmt.Println(<-positionChannel)
+	}
+}
+```
+
+Another example using `generator`, `fan-in` and `fan-out` pattern
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	randomNumbers := []int{13, 44, 56, 99, 9, 45, 67, 90, 78, 23}
+	// generate the common channel with inputs
+	inputChan := generatePipeline(randomNumbers)
+
+	// Fan-out to 2 Go-routine
+	c1 := squareNumber(inputChan)
+	c2 := squareNumber(inputChan)
+
+	// Fan-in the resulting squared numbers
+	c := fanIn(c1, c2)
+	sum := 0
+
+	// Do the summation
+	for i := 0; i < len(randomNumbers); i++ {
+		sum += <-c
+	}
+	fmt.Printf("Total Sum of Squares: %d", sum)
+}
+
+func generatePipeline(numbers []int) <-chan int {
+	out := make(chan int)
+	go func() {
+		for _, n := range numbers {
+			out <- n
+		}
+		close(out)
+	}()
+	return out
+}
+
+func squareNumber(in <-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		for n := range in {
+			out <- n * n
+		}
+		close(out)
+	}()
+	return out
+}
+
+func fanIn(input1, input2 <-chan int) <-chan int {
+	c := make(chan int)
+	go func() {
+		for {
+			select {
+			case s := <-input1:
+				c <- s
+			case s := <-input2:
+				c <- s
+			}
+		}
+	}()
+	return c
+}
+```
