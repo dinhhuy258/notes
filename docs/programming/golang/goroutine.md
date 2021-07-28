@@ -208,3 +208,106 @@ A RWMutex is a reader/writer mutual exclusion lock. The lock can be held by an a
 - `Unlock`: unlocks writing lock.
 - `RLock`: locks for reading. It should not be used for recursive read locking; a blocked Lock call excludes new readers from acquiring the lock.
 - `RUnlock`: RUnlock undoes a single RLock call; it does not affect other simultaneous readers.
+
+## 9. Once, Pool, Cond
+
+### Once
+
+Once is an object that performs an action only once.
+
+Implement a singleton pattern in Go:
+
+```go
+package main
+
+import (
+   "fmt"
+   "sync"
+)
+
+type DbConnection struct {}
+
+var (
+   dbConnOnce sync.Once
+   conn *DbConnection
+)
+
+func GetConnection() *DbConnection {
+   dbConnOnce.Do(func() {
+      conn = &DbConnection{}
+      fmt.Println("Inside")
+   })
+   fmt.Println("Outside")
+   return conn
+}
+
+func main()  {
+   for i := 0; i<5; i++ {
+      _ = GetConnection()
+      /*
+         Result is ...
+         Inside
+         Outside
+         Outside
+         Outside
+         Outside
+         Outside
+      */
+   }
+}
+```
+
+### Pool
+
+A Pool is a set of temporary objects that may be individually saved and retrieved. Pool's purpose is to cache allocated but unused items for later reuse, relieving pressure on the garbage collector.
+
+The public methods are:
+
+- `Get() interface{}` to retrieve an element
+- `Put(interface{})` to add an element
+
+```go
+pool := &sync.Pool{
+  New: func() interface{} {
+    return NewConnection()
+  },
+}
+
+connection := pool.Get().(*Connection)
+```
+
+When shall we use sync.Pool? There are two use-cases:
+
+- The first one is when we have to reuse **shared and long-live objects** like a DB connection for example.
+- The second one is to **optimize memory allocation**.
+
+Eg:
+
+```go
+func writeFile(pool *sync.Pool, filename string) error {
+	// Gets a buffer object
+	buf := pool.Get().(*bytes.Buffer)
+	// Returns the buffer into the pool
+	defer pool.Put(buf)
+
+	// Reset buffer otherwise it will contain "foo" during the first call
+	// Then "foofoo" etc.
+	buf.Reset()
+
+	buf.WriteString("foo")
+
+	return ioutil.WriteFile(filename, buf.Bytes(), 0644)
+}
+```
+
+**Note:** Since a pointer can be put into the interface value returned by Get() without any allocation, it is preferable to put pointers than structures in the pool.
+
+### Cond
+
+Cond implements a condition variable, a rendezvous point for goroutines waiting for or announcing the occurrence of an event.
+
+Creating a sync.Cond requires a sync.Locker object (either a sync.Mutex or a sync.RWMutex):
+
+```go
+cond := sync.NewCond(&sync.RWMutex{})
+```
