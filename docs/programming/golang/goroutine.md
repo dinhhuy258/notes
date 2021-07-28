@@ -605,3 +605,78 @@ func fanIn(input1, input2 <-chan int) <-chan int {
 	return c
 }
 ```
+
+### Sequencing
+
+Imagine a cooking competition. You are participating in it with your partner. The rule of the game are:
+
+1. There are 3 rounds in the competition.
+2. In each round both partners will have to to come up with their own dishes.
+3. A player can not move to the next round until their partner is done with their dish.
+4. The judge will decide the entry to the next round after tasting food from both the team members.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+type CookInfo struct {
+	foodCooked     string
+	waitForPartner chan bool
+}
+
+func cookFood(name string) <-chan CookInfo {
+	cookChannel := make(chan CookInfo)
+	waitForPartner := make(chan bool)
+
+	go func() {
+		for round := 0; round < 3; round++ {
+			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+
+			cookChannel <- CookInfo{fmt.Sprintf("%s %s\n", name, "Done"), waitForPartner}
+
+			<-waitForPartner
+		}
+	}()
+
+	return cookChannel
+}
+
+func fanIn(input1, input2 <-chan CookInfo) <-chan CookInfo {
+	c := make(chan CookInfo)
+	go func() {
+		for {
+			select {
+			case s := <-input1:
+				c <- s
+			case s := <-input2:
+				c <- s
+			}
+		}
+	}()
+
+	return c
+}
+
+func main() {
+	channel := fanIn(cookFood("Player 1"), cookFood("Player 2"))
+	for round := 0; round < 3; round++ {
+		food1 := <-channel
+		fmt.Printf(food1.foodCooked)
+
+		food2 := <-channel
+		fmt.Printf(food2.foodCooked)
+
+		food1.waitForPartner <- true
+		food2.waitForPartner <- true
+
+		fmt.Printf("Done with round %d\n", round+1)
+	}
+
+	fmt.Printf("Done with the competition\n")
+}
+```
