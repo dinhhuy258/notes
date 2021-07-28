@@ -53,6 +53,7 @@ nav:
     - Distributed System: web_architecture/distributed_system_common_principles.md
   - Programming:
     - Golang:
+      - Array and slice: programming/golang/array_and_slice.md
       - Goroutine: programming/golang/goroutine.md
   - Devops:
     - Kubernetes:
