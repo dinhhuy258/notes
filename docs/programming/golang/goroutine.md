@@ -152,6 +152,53 @@ The empty select will block forever as there is no case statement to execute.
 It is similar to an empty `for {}` statement.
 On most supported Go architectures, the empty select will yield CPU. An empty for-loop won't, i.e. it will "spin" on 100% CPU.
 
+### Select statement with timeout
+
+Timeout in select can be achieved by using `After()` function of `time` package. Below is the signature of `After()` function.
+
+```go
+func After(d Duration) <-chan Time
+```
+
+The `After` function waits for `d` duration to finish and then it returns the current time on a channel.
+
+Example:
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	news := make(chan string)
+	go newsFeed(news)
+
+	printAllNews(news)
+}
+
+func printAllNews(news chan string) {
+	for {
+		select {
+		case n := <-news:
+			fmt.Println(n)
+		case <-time.After(time.Second * 1):
+			fmt.Println("Timeout: News feed finished")
+			return
+		}
+	}
+}
+
+func newsFeed(ch chan string) {
+	for i := 0; i < 2; i++ {
+		time.Sleep(time.Millisecond * 400)
+		ch <- fmt.Sprintf("News: %d", i+1)
+	}
+}
+```
+
 ## 8. WaitGroups
 
 A WaitGroup blocks a program an waits for a set of goroutines to finish before moving to the next steps of excutions.
