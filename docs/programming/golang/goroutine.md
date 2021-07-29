@@ -60,8 +60,6 @@ The current goroutine evaluates the input parameters to the function which are e
 
 Channel is a pipe between goroutines to synchronize excution and communicate by sending/receiving data
 
-![](../../assets/images/golang/channel.png)
-
 ```go
 channelName := make(chan datatype)
 ```
