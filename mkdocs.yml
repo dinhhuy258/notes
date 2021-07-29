@@ -55,6 +55,7 @@ nav:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
       - Goroutine: programming/golang/goroutine.md
+      - Context: programming/golang/context.md
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
