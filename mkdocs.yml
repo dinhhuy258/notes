@@ -64,5 +64,8 @@ nav:
       - Ingress: devops/kubernetes/ingress.md
       - Volumes: devops/kubernetes/volumes.md
       - ConfigMaps: devops/kubernetes/config_maps.md
+  - WebRTC:
+    - WebRTC: webrtc/webrtc.md
+    - Signaling: webrtc/signaling.md
   - Git:
     - Git commands: git/git_commands.md
