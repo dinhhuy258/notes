@@ -40,3 +40,15 @@ Some networks don’t allow UDP traffic at all, or maybe they don’t allow TCP.
 
 Some network administrators will run software that tries to process every packet. Many times this software doesn’t understand WebRTC, so it blocks it because it doesn’t know what to do, e.g. treating WebRTC packets as suspicious UDP packets on an arbitrary port that is not whitelisted.
 
+### 2.2 NAT Mapping
+
+NAT (Network Address Translation) mapping is the magic that makes the connectivity of WebRTC possible
+
+For example we have `Agent 1` and `Agent 2` and they are in different networks
+
+![](../../assets/images/webrtc/nat_mapping.png)
+
+To make this communication happen you establish a NAT mapping
+
+Agent 1 uses port `7000` to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to 5.0.0.1:7000.
+
