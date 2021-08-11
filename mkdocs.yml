@@ -50,7 +50,7 @@ nav:
     - TCP: networking/tcp.md
   - Web:
     - HTTP: web/http.md
-    - Distributed System: web/distributed_system_common_principles.md
+    - Distributed System: web/distributed_system.md
   - Programming:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
