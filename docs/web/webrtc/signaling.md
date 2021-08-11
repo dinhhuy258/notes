@@ -72,7 +72,7 @@ WebRTC uses an offer/answer model. All this means is that one WebRTC Agent makes
 
 This gives the answerer a chance to reject unsupported codecs in the Media Descriptions. This is how two peers can understand what formats they are willing to exchange.
 
-![](../assets/images/webrtc/offer_answer_model.png)
+![](../../assets/images/webrtc/offer_answer_model.png)
 
 ### 3.2 Transceivers are for sending and receiving
 
