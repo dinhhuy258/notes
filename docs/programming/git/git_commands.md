@@ -10,14 +10,14 @@ git config -l
 
 ### Setup git username, email
 
-#### Global configuration
+#### Repository configuration
 
 ```
 git config user.name "Huy Duong"
 git config user.email "huy.duongdinh@gmail.com"
 ```
 
-#### Repository configuration
+#### Global configuration
 
 ```
 git config --global user.name "Huy Duong"
@@ -88,3 +88,12 @@ git revert [--no-commit] <commit_id>
 ```
 git checkout <commit_id> -- <file>
 ```
+
+## 4. Rebase
+
+### Rebase interactive mode
+
+```
+git rebase -i <branch_name>
+```
+
