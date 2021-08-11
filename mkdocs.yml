@@ -54,6 +54,7 @@ nav:
     - WebRTC:
       - WebRTC: web/webrtc/webrtc.md
       - Signaling: web/webrtc/signaling.md
+      - Connecting: web/webrtc/connecting.md
   - Programming:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
