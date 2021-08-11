@@ -8,7 +8,7 @@ In a distributed computer system, you can only support two of the following guar
 - **Availability:** means that every request gets a (non-error) response regardless of the individual state of a node. This does not guarantee that the response contains the most recent write
 - **Partition Tolerance:** means that the cluster must continue to work despite any number of communication breakdowns between nodes in the system
 
-![](../assets/images/web-architecture/cap_theorem.png)
+![](../assets/images/web/cap_theorem.png)
 
 Networks aren't reliable, so you'll need to support partition tolerance (the P of CAP). That leaves a decision between the other two, C and A. When a network failure happens, one can choose to guarantee **consistency** or **availability**
 

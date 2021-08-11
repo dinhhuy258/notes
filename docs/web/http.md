@@ -47,7 +47,7 @@ HTTP messages, as defined in HTTP/1.1 and earlier, are human-readable. In HTTP/2
 
 #### HTTP Request
 
-![](../assets/images/web-architecture/http_request.png)
+![](../assets/images/web/http_request.png)
 
 Requests consists of the following elements:
 
@@ -59,7 +59,7 @@ Requests consists of the following elements:
 
 #### HTTP Response
 
-![](../assets/images/web-architecture/http_response.png)
+![](../assets/images/web/http_response.png)
 
 Responses consist of the following elements:
 
@@ -112,7 +112,7 @@ This is the default HTTP communication method and is extensively on the Internet
 The disadvantage of the HTTP pull method is that if clients keep on periodically makes the pull request for updated data, but there are no updates at the server hence, every time the client will get the same result, bandwidth will be wasted and the server will be busy too.
 Also, excessive pulls by the clients have the potential to bring down the server.
 
-![](../assets/images/web-architecture/http_pull.png)
+![](../assets/images/web/http_pull.png)
 
 ## 3. HTTP push
 
@@ -126,4 +126,4 @@ There are multiple technologies involved in the HTTP push based mechanism such a
 - Message Queues
 - Streaming over HTTP
 
-![](../assets/images/web-architecture/http_push.png)
+![](../assets/images/web/http_push.png)
