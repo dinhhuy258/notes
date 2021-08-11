@@ -56,6 +56,8 @@ nav:
       - Array and slice: programming/golang/array_and_slice.md
       - Goroutine: programming/golang/goroutine.md
       - Context: programming/golang/context.md
+    - Git:
+      - Git commands: git/git_commands.md
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
@@ -67,5 +69,3 @@ nav:
   - WebRTC:
     - WebRTC: webrtc/webrtc.md
     - Signaling: webrtc/signaling.md
-  - Git:
-    - Git commands: git/git_commands.md
