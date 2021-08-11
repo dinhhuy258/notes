@@ -41,23 +41,26 @@ nav:
     - Bucket sort: algorithms/bucket_sort.md
     - Huffman coding: algorithms/huffman_coding.md
     - Union find: algorithms/union_find.md
-  - Database:
-    - SQL cheat sheet: database/sql_cheat_sheet.md
-    - MySQL: database/mysql.md
-    - Transactions: database/transactions.md
-    - NoSQL: database/nosql.md
-  - Networking:
-    - TCP: networking/tcp.md
   - Web:
     - HTTP: web/http.md
     - Distributed System: web/distributed_system.md
+    - Networking:
+      - TCP: web/networking/tcp.md
+    - Database:
+      - SQL cheat sheet: web/database/sql_cheat_sheet.md
+      - MySQL: web/database/mysql.md
+      - Transactions: web/database/transactions.md
+      - NoSQL: web/database/nosql.md
+    - WebRTC:
+      - WebRTC: web/webrtc/webrtc.md
+      - Signaling: web/webrtc/signaling.md
   - Programming:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
       - Goroutine: programming/golang/goroutine.md
       - Context: programming/golang/context.md
     - Git:
-      - Git commands: git/git_commands.md
+      - Git commands: programming/git/git_commands.md
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
@@ -66,6 +69,3 @@ nav:
       - Ingress: devops/kubernetes/ingress.md
       - Volumes: devops/kubernetes/volumes.md
       - ConfigMaps: devops/kubernetes/config_maps.md
-  - WebRTC:
-    - WebRTC: webrtc/webrtc.md
-    - Signaling: webrtc/signaling.md
