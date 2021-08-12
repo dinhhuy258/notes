@@ -31,7 +31,6 @@ Most of the time the other WebRTC Agent will not even be in the same network. A 
 ![](../../assets/images/webrtc/two_networks.png)
 
 For hosts in the same network it is very easy to connect. However, a host using `Router B` has no way to directly access anything behind `Router A`. How would you tell the different between `191.168.0.1` behind `Router A` and the same IP behind `Router B`? They are private IPs. A host using `Router B` could send traffic directly to `Router A`, but the request would end there. How does `Router A` know which host it should forward the message to?
-
 **Protocol Restrictions**
 
 Some networks don’t allow UDP traffic at all, or maybe they don’t allow TCP. Some networks may have a very low MTU (Maximum Transmission Unit). There are lots of variables that network administrators can change that can make communication difficult.
@@ -51,4 +50,12 @@ For example we have `Agent 1` and `Agent 2` and they are in different networks
 To make this communication happen you establish a NAT mapping
 
 Agent 1 uses port `7000` to establish a WebRTC connection with Agent 2. This creates a binding of `192.168.0.1:7000` to `5.0.0.1:7000`. This then allows Agent 2 to reach Agent 1 by sending packets to 5.0.0.1:7000.
+
+### 2.3 STUN
+
+Session Traversal Utilities for NAT (STUN) protocol enables a device to discover its public IP address.
+
+STUN relies on a simple observation: when you talk to a server on the internet from a NATed client, the server sees the public ip:port that your NAT device created for you, not your LAN ip:port. So, the server can tell you what ip:port it saw. That way, you know what traffic from your LAN ip:port looks like on the internet, you can tell your peers about that mapping, and now they know where to send packets.
+
+![](../../assets/images/webrtc/stun.png)
 
