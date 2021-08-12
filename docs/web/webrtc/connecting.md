@@ -6,20 +6,6 @@ WebRTC does’t use a client/server model, it establishes peer-to-peer (P2P) con
 
 ![](../../assets/images/webrtc/p2p.png)
 
-Establishing peer-to-peer connectivity can be difficult though. Despite these difficulties in setting up a P2P connection, you get advantages over traditional Client/Server technology because of the following attributes that WebRTC offers.
-
-**Reduce bandwidth costs**
-
-Since media communication happens directly between peers you don't have to pay for, or host a separate server to relay media
-
-**Lower latency**
-
-Communication is fast when it is direct
-
-**Secure E2E communication**
-
-Direct communication is more secure. Since users aren’t routing data through your server, they don’t even need to trust you won’t decrypt it.
-
 ## 2. How does it work
 
 ### 2.1 Networking real-world constraints
@@ -42,7 +28,7 @@ To solve this issue NAT devices introduced. These devices would be responsible f
 
 Session Traversal Utilities for NAT (STUN) protocol enables a device to discover its public IP address.
 
-STUN relies on a simple observation: when you talk to a server on the internet from a NATed client, the server sees the public ip:port that your NAT device created for you, not your LAN ip:port. So, the server can tell you what ip:port it saw. That way, you know what traffic from your LAN ip:port looks like on the internet, you can tell your peers about that mapping, and now they know where to send packets.
+STUN relies on a simple observation: when you talk to a server on the internet from a NATed client, the server sees the public `ip:port` that your NAT device created for you, not your LAN `ip:port`. So, the server can tell you what `ip:port` it saw. That way, you know what traffic from your LAN `ip:port` looks like on the internet, you can tell your peers about that mapping, and now they know where to send packets.
 
 ![](../../assets/images/webrtc/stun.png)
 
