@@ -32,3 +32,12 @@ STUN relies on a simple observation: when you talk to a server on the internet f
 
 ![](../../assets/images/webrtc/stun.png)
 
+### 2.4 TURN
+
+TURN (Traversal Using Relays around NAT) is the solution when direct connectivity isn’t possible. It could be because you have two NAT Types that are incompatible, or maybe can’t speak the same protocol or when a symmetric NAT is in use!
+
+TURN Server allows clients to send and receive data through an intermediary server.
+
+Typically A TURN client first sends a message to a TURN server to allocate an IP address and port on the TURN server. Once the allocation has succeeded, the client will use the IP address and port number to communicate with peers.
+
+![](../../assets/images/webrtc/turn.png)
