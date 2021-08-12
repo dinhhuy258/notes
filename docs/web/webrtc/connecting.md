@@ -36,15 +36,13 @@ STUN relies on a simple observation: when you talk to a server on the internet f
 
 TURN (Traversal Using Relays around NAT) is the solution when direct connectivity isn’t possible. It could be because you have two NAT Types that are incompatible, or maybe can’t speak the same protocol or when a symmetric NAT is in use!
 
-TURN Server allows clients to send and receive data through an intermediary server.
-
-Typically A TURN client first sends a message to a TURN server to allocate an IP address and port on the TURN server. Once the allocation has succeeded, the client will use the IP address and port number to communicate with peers.
+WebRTC agent bypass the Symmetric NAT restriction by opening a connection with a TURN server and relaying all information through that server. You would create a connection with a TURN server and tell all peers to send packets to the server which will then be forwarded to you. This obviously comes with some overhead so it is only used if there are no other alternatives.
 
 ![](../../assets/images/webrtc/turn.png)
 
 ### 2.5 ICE
 
-ICE (Interactive Connectivity Establishment) is how  WebRTC connects two Agents. ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
+ICE (Interactive Connectivity Establishment) is how  WebRTC connects two Agents. ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected. 
 
 These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
 
