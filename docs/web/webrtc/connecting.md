@@ -41,3 +41,13 @@ TURN Server allows clients to send and receive data through an intermediary serv
 Typically A TURN client first sends a message to a TURN server to allocate an IP address and port on the TURN server. Once the allocation has succeeded, the client will use the IP address and port number to communicate with peers.
 
 ![](../../assets/images/webrtc/turn.png)
+
+### 2.5 ICE
+
+ICE (Interactive Connectivity Establishment) is how  WebRTC connects two Agents. ICE is a protocol for establishing connectivity. It determines all the possible routes between the two peers and then ensures you stay connected.
+
+These routes are known as `Candidate Pairs`, which is a pairing of a local and remote transport address. This is where STUN and TURN come into play with ICE. These addresses can be your local IP Address plus a port, `NAT mapping`, or `Relayed Transport Address`. Each side gathers all the addresses they want to use, exchanges them, and then attempts to connect!
+
+An ICE Agent is either Controlling or Controlled. The Controlling Agent is the one that decides the selected Candidate Pair. Usually, the peer sending the offer is the controlling side.
+
+Each side must have a `user fragment` and a `password`. These two values must be exchanged before connectivity checks can even begin. The `user fragment` is sent in plain text and is useful for demuxing multiple ICE Sessions. The `password` is used to generate a MESSAGE-INTEGRITY attribute. At the end of each STUN packet, there is an attribute that is a hash of the entire packet using the `password` as a key. This is used to authenticate the packet and ensure it hasn’t been tampered with.
