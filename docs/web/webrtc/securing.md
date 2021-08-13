@@ -48,3 +48,7 @@ ChangeCipherSpec informs the receiver that everything sent after this message wi
 
 Finished is encrypted and contains a hash of all messages. This is to assert that the handshake was not tampered with.
 
+## 2. SRTP
+
+SRTP is a protocol designed specifically for encrypting RTP packets. To start an SRTP session you specify your keys and cipher. Unlike DTLS it has no handshake mechanism. All the configuration and keys were generated during the DTLS handshake.
+
