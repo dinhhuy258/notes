@@ -97,3 +97,16 @@ git checkout <commit_id> -- <file>
 git rebase -i <branch_name>
 ```
 
+## 5. Submodule
+
+### Add submodule
+
+```
+git submodule add <remote_url>
+```
+
+### Update submodule
+
+```
+git submodule update --init --recursive
+```
