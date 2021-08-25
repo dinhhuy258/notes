@@ -103,6 +103,8 @@ git rebase -i <branch_name>
 
 ```
 git submodule add <remote_url>
+
+git submodule add <remote_url> <folder>
 ```
 
 ### Update submodule
