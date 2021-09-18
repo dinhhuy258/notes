@@ -71,6 +71,10 @@ fun main() = runBlocking {
 }
 ```
 
+### withContext
+
+Calls the specified suspending block with a given coroutine context, suspends until it completes, and returns the result.
+
 ### Structured Concurrency
 
 If a coroutine is started on `GlobalScope`, the program will not wait for it. For example:
@@ -138,4 +142,3 @@ suspend fun doWorld() = coroutineScope {  // this: CoroutineScope
     println("Hello")
 }
 ```
-
