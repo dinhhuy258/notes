@@ -64,6 +64,10 @@ nav:
       - Context: programming/golang/context.md
     - Git:
       - Git commands: programming/git/git_commands.md
+    - Kotlin:
+      - Coroutine:
+        - Coroutine basics: programming/kotlin/coroutine/basics.md
+        - Coroutine context and dispatchers: programming/kotlin/coroutine/context_and_dispatchers.md
   - Devops:
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md

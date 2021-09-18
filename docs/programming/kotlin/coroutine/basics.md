@@ -1,4 +1,4 @@
-# Coroutine
+# Coroutine basics
 
 A coroutine is an instance of **suspendable** computation. It is conceptually similar to a thread. However, a coroutine is not bound to any particular thread. It may suspend its execution in one thread and resume in another one.
 
