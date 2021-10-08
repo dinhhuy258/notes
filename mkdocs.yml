@@ -46,6 +46,8 @@ nav:
     - Distributed System: web/distributed_system.md
     - Networking:
       - TCP: web/networking/tcp.md
+    - Security:
+      - JWT: web/security/jwt.md
     - Database:
       - SQL cheat sheet: web/database/sql_cheat_sheet.md
       - MySQL: web/database/mysql.md
