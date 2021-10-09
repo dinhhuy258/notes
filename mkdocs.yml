@@ -48,6 +48,7 @@ nav:
       - TCP: web/networking/tcp.md
     - Security:
       - JWT: web/security/jwt.md
+      - OAuth2: web/security/oauth2.md
     - Database:
       - SQL cheat sheet: web/database/sql_cheat_sheet.md
       - MySQL: web/database/mysql.md
