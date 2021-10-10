@@ -82,3 +82,11 @@ Implicit flow is considered less secure because the browser is responsible for m
 ## 4. OpenID Connect
 
 OpenID Connect is an identity layer on top of the OAuth 2.0 protocol. It extends OAuth 2.0 to standardize a way for authentication.
+
+- OpenID is about verifying a person's identity (authentication).
+- OAuth is about accessing a person's stuff (authorization).
+- OpenID Connect does both.
+
+![](../../assets/images/security/oauth_vs_openid.png)
+
+![](../../assets/images/security/open_id_authorization_code_flow.png)
