@@ -48,3 +48,5 @@ For example, suppose transaction T1 retrieves a set of rows that satisfy some se
 |  Read Committed  |      ✘      |          ✔           |       ✔       |
 | Repeatable Reads |      ✘      |          ✘           |       ✔       |
 |   Serializable   |      ✘      |          ✘           |       ✘       |
+
+In `Repeatable Reads` isolation or higher if we are updating row data at the same time another concurrent transaction is also updating the same row then we are getting an error `ERROR: could not serialize access due to concurrent update`
