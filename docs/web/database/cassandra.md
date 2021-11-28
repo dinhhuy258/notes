@@ -46,3 +46,35 @@ A datacenter is a logical set of racks/ nodes. A common use case is AWS-EAST vs 
 The cluster is the collection of many data centers.
 
 ![](../../assets/images/database/cassandra_architecture_3.png)
+
+## 2. Data distribution and replication
+
+### 2.1 Data Partitions
+
+A **partition key** is converted to a **token** by a **partitioner**. The tokens are signed integer values between -2^63 to +2^63-1, and this range is referred to as token range.
+
+If we consider there are only 100 tokens used for a Cassandra cluster with three nodes. Each node is assigned approximately 33 tokens like
+
+```
+node1: 0-33
+node2: 34-66
+node3: 67-99
+```
+
+If there are nodes added or removed, the token range distribution should be shuffled to suit the new topology. This process takes a lot of calculation and configuration change for each cluster operation.
+
+![](../../assets/images/database/cassandra_token_ring.png)
+
+If one node is removed, data in removed node is placed on the next neighbor node in clockwise manner.
+
+![](../../assets/images/database/cassandra_token_ring_2.png)
+
+### 2.2 Virtual nodes/Vnodes
+
+Virtual nodes in a Cassandra cluster are also called vnodes. Vnodes can be defined for each physical node in the cluster. Each node in the ring can hold multiple virtual nodes.
+
+The default number of Vnodes owned by a node in Cassandra is `256`, which is set by  `num_tokens` property. When a node is added into a cluster, the token allocation algorithm allocates tokens to the node. The algorithm selects random token values to ensure uniform distribution.
+
+In your case you have 6 nodes, each set with 256 token ranges so you have 6*256 token ranges and each psychical node contains 256 token ranges.
+
+![](../../assets/images/database/cassandra_virtual_node.png)
