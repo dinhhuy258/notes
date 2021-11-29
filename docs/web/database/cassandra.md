@@ -73,8 +73,46 @@ If one node is removed, data in removed node is placed on the next neighbor node
 
 Virtual nodes in a Cassandra cluster are also called vnodes. Vnodes can be defined for each physical node in the cluster. Each node in the ring can hold multiple virtual nodes.
 
-The default number of Vnodes owned by a node in Cassandra is `256`, which is set by  `num_tokens` property. When a node is added into a cluster, the token allocation algorithm allocates tokens to the node. The algorithm selects random token values to ensure uniform distribution.
+The default number of Vnodes owned by a node in Cassandra is `256`, which is set by `num_tokens` property. When a node is added into a cluster, the token allocation algorithm allocates tokens to the node. The algorithm selects random token values to ensure uniform distribution.
 
-In your case you have 6 nodes, each set with 256 token ranges so you have 6*256 token ranges and each psychical node contains 256 token ranges.
+In your case you have 6 nodes, each set with 256 token ranges so you have 6\*256 token ranges and each psychical node contains 256 token ranges.
 
 ![](../../assets/images/database/cassandra_virtual_node.png)
+
+### 2.3 Replication
+
+The data in each keyspace is replicated with a **replication factor**. There is one primary replica of data that resides with the token owner node as explained in the data partitioning section. The remainder of replicas is placed by Cassandra on specific nodes using the replica placement strategy.
+
+The total number of replicas for a keyspace across a Cassandra cluster is referred to as the keyspace's replication factor. A replication factor of one means that there is only one copy of each row in the Cassandra cluster. A replication factor of two means there are two copies of each row, where each copy is on a different node. All replicas are equally important; there is no primary or master replica.
+
+There are two settings that mainly impact replica placement:
+
+- First is snitch, which determines the data center, and the rack a Cassandra node belongs to, and it is set at the node level
+- The second setting is the replication strategy. The replication strategy is set at the keyspace level. There are two strategies: SimpleStrategy and NetworkTopologyStrategy.
+
+SimpleStrategy: does not consider racks and multiple data centers. It places data replicas on nodes sequentially.
+NetworkTopologyStrategy: is rack aware and data center aware
+
+![](../../assets/images/database/cassandra_replication.png)
+
+### 2.4 Consistency level
+
+The Cassandra consistency level is defined as the minimum number of Cassandra nodes that must acknowledge a read or write operation before the operation can be considered successful. Different consistency levels can be assigned to different Edge keyspaces.
+
+You can find all cassandra's consistency level [here](https://docs.scylladb.com/getting-started/consistency/#consistency-levels-reference)
+
+![](../../assets/images/database/cassandra_consistency.png)
+
+**Write Consistency**
+
+1. A client sends a write request to the coordinator.
+2. The coordinator forwards the write request (INSERT, UPDATE or DELETE) to all replica nodes whatever write CL you have set.
+3. The coordinator waits for n number of replica nodes to respond. n is set by the write CL.
+4. The coordinator sends the response back to the client.
+
+**Read Consistency**
+
+1. A client sends a read request to the coordinator.
+2. The coordinator forwards the read (SELECT) request to n number of replica nodes. n is set by the read CL.
+3. The coordinator waits for n number of replica nodes to respond.
+4. The coordinator then merges (finds out most recent copy of written data) the n number of responses to a single response and sends response to the client.
