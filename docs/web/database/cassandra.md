@@ -1,5 +1,7 @@
 # Cassandra
 
+Cassandra is an open source, column-oriented database designed to handle large amounts of data across many commodity servers.
+
 ## 1. Cassandra Architecture
 
 Some of the features of Cassandra architecture are as follows:
@@ -116,3 +118,50 @@ You can find all cassandra's consistency level [here](https://docs.scylladb.com/
 2. The coordinator forwards the read (SELECT) request to n number of replica nodes. n is set by the read CL.
 3. The coordinator waits for n number of replica nodes to respond.
 4. The coordinator then merges (finds out most recent copy of written data) the n number of responses to a single response and sends response to the client.
+
+## 3. Data storage
+
+Cassandra processes data at several stages on the write path, starting with the immediate logging of a write and ending in with a write of data to disk:
+
+- Logging data in the commit log
+- Writing data to the memtable
+- Flushing data from the memtable
+- Storing data on disk in SSTables
+
+![](../../assets/images/database/cassandra_write_path.png)
+
+- **Commitlogs** are an append only log of all mutations local to a Cassandra node. Any data written to Cassandra will first be written to a commit log before being written to a memtable. This provides durability in the case of unexpected shutdown. On startup, any mutations in the commit log will be applied to memtables.
+- **Memtables** are in-memory structures where Cassandra buffers writes. In general, there is one active memtable per table. Eventually, memtables are flushed onto disk and become immutable SSTables. This can be triggered in several ways:
+  - The memory usage of the memtables exceeds the configured threshold (see `memtable_cleanup_threshold`)
+  - The `commit-log` approaches its maximum size, and forces memtable flushes in order to allow commitlog segments to be freed
+- **SSTables** are the immutable data files that Cassandra uses for persisting data on disk.
+
+## 4. Data Model
+
+The Cassandra data model uses the same terms as Google BigTable, for example, column family, column, row, etc. Some of these terms also exist in the relational data model but have different meanings.
+
+**Column**
+
+A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
+
+![](../../assets/images/database/cassandra_column.png)
+
+The timestamp is used for conflict resolution by client applications during write operations. Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.
+
+**Row**
+
+Each row consists of a row key — also known as the primary key — and a set of columns, as shown in the following figure.
+
+![](../../assets/images/database/cassandra_row.png)
+
+Each row may have different column names. That is why Cassandra is row-oriented and column-oriented. There are no timestamps for the row.
+
+**Column Family**
+
+![](../../assets/images/database/cassandra_column_family.png)
+
+A row key in the column family must be unique and be used to identify rows. Although not the same, the column family can be analogous to a **table** in a relational database. Column families provide greater flexibility by allowing different columns in different rows.
+
+**Keyspace**
+
+A keyspace is analogous to a **schema** or **database** in a relational model. Each Cassandra cluster has a system keyspace to store system-wide metadata. Keyspace contains replication settings that control how data is distributed and replicated in clusters.
