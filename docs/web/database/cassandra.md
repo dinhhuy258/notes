@@ -1,6 +1,9 @@
 # Cassandra
 
-Cassandra is an open source, column-oriented database designed to handle large amounts of data across many commodity servers.
+Apache Cassandra is a highly-scalable partitioned row store. Rows are organized into tables with a required primary key.
+
+- Partitioning means that Cassandra can distribute your data across multiple machines
+- Row store means that like relational databases, Cassandra organizes data by rows and columns.
 
 ## 1. Cassandra Architecture
 
@@ -140,13 +143,73 @@ Cassandra processes data at several stages on the write path, starting with the 
 
 The Cassandra data model uses the same terms as Google BigTable, for example, column family, column, row, etc. Some of these terms also exist in the relational data model but have different meanings.
 
-**Column**
+**Keyspace**
 
-A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
+A keyspace is analogous to a **schema** or **database** in a relational model. Each Cassandra cluster has a system keyspace to store system-wide metadata. Keyspace contains replication settings that control how data is distributed and replicated in clusters.
 
-![](../../assets/images/database/cassandra_column.png)
+Syntax:
 
-The timestamp is used for conflict resolution by client applications during write operations. Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.
+```
+Create keyspace KeyspaceName with replication={'class':strategy name, 'replication_factor': No of replications on different nodes};
+```
+
+Strategy:
+
+- Simple Strategy: Simple strategy is used when you have just one data center. In this strategy, the first replica is placed on the node selected by the partitioner. Remaining nodes are placed in the clockwise direction in the ring without considering rack or node location.
+- Network Topology Strategy: Network topology strategy is used when you have more than one data centers. In this strategy, you have to provide replication factor for each data center separately. Network topology strategy places replicas in nodes in the clockwise direction in the same data center. This strategy attempts to place replicas in different racks.
+
+Replication Factor:
+
+Replication factor is the number of replicas of data placed on different nodes. For no failure, 3 is good replication factor. More than two replication factor ensures no single point of failure. Sometimes, the server can be down, or network problem can occur, then other replicas provide service with no failure.
+
+Eg:
+
+```
+Create keyspace University with replication={'class':SimpleStrategy,'replication_factor': 3};
+```
+
+**Column Family**
+
+![](../../assets/images/database/cassandra_column_family.png)
+
+A row key in the column family must be unique and be used to identify rows. Although not the same, the column family can be analogous to a **table** in a relational database. Column families provide greater flexibility by allowing different columns in different rows.
+
+Syntax:
+
+```
+Create table KeyspaceName.TableName
+(
+ColumnName DataType,
+ColumnName DataType,
+ColumnName DataType
+...
+Primary key(ColumnName)
+) with PropertyName=PropertyValue;
+```
+
+- Single Primary Key
+
+```
+Primary key (ColumnName)
+```
+
+In the single primary key, there is only a single column. That column is also called partitioning key. Data is partitioned on the basis of that column.
+
+- Compound Primary Key
+
+```
+Primary key(ColumnName1,ColumnName2 . . .)
+```
+
+In above syntax, ColumnName1 is the partitioning key and ColumnName2 is the Clustering key. Data will be partitioned on the basis of ColumnName1 and data will be clustered on the basis of ColumnName2. Clustering is the process that sorts data in the partition.
+
+- Compound Partitioning key
+
+```
+Primary Key((ColumnName1,ColumnName2),ColumnName3...))
+```
+
+In above syntax, ColumnName1 and ColumnName2 are the compound partition key. Data will be partitioned on the basis of both columns ColumnName1 and ColumnName2 and data will be clustered on the basis of the ColumnName3.
 
 **Row**
 
@@ -156,12 +219,45 @@ Each row consists of a row key — also known as the primary key — and a set o
 
 Each row may have different column names. That is why Cassandra is row-oriented and column-oriented. There are no timestamps for the row.
 
-**Column Family**
+**Column**
 
-![](../../assets/images/database/cassandra_column_family.png)
+A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
 
-A row key in the column family must be unique and be used to identify rows. Although not the same, the column family can be analogous to a **table** in a relational database. Column families provide greater flexibility by allowing different columns in different rows.
+![](../../assets/images/database/cassandra_column.png)
 
-**Keyspace**
+The timestamp is used for conflict resolution by client applications during write operations. Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.
 
-A keyspace is analogous to a **schema** or **database** in a relational model. Each Cassandra cluster has a system keyspace to store system-wide metadata. Keyspace contains replication settings that control how data is distributed and replicated in clusters.
+**Cassandra index**
+
+Cassandra creates indexes on the data during the ‘create index’ statement execution.
+
+- After creating an index, Cassandra indexes new data automatically when data is inserted.
+- The index cannot be created on primary key as a primary key is already indexed.
+- Indexes on collections are not supported in Cassandra.
+- Without indexing on the column, Cassandra can’t filter that column unless it is a primary key.
+
+That’s why, for filtering columns in Cassandra, indexes needs to be created.
+
+Syntax
+
+```
+Create index IndexName on KeyspaceName.TableName(ColumnName);
+```
+
+**Cassandra Data Model Rules**
+
+Cassandra does not support joins, group by, OR clause, aggregations, etc. So you have to store your data in such a way that it should be completely retrievable. So these rules must be kept in mind while modelling data in Cassandra.
+
+What cassandra does not support:
+
+1. CQL does not support aggregation queries like max, min, avg.
+2. CQL does not support group by, having queries.
+3. CQL does not support joins.
+4. CQL does not support OR queries.
+5. CQL does not support wildcard queries.
+6. CQL does not support Union, Intersection queries.
+7. Table columns cannot be filtered without creating the index.
+8. Greater than (>) and less than (<) query is only supported on clustering column.
+
+Cassandra query language is not suitable for analytics purposes because it has so many limitations.
+
