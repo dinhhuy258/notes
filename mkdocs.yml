@@ -41,6 +41,7 @@ nav:
     - Bucket sort: algorithms/bucket_sort.md
     - Huffman coding: algorithms/huffman_coding.md
     - Union find: algorithms/union_find.md
+    - Monotonic stack: algorithms/monotomic_stack.md
   - Web:
     - HTTP: web/http.md
     - Distributed System: web/distributed_system.md
@@ -54,6 +55,7 @@ nav:
       - MySQL: web/database/mysql.md
       - Transactions: web/database/transactions.md
       - NoSQL: web/database/nosql.md
+      - Cassandra: web/database/cassandra.md
     - WebRTC:
       - WebRTC: web/webrtc/webrtc.md
       - Signaling: web/webrtc/signaling.md
