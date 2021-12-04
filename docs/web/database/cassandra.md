@@ -211,22 +211,6 @@ Primary Key((ColumnName1,ColumnName2),ColumnName3...))
 
 In above syntax, ColumnName1 and ColumnName2 are the compound partition key. Data will be partitioned on the basis of both columns ColumnName1 and ColumnName2 and data will be clustered on the basis of the ColumnName3.
 
-**Row**
-
-Each row consists of a row key — also known as the primary key — and a set of columns, as shown in the following figure.
-
-![](../../assets/images/database/cassandra_row.png)
-
-Each row may have different column names. That is why Cassandra is row-oriented and column-oriented. There are no timestamps for the row.
-
-**Column**
-
-A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
-
-![](../../assets/images/database/cassandra_column.png)
-
-The timestamp is used for conflict resolution by client applications during write operations. Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.
-
 **Cassandra index**
 
 Cassandra creates indexes on the data during the ‘create index’ statement execution.
@@ -242,6 +226,37 @@ Syntax
 
 ```
 Create index IndexName on KeyspaceName.TableName(ColumnName);
+```
+
+**Row**
+
+Each row consists of a row key — also known as the primary key — and a set of columns, as shown in the following figure.
+
+![](../../assets/images/database/cassandra_row.png)
+
+Each row may have different column names. That is why Cassandra is row-oriented and column-oriented. There are no timestamps for the row.
+
+**Column**
+
+A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
+
+![](../../assets/images/database/cassandra_column.png)
+
+The timestamp is used for conflict resolution by client applications during write operations.
+Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.
+
+Time-To-Live:
+
+During data insertion, you have to specify ‘ttl’ value in seconds. ‘ttl’ value is the time to live value for the data. After that particular amount of time, data will be automatically removed.
+
+For example, specify ttl value 100 seconds during insertion. Data will be automatically deleted after 100 seconds. When data is expired, that expired data is marked with a tombstone.
+
+A tombstone exists for a grace period. After data is expired, data is automatically removed after compaction process.
+
+Syntax:
+
+```
+Insert into KeyspaceName.TableName(ColumnNames) values(ColumnValues) using ttl TimeInseconds;
 ```
 
 **Cassandra Data Model Rules**
@@ -261,3 +276,118 @@ What cassandra does not support:
 
 Cassandra query language is not suitable for analytics purposes because it has so many limitations.
 
+## 5. Data Modeling in Cassandra example
+
+### 5.1 Facebook Posts
+
+Suppose that we are storing Facebook posts of different users in Cassandra. One of the common query patterns will be fetching the top `N` posts made by a given user. Thus we need to store all data for a particular user on a single partition
+
+```
+CREATE TABLE posts_facebook (
+  user_id uuid,
+  post_id timeuuid,
+  content text,
+  PRIMARY KEY (user_id, post_id) )
+WITH CLUSTERING ORDER BY (post_id DESC);
+```
+
+Now, let's write a query to find the top 20 posts for the user Anna:
+
+```
+SELECT content FROM posts_facebook WHERE user_id = "Anna_id" LIMIT 20
+```
+
+### 5.2 Gyms Across the Country
+
+Suppose that we are storing the details of different partner gyms across the different cities and states of many countries and we would like to fetch the gyms for a given city.
+
+Also, let's say we need to return the results having gyms sorted by their opening date.
+
+```
+CREATE TABLE gyms_by_city (
+ country_code text,
+ state text,
+ city text,
+ gym_name text,
+ opening_date timestamp,
+ PRIMARY KEY (
+   (country_code, state_province, city),
+   (opening_date, gym_name))
+ WITH CLUSTERING ORDER BY (opening_date ASC, gym_name ASC);
+```
+
+Now, let's look at a query that fetches the first ten gyms by their opening date for the city of Phoenix within the U.S. state of Arizona:
+
+```
+SELECT * FROM gyms_by_city
+  WHERE country_code = "us" AND state = "Arizona" AND city = "Phoenix"
+  LIMIT 10
+```
+
+Next, let’s see a query that fetches the ten most recently-opened gyms in the city of Phoenix within the U.S. state of Arizona:
+
+```
+SELECT * FROM gyms_by_city
+  WHERE country_code = "us" and state = "Arizona" and city = "Phoenix"
+  ORDER BY opening_date DESC
+  LIMIT 10
+```
+
+**Note**: As the last query's sort order is opposite of the sort order defined during the table creation, the query will run slower as Cassandra will first fetch the data and then sort it in memory.
+
+### 5.3 E-commerce Customers and Products
+
+Let's say we are running an e-commerce store and that we are storing the Customer and Product information within Cassandra. Let's look at some of the common query patterns around this use case:
+
+1. Get Customer info
+2. Get Product info
+3. Get all Customers who like a given Product
+4. Get all Products a given Customer likes
+
+We will start by using separate tables for storing the Customer and Product information. However, we need to introduce a fair amount of denormalization to support the 3rd and 4th queries shown above.
+
+We will create two more tables to achieve this – “Customer_by_Product” and “Product_by_Customer“.
+
+```
+CREATE TABLE Customer (
+  cust_id text,
+  first_name text,
+  last_name text,
+  registered_on timestamp,
+  PRIMARY KEY (cust_id));
+
+CREATE TABLE Product (
+  prdt_id text,
+  title text,
+  PRIMARY KEY (prdt_id));
+
+CREATE TABLE Customer_By_Liked_Product (
+  liked_prdt_id text,
+  liked_on timestamp,
+  title text,
+  cust_id text,
+  first_name text,
+  last_name text,
+  PRIMARY KEY (prdt_id, liked_on));
+
+CREATE TABLE Product_Liked_By_Customer (
+  cust_id text,
+  first_name text,
+  last_name text,
+  liked_prdt_id text,
+  liked_on timestamp,
+  title text,
+  PRIMARY KEY (cust_id, liked_on));
+```
+
+Query to find the ten Customers who most recently liked the product “Pepsi“:
+
+```
+SELECT * FROM Customer_By_Liked_Product WHERE title = "Pepsi" LIMIT 10
+```
+
+Query that finds the recently-liked products (up to ten) by a customer named “Anna“:
+
+```
+SELECT * FROM Product_Liked_By_Customer WHERE first_name = "Anna" LIMIT 10
+```
