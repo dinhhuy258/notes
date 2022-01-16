@@ -84,3 +84,80 @@ int main() {
 ```
 
 The time complexity of Prim's algorithm is O(E log V).
+
+## 4. Kruskal’s Algorithm
+
+- Kruskal’s algorithm is a greedy algorithm that works well on **dense graphs**.
+
+**Algorithm Steps:**
+
+1. Sort the set of edges E in increasing order
+2. Start adding edges to the MST from the edge with the smallest weight until the edge of the largest weight.
+3. Only add edges which doesn't form a cycle , edges which connect only disconnected components.
+
+So now the question is how to check if  vertices are connected or not ?
+
+This could be done using DFS but DFS will make time complexity large. So the best solution is `Disjoint Set`
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+class DisjointSet {
+private:
+	std::vector<int> parents;
+public:
+	DisjointSet(int n) {
+		parents = std::vector<int>(n + 1, -1);
+		
+		for (int i = 1; i <= n; ++i) {
+			parents[i] = i;
+		}
+	}
+
+	int find(int x) {
+		while (parents[x] != x) {
+			parents[x] = parents[parents[x]];
+			x = parents[x];
+		}
+
+		return parents[x];
+	}
+
+	void unionSet(int x, int y) {
+		auto parentX = find(x);
+		auto parentY = find(y);
+
+		parents[parentY] = parentX;
+	}
+};
+
+int main() {
+	int n, m, a, b, w;
+	std::cin >> n >> m;
+	std::vector<std::pair<int, std::pair<int, int>>> edges;
+
+	for (int i = 0; i < m; ++i) {
+		std::cin >> a >> b >> w;
+		edges.push_back(std::make_pair(w, std::make_pair(a, b)));
+	}
+
+	DisjointSet disjointSet(n);
+	std::sort(edges.begin(), edges.end());
+	int mst = 0;
+	for (int i = 0; i < edges.size(); ++i) {
+		auto cost = edges[i].first;
+		auto s = edges[i].second.first;
+		auto d = edges[i].second.second;
+
+		if (disjointSet.find(s) != disjointSet.find(d)) {
+			disjointSet.unionSet(s, d);
+
+			mst += cost;
+		}
+	}
+
+	std::cout << mst << std::endl;
+}
+```
