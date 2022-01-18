@@ -46,7 +46,59 @@ for (int i = 0; i < n - 1; ++i) {
 
 The time complexity of the algorithm is O(VE).
 
-## 2. Floyd Warshall's Algorithm
+## 2. Dijkstra's Algorithm
+
+Dijkstra's algorithm is used to find the shortest paths from the **source** vertex to **all other vertices** in a weighted graph.
+
+One contraint for Dijkstra's algorithm is that the graph must only contain **non-negative edge weight**. This contraint is imposed to ensure that once a node has been visited its optimal distance can not be improved.
+
+**Algorithm Steps:**
+
+- Maintain a `dist` array where the distance to every node is positive infinity, mark the distance to the start node `s` to be `0`
+- Maintain a PQ of key-value pairs of (node_idx, distance) pairs and insert (s, 0) in to the PQ
+- Pull out the pair (node_idx, distance) from PQ
+- Update the distance of the connected vertices to node in `node_idx` in case of `current vertex distance + edge weight < next vertex distance`, then push them to PQ
+- If the popped vertex is visited before, just continue without using it.
+- Apply the same algorithm again until the PQ is empty.
+
+```cpp
+std::vector<int> dist(n, std::numeric_limits<int>::max());
+std::vector<bool> visited(n, false);
+std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> queue;
+
+dist[0] = 0;
+queue.push(std::make_pair(0, 0));
+
+while(!queue.empty()) {
+  auto w = queue.top().first;
+  auto node_idx = queue.top().second;
+  queue.pop();
+
+  if (visited[node_idx]) {
+    continue;
+  }
+
+  visited[node_idx] = true;
+
+  if (dist[node_idx] < w) {
+    continue;
+  }
+
+  for (int i = 0; i < adj[node_idx].size(); ++i) {
+    auto to = adj[node_idx][i].first;
+    auto cost = adj[node_idx][i].second;
+  
+    if (dist[node_idx] + cost < dist[to]) {
+      dist[to] = dist[node_idx] + cost;
+      queue.push(std::make_pair(dist[to], to));
+    }
+  }
+}
+```
+
+The time complexity of the algorithm is O(V + E log(V)).
+
+## 3. Floyd Warshall's Algorithm
 
 Floyd Warshall's Algorithm is used to find the shortest paths between between **all pairs of vertices** in a graph, where each edge in the graph has a weight which is positive or negative.
 
