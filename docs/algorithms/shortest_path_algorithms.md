@@ -56,12 +56,22 @@ Floyd Warshall's Algorithm is used to find the shortest paths between between **
 - Find all pair shortest paths that use 0 intermediate vertices, then find the shortest paths that use 1 intermediate vertex and so on.. until using all V vertices as intermediate nodes.
 - Minimize the shortest paths between any 2 pairs in the previous operation.
 - For any 2 vertices (i,j), one should actually minimize the distances between this pair using the first K nodes, so the shortest path will be: min(dist[i][k]+dist[k][j], dist[i][j])
+- Repeat to find nodes caught in a negative cycle
 
 ```cpp
 for(int k = 1; k <= n; k++){
   for(int i = 1; i <= n; i++){
     for(int j = 1; j <= n; j++){
       dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+    }
+  }
+}
+
+// Detect negative cycle
+for(int k = 1; k <= n; k++){
+  for(int i = 1; i <= n; i++){
+    for(int j = 1; j <= n; j++){
+      dist[i][j] = std::numeric_limits<int>::min();
     }
   }
 }
