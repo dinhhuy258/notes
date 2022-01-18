@@ -2,6 +2,15 @@
 
 The shortest path problem is about finding a path between 2 vertices in a graph such that the total sum of the edges weights is minimum.
 
+|                                   | BFS                             | Dijkstra        | Bellman Ford | Floyd Warshall |
+| --------------------------------- | ------------------------------- | --------------- | ------------ | -------------- |
+| Complexity                        | O(V+E)                          | O(V + E log(V)) | O(VE)        | O(V3)          |
+| Recommended grapth size           | Large                           | Large/Medium    | Medium/Small | Small          |
+| Good for APSP                     | Only works on unweighted graphs | Ok              | Bad          | Yes            |
+| Can detect negative cycles        | No                              | No              | Yes          | Yes            |
+| SP on graph with weighted edges   | Incorrect SP answer             | Best algorithm  | Works        | Bad in general |
+| SP on graph with unweighted edges | Best algorithm                  | Ok              | Bad          | Bad in general |
+
 ## 1. Bellman Ford's Algorithm
 
 Bellman Ford's algorithm is used to find the shortest paths from the **source** vertex to **all other vertices** in a weighted graph.
@@ -87,7 +96,7 @@ while(!queue.empty()) {
   for (int i = 0; i < adj[node_idx].size(); ++i) {
     auto to = adj[node_idx][i].first;
     auto cost = adj[node_idx][i].second;
-  
+
     if (dist[node_idx] + cost < dist[to]) {
       dist[to] = dist[node_idx] + cost;
       queue.push(std::make_pair(dist[to], to));
