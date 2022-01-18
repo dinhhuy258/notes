@@ -43,6 +43,7 @@ nav:
     - Union find: algorithms/union_find.md
     - Monotonic stack: algorithms/monotonic_stack.md
     - Minimum spanning tree: algorithms/minimum_spanning_tree.md
+    - Shortest Path Algorithms: algorithms/shortest_path_algorithms.md
   - Web:
     - HTTP: web/http.md
     - Distributed System: web/distributed_system.md
