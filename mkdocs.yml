@@ -44,6 +44,7 @@ nav:
     - Monotonic stack: algorithms/monotonic_stack.md
     - Minimum spanning tree: algorithms/minimum_spanning_tree.md
     - Shortest Path Algorithms: algorithms/shortest_path_algorithms.md
+    - Articulation Points and Bridges: algorithms/articulation_points_and_bridges.md.md
     - Topological Sort: algorithms/topological_sort.md
   - Web:
     - HTTP: web/http.md
