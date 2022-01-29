@@ -38,6 +38,7 @@ void dfs(int v, int p = -1) {
     } else {
       dfs(to, v);
       low[v] = min(low[v], low[to]);
+
       if (low[to] >= disc[v] && p != -1) {
         IS_CUTPOINT(v);
       }
@@ -65,3 +66,54 @@ void find_cutpoints() {
 ```
 
 The time complexity of the algorithm is O(E + V).
+
+## 2. Bridge 
+
+An edge in a graph between vertices u and v is called a Bridge, if after removing it, there will be no path left between  u and v.
+
+![](../assets/images/algorithms/bridge.png)
+
+**Algorithm Steps:**
+
+```cpp
+int n; // number of nodes
+vector<vector<int>> adj; // adjacency list of graph
+
+vector<bool> visited;
+vector<int> disc, low;
+int timer;
+
+void dfs(int v, int p = -1) {
+  visited[v] = true;
+  disc[v] = low[v] = timer++;
+  for (int to : adj[v]) {
+    if (to == p) {
+      continue;
+    }
+
+    if (visited[to]) {
+      low[v] = min(low[v], disc[to]);
+    } else {
+      dfs(to, v);
+      low[v] = min(low[v], low[to]);
+
+      if (low[to] > disc[v]) {
+        IS_BRIDGE(v, to);
+      }
+    }
+  }
+}
+
+void find_bridges() {
+  timer = 0;
+  visited.assign(n, false);
+  disc.assign(n, -1);
+  low.assign(n, -1);
+
+  for (int i = 0; i < n; ++i) {
+    if (!visited[i]) {
+      dfs(i);
+    }
+  }
+}
+```
