@@ -38,6 +38,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Algorithms:
+    - Binary search: algorithms/binary_search.md
     - Bucket sort: algorithms/bucket_sort.md
     - Huffman coding: algorithms/huffman_coding.md
     - Union find: algorithms/union_find.md
