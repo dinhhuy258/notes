@@ -47,6 +47,7 @@ nav:
     - Shortest Path Algorithms: algorithms/shortest_path_algorithms.md
     - Articulation Points and Bridges: algorithms/articulation_points_and_bridges.md.md
     - Topological Sort: algorithms/topological_sort.md
+    - Rolling hash: algorithms/rolling_hash.md
   - Web:
     - HTTP: web/http.md
     - Distributed System: web/distributed_system.md
