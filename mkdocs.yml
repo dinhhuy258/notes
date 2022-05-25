@@ -46,12 +46,12 @@ nav:
     - Monotonic stack: algorithms/monotonic_stack.md
     - Minimum spanning tree: algorithms/minimum_spanning_tree.md
     - Shortest Path Algorithms: algorithms/shortest_path_algorithms.md
-    - Articulation Points and Bridges: algorithms/articulation_points_and_bridges.md.md
+    - Articulation Points and Bridges: algorithms/articulation_points_and_bridges.md
     - Topological Sort: algorithms/topological_sort.md
     - Rolling hash: algorithms/rolling_hash.md
     - Bloom filter: algorithms/bloom_filter.md
   - Distributed System:
-    - Distributed System: web/distributed-system/distributed_system.md
+    - Distributed System: distributed-system/distributed_system.md
   - Web:
     - HTTP: web/http.md
     - Networking:
