@@ -50,9 +50,10 @@ nav:
     - Topological Sort: algorithms/topological_sort.md
     - Rolling hash: algorithms/rolling_hash.md
     - Bloom filter: algorithms/bloom_filter.md
+  - Distributed System:
+    - Distributed System: web/distributed-system/distributed_system.md
   - Web:
     - HTTP: web/http.md
-    - Distributed System: web/distributed_system.md
     - Networking:
       - TCP: web/networking/tcp.md
     - Security:
