@@ -44,3 +44,80 @@ Microservices emit events, which other microservices consume and react to accord
 ### Common data
 
 Not often seen as a communication style, microservices collaborate via some shared data source.
+
+## Technology choices
+
+### REST
+
+REST (Representational State Transfer) is an architectural style that provides guidelines for designing web APIs.
+
+REST itself doesn’t really talk about underlying protocols, although it is most commonly used over HTTP.
+We can implement REST using different protocols, although this can require a lot of work. Some of the features that HTTP gives us as part of the specification, such as verbs, make implementing REST over HTTP easier, whereas with other protocols you’ll have to handle these features yourself.
+
+**Where to use:**
+
+REST-over-HTTP-based API is an obvious choice for a synchronous request-response interface if you are looking to allow access from as wide a variety of clients as possible
+
+### Remote procedure call
+
+Remote procedure call (RPC) refers to the technique of making a local call and having it execute on a remote service somewhere. There are a number of different RPC implementations in use. Most of the technology in this space requires an explicit schema, such as **SOAP** or **gRPC**. In this note, we only focus on **gRPC**
+
+gRPC stands for Google Remote Procedure Call and is a variant based on the RPC architecture. This technology follows an RPC API's implementation that uses HTTP 2.0 protocol
+
+gRPC uses Protocol Buffer by default to serialize payload data.
+
+#### REST vs gRPC
+
+**Guidelines vs. Rules**
+
+REST is a set of guidelines for designing web APIs without enforcing anything.
+
+gRPC enforces rules by defining a .proto file that must be adhered to by both client and server for data exchange.
+
+**Underlying HTTP Protocol**
+
+REST provides a request-response communication model built on the HTTP 1.1 protocol. Therefore, when multiple requests reach the server, it is bound to handle each of them, one at a time which consequently slows the entire system.
+
+gRPC follows a client-response model of communication for designing web APIs that rely on HTTP/2. Hence, gRPC allows streaming communication and serves multiple requests simultaneously. In addition to that, gRPC also supports unary communication similar to REST.
+
+![](../assets/images/distributed-system/grpc_streamming_types.png)
+
+**Data Exchange Format**
+
+REST typically uses JSON and XML formats for data transfer
+
+gRPC relies on Protobuf for an exchange of data over the HTTP/2 protocol.
+
+The gRPC is based on binary protocol-buffer format which is very lightweight compared to text-based formats such as JSON.
+For example, for below payload JSON encoding takes 81 bytes and the same payload in protocol-buffers takes 33 bytes
+
+**Serialization vs. Strong Typing**
+
+REST, in most cases, uses JSON or XML that requires serialization and conversion into the target programming language for both client and server, thereby increasing response time and the possibility of errors while parsing the request/response.
+
+gRPC provides strongly typed messages automatically converted using the Protobuf exchange format to the chosen programming language.
+
+**Latency**
+
+REST utilizing HTTP 1.1 requires a TCP handshake for each request. Hence, REST APIs with HTTP 1.1 can suffer from latency issues.
+
+gRPC relies on HTTP/2 protocol, which uses multiplexed streams. Therefore, several clients can send multiple requests simultaneously without establishing a new TCP connection for each one. Also, the server can send push notifications to clients via the established connection.
+
+**Browser Support**
+
+REST APIs on HTTP 1.1 have universal browser support.
+
+gRPC has limited browser support because numerous browsers
+
+**Code Generation Features**
+
+REST provides no built-in code generation features. However, we can use third-party tools like Swagger or Postman to produce code for API requests.
+
+gRPC, using its protoc compiler, comes with native code generation features, compatible with several programming languages.
+
+**Where to use:**
+
+- Great choice for inter-process communication in microservices applications (Not only the gRPC services are faster compared to RESTful services but also they are strongly typed)
+- IoT systems that require light-weight message transmission
+- Mobile applications with no browser support
+- Applications that need multiplexed streams.
