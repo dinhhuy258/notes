@@ -121,3 +121,43 @@ gRPC, using its protoc compiler, comes with native code generation features, com
 - IoT systems that require light-weight message transmission
 - Mobile applications with no browser support
 - Applications that need multiplexed streams.
+
+### GraphQL
+
+GraphQL is a query language and server-side runtime for application programming interfaces (APIs) that prioritizes giving clients exactly the data they request and no more.
+
+With a REST API, you would typically gather the data by accessing multiple endpoints.
+
+In the example, these could be `/users/<id>` endpoint to fetch the initial user data.
+Secondly, there’s likely to be a `/users/<id>/posts` endpoint that returns all the posts for a user.
+The third endpoint will then be the `/users/<id>/followers` that returns a list of followers per user.
+
+![](../assets/images/distributed-system/rest_vs_graphql.png)
+
+In GraphQL on the other hand, you’d simply send a single query to the GraphQL server that includes the concrete data requirements. The server then responds with a JSON object where these requirements are fulfilled.
+
+![](../assets/images/distributed-system/rest_vs_graphql_2.png)
+
+**Where to use:**
+
+- Apps for devices such as mobile phones, smartwatches, and IoT devices, where bandwidth usage matters.
+- Applications where nested data needs to be fetched in a single call. (For example, a blog or social networking platform where posts need to be fetched along with nested comments and commenters details.)
+- Composite pattern, where application retrieves data from multiple, different storage APIs (For example, a dashboard that fetches data from multiple sources such as logging services, backends for consumption stats, third-party analytics tools to capture end-user interactions.)
+
+### Message brokers
+
+Message brokers are programs that enables services to communicate with each other and exchange information.
+
+#### Point-to-Point (Queues)
+
+[](../assets/images/distributed-system/point_to_point.png)
+
+#### Publish and Subscribe (Topics)
+
+[](../assets/images/distributed-system/publish_and_subscribe.png)
+
+**Where to use:**
+
+- Long-running tasks
+- Data post-processing
+
