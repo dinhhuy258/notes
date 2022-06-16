@@ -61,6 +61,7 @@ nav:
     - Security:
       - JWT: web/security/jwt.md
       - OAuth2: web/security/oauth2.md
+      - CORS: web/security/cors.md
     - Database:
       - SQL cheat sheet: web/database/sql_cheat_sheet.md
       - MySQL: web/database/mysql.md
