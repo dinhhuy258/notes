@@ -56,6 +56,7 @@ nav:
     - Microservice communication: distributed-system/microservice_communication.md
     - Service discovery: distributed-system/service_discovery.md
     - API Gateway: distributed-system/api_gateway.md
+    - Service Mesh: distributed-system/service_mesh.md
   - Web:
     - HTTP: web/http.md
     - Networking:
