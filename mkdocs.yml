@@ -61,6 +61,7 @@ nav:
     - HTTP: web/http.md
     - Networking:
       - TCP: web/networking/tcp.md
+      - Understanding socket and port in TCP: web/networking/understanding_socket_and_port_in_tcp.md
     - Security:
       - JWT: web/security/jwt.md
       - OAuth2: web/security/oauth2.md
