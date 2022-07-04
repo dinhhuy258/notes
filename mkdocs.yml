@@ -51,6 +51,8 @@ nav:
     - Rolling hash: algorithms/rolling_hash.md
     - Bloom filter: algorithms/bloom_filter.md
   - Distributed System:
+    - Kafka:
+      - Kafka installation: distributed-system/kafka/kafka_installation.md
     - Distributed System: distributed-system/distributed_system.md
     - Cohesion and coupling: distributed-system/cohesion_and_coupling.md
     - Microservice communication: distributed-system/microservice_communication.md
