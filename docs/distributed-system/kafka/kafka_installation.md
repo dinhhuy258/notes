@@ -16,9 +16,9 @@ dataDir=/var/zookeeper
 clientPort=2181
 ```
 
-**tickTime:** the basic time unit in milliseconds used by ZooKeeper
-**dataDir:** the location to store the in-memory database snapshots
-**clientPort:** the port to listen for client connections
+- **tickTime:** the basic time unit in milliseconds used by ZooKeeper
+- **dataDir:** the location to store the in-memory database snapshots
+- **clientPort:** the port to listen for client connections
 
 ### ZooKeeper ensemble configuration
 
@@ -39,17 +39,17 @@ server.2=zoo2.example.com:2888:3888
 server.3=zoo3.example.com:2888:3888
 ```
 
-**initLimit:** is the amount of time to allow followers to connect with a leader
-**syncLimit:** limits how long out-of-sync followers can be with the leader.
+- **initLimit:** is the amount of time to allow followers to connect with a leader
+- **syncLimit:** limits how long out-of-sync followers can be with the leader.
 
 Both values are a number of `tickTime` units, which makes the `initLimit` 20 × 2,000 ms, or 40 seconds.
 
 The configuration also lists each server in the ensemble. The servers are specified in the format `server.X=hostname:peerPort:leaderPort`, with the following parameters:
 
-**X:** The ID number of the server. This must be an integer.
-**hostname:** The hostname or IP address of the server
-**peerPort:** The TCP port over which servers in the ensemble communicate with one another.
-**leaderPort:** The TCP port over which leader election is performed.
+- **X:** The ID number of the server. This must be an integer.
+- **hostname:** The hostname or IP address of the server
+- **peerPort:** The TCP port over which servers in the ensemble communicate with one another.
+- **leaderPort:** The TCP port over which leader election is performed.
 
 Clients only need to be able to connect to the ensemble over the `clientPort`, but the members of the ensemble must be able to communicate with one another over all three ports
 
@@ -57,7 +57,7 @@ Clients only need to be able to connect to the ensemble over the `clientPort`, b
 
 We can download and install Kafka from this [site](https://kafka.apache.org/downloads.html). We can also using the docker image from [here](https://github.com/confluentinc/cp-docker-images/wiki/Getting-Started)
 
-### Configuring the Broker
+### Broker Configurations
 
 **broker.id**
 
@@ -83,3 +83,57 @@ By default, only **one** thread per log directory is used. As these threads are 
 Default: 1
 
 Please refer this [site](https://docs.confluent.io/platform/current/installation/configuration/broker-configs.html) for more broker config
+
+## Topic Configurations
+
+**num.partitions**
+
+Determines how many partitions a new topic is created with. Please keep in mind that the number of partitions for a topic can only be increased, never decreased.
+
+Default: 1
+
+**default.replication.factor**
+
+This configuration sets what the replication factor should be for new topics. It's highly recommended to set the replication factor to at least 1 above the `min.isync.replicas` setting.
+
+Default: 1
+
+**log.retention.ms**
+
+This configuration controls the maximum time we will retain a log before we will discard old log segments to free up space.
+
+Default: 604800000 (7 days)
+
+**log.retention.bytes**
+
+This configuration controls the maximum size a partition (which consists of log segments) can grow to before we will discard old log segments to free up space.
+
+Default: -1 (unlimited)
+
+**log.segment.bytes**
+
+As messages are produced to the Kafka broker, they are appended to the current log segment for the partition. Once the log segment has reached the size specified by the `log.segment.bytes`, which defaults to 1GB, the log segment is closed and a new one is opened. Once the log segment is closed, it can be considered for expiration.
+
+Adjusting the size of the log segments can be important if topics have a low produce rate. For example, if a topic receives only 100Mb per day of messages, and `log.segment.bytes` is set to the default, it will take 10 days to fill one segment. As messages can not be expired until the log segment is closed, if `log.retention.ms` is set to 1 week, there will actually be up to 17 days of messages retained until the closed log segment expired.
+
+Default: 1GB
+
+**log.roll.ms**
+
+This configuration controls the period of time after which Kafka will force the log to roll even if the segment file isn't full to ensure that retention can delete or compact old data.
+
+Default: 7 days
+
+**min.insync.replicas**
+
+This configuration specifies the minimum number of replicas that must acknowledge a write for the write to be considered successful. If this minimum cannot be met, then the producer will raise an exception (either NotEnoughReplicas or NotEnoughReplicasAfterAppend)
+
+Default: 1
+
+**message.max.bytes**
+
+The largest record batch size allowed by Kafka (after compression if compression is enabled)
+
+Default: 1MB
+
+Please refer this [site](https://docs.confluent.io/platform/current/installation/configuration/topic-configs.html) for more topic config
