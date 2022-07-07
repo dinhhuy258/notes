@@ -27,7 +27,7 @@ Kafka messages are created by the producer. A Kafka message consists of the foll
 - **Partition + Offset:** Once a message is sent into a Kafka topic, it receives a partition number and an offset id. The combination of topic+partition+offset uniquely identifies the message
 - **Timestamp:** A timestamp is added either by the user or the system in the message.
 
-## Kafka Message Deserializers
+## Kafka Message Serializers
 
 The data sent by the Kafka producers is serialized. This means that the data received by the Kafka consumers must be correctly deserialized in order to be useful within your application.Data being consumed must be deserialized in the same format it was serialized in.
 
