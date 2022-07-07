@@ -121,11 +121,17 @@ Default: 0
 
 **max.in.flight.requests.per.connection**
 
-This controls how many message batches the producer will send to the server without receiving response.
+This controls how many message batches that the producer is allowed to sent before waiting for an ack from the broker. In other words this configuration is the maximum number of unacknowledged requests the client will send on a single connection before blocking.
 
-If `retries` are enabled, and `max.in.flight.requests.per.connection` is set greater than 1, there lies a risk of message re-ordering.
+If `retries` are enabled, and `max.in.flight.requests.per.connection` is set greater than 1, and `enable.idempotence` is enabled there lies a risk of message re-ordering.
 
 Apache Kafka preserves the order of messages within a partition. Setting `retries` to non-zero and `max.in.flight.requests.per.connection` to more than 1 means that it is possible that the broker will fail to write the first batch of messages, succeed in writing the second (which as already in-flight) and then retry the first batch and succeed, thereby reversing the order.
+
+```
+Safety vs Throughput
+
+Setting max.in.flight.requests.per.connection=1 can significantly decrease your throughput
+```
 
 Default: 5
 
@@ -136,6 +142,8 @@ When set to 'true', the producer will ensure that exactly one copy of each messa
 Note that enabling idempotence requires `max.in.flight.requests.per.connection` to be less than or equal to 5 (with message ordering preserved for any allowable value), `retries` to be greater than 0, and `acks` must be 'all'.
 
 There is some case that the message is written to the broker more than one. For example, imagine that a broker received a record from the producer, wrote it to the disk and the record was successfully replicated to other broker, but then the first broker crashed before sending a response to the producer. The producer will wait until it reaches request timeout and then retry. The retry will go to the new leader that already has a copy of this record since the previous write was replicated successfully => you have a duplicated record.
+
+**NOTE:** Enable `enable.idempotence` ensures messages ordering within topic partition even `max.in.flight.requests.per.connection` configuration is larger than `1`
 
 Default: true
 
