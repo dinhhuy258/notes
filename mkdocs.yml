@@ -55,6 +55,7 @@ nav:
     - Kafka:
       - Installation: distributed-system/kafka/installation.md
       - Producer: distributed-system/kafka/producer.md
+      - Consumer: distributed-system/kafka/consumer.md
     - Distributed System: distributed-system/distributed_system.md
     - Cohesion and coupling: distributed-system/cohesion_and_coupling.md
     - Microservice communication: distributed-system/microservice_communication.md
