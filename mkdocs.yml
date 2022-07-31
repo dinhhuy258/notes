@@ -50,6 +50,7 @@ nav:
     - Topological Sort: algorithms/topological_sort.md
     - Rolling hash: algorithms/rolling_hash.md
     - Bloom filter: algorithms/bloom_filter.md
+    - Binary indexed tree: algorithms/binary_indexed_tree.md
   - Distributed System:
     - Kafka:
       - Installation: distributed-system/kafka/installation.md
