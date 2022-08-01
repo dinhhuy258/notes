@@ -44,3 +44,10 @@ Here is some sample user information in the form of JSON present in an identity 
 The Authorization code flow for OpenID Connect is similar to the **Authorization Code Flow**. The only difference is the change in the value of the scope field. It must contain **openid** as one of the values, followed by other scope values based on what type of user data the client wants.
 
 ![](../../assets/images/security/open_id_authorization_code_flow.png)
+
+## OpenId Connect vs OAuth2
+
+- OpenID Connect are authentication protocols while OAuth2 is an authorization protocol.
+- The most significant difference between OpenID Connect and OAuth2 is the id_token. OIDC contains an id_token while OAuth2 does not.
+- In OpenID Connect it contains user info endpoint while OAuth2 does not.
+- OpenID Connect defines how to send a signed and encrypted request object where OAuth2 does not.
