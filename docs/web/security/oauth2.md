@@ -46,7 +46,7 @@ The result of this request is an authorization code, which the client can exchan
 4/W7q7P51a-iMsCeLvIaQc6bYrgtp9
 ```
 
-** Why exchange code for a token?**
+**Why exchange code for a token?**
 
 An access token is a secret piece of information that we don’t want someone to access. If the client requests an access token directly and stores it in the browser, it can be stolen because browsers are not fully secure. Anyone can see the page source or potentially use dev tools to acquire the access token.
 
@@ -78,15 +78,3 @@ The OAuth 2.0 implicit flow is used when you don’t have a back end channel and
 The client redirects the browser to the authorization server URI to start the authorization flow with `response_type` set to `token`
 
 Implicit flow is considered less secure because the browser is responsible for managing the access token, so it could potentially be stolen. Still, it’s widely used for single-page applications.
-
-## 4. OpenID Connect
-
-OpenID Connect is an identity layer on top of the OAuth 2.0 protocol. It extends OAuth 2.0 to standardize a way for authentication.
-
-- OpenID is about verifying a person's identity (authentication).
-- OAuth is about accessing a person's stuff (authorization).
-- OpenID Connect does both.
-
-![](../../assets/images/security/oauth_vs_openid.png)
-
-![](../../assets/images/security/open_id_authorization_code_flow.png)

@@ -70,6 +70,7 @@ nav:
     - Security:
       - JWT: web/security/jwt.md
       - OAuth2: web/security/oauth2.md
+      - OpenId Connect: web/security/openid_connect.md
       - CORS: web/security/cors.md
     - Database:
       - SQL cheat sheet: web/database/sql_cheat_sheet.md
