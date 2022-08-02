@@ -14,6 +14,10 @@ While discussing OAuth, we discussed the **authorization code and access token**
 
 In contrast to access tokens, which are only intended to be understood by the resource server, ID tokens are intended to be understood by the client application. The ID token contains the user information in JSON format. The JSON is wrapped into a JWT.
 
+An ID token is an artifact that proves that **the user has been authenticated**
+
+An ID token is encoded as a JSON Web Token (JWT)
+
 When a client receives the identity token, it should validate it first. The client must validate the following fields:
 
 1. `iss` - Client must validate that the issuer of this token is the Authorization Server
@@ -38,6 +42,12 @@ Here is some sample user information in the form of JSON present in an identity 
 - `iat`: The iat claim identifies the time at which the JWT was issued.
 - `auth_time`: Time when the End-User authentication occurred.
 - `nonce`: ID token requests may come with a nonce request parameter to protect from replay attacks.
+
+The ID token may have additional information about the user, such as their email address, picture, birthday, and so on.
+
+**ID token vs Access token**
+
+![](../../assets/images/security/id_token_vs_access_token.png)
 
 ## Authorization Code Flow for Authentication
 
