@@ -93,3 +93,31 @@ There are four consumer configuration properties that are important to understan
 - `auto.offset.reset`: This parameter controls what the consumer will do when no offsets were committed (e.g., when the consumer first starts) or when the consumer asks for offsets that don’t exist in the broker. There are only two options here. If we choose `earliest`, the consumer will start from the beginning of the partition whenever it doesn’t have a valid offset. If we choose `latest`, the consumer will start at the end of the partition.
 - `enable.auto.commit`
 - `auto.commit.interval.ms`
+
+### Explicitly Committing Offsets in Consumers
+
+#### Always commit offsets after messages were processed
+
+Always commit offset once events are processed. It means your poll method should contain the processing logic like saving messages to DB or doing some translation logic before it calls `commit()`
+
+#### Commit Frequency
+
+Calling `commit()` on every message will consume much resources on broker side as it increases the bookkeeping activity. Hence `commit()` should be called once all the messages from the `poll()` call get processed.
+
+The commit frequency has to balance requirements for **performance** and **lack of duplicates**. Committing after every message should only ever be done on very low-throughput topics.
+
+#### Rebalance
+
+This scenario can happen anytime as and when new consumers are added or existing consumers are dropped. But consumer code should gracefully handle `commit()` before moving out of the group. Therefore `commit()` method should be called in the finally block or finalize method.
+
+#### Consumer Retries
+
+In some cases, after calling poll and processing records, some records are not fully processed and will need to be processed later.  For example, we may try to write records from Kafka to a database but find that the database is not available at that moment and we need to retry later. Note that unlike traditional pub/sub messaging systems, Kafka consumers commit offsets and do not “ack” individual messages. This means that if we failed to process record #30 and succeeded in processing record #31, we should not commit offset #31—this would result in marking as processed all the records up to #31 including #30, which is usually not what we want. Instead, try following one of the following two patterns.
+
+- One option when we encounter a retriable error is to commit the last record we processed successfully. We’ll then store the records that still need to be processed in a buffer (so the next poll won’t override them), use the consumer `pause()` method to ensure that additional polls won’t return data, and keep trying to process the records.
+
+- A second option when encountering a retriable error is to write it to a separate topic and continue. A separate consumer group can be used to handle retries from the retry topic, or one consumer can subscribe to both the main topic and to the retry topic but pause the retry topic between retries. This pattern is similar to the deadletter-queue system used in many messaging systems
+
+#### Consumers may need to maintain state
+
+In some applications, we need to maintain state across multiple calls to poll. For example, if we want to calculate moving average, we’ll want to update the average after every time we poll Kafka for new messages. If our process is restarted, we will need to not just start consuming from the last offset, but we’ll also need to recover the matching moving average.
