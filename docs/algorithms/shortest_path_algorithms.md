@@ -107,7 +107,41 @@ while(!queue.empty()) {
 
 The time complexity of the algorithm is O(V + E log(V)).
 
-## 3. Floyd Warshall's Algorithm
+## 3. BFS 0-1
+
+We know that we can use Dijkstra algorithm with time complexity O(V + E log(V)) to solve SSSP problems.
+
+However if the weights are more constrained we can do better, in this case we can use BFS to solve the SSSP problem in O(E), if weight of each edge is either 0 or 1.
+
+The algorithm is based on the Dijkstra algorithm
+
+```cpp
+std::vector<int> d(n, INF);
+d[s] = 0;
+std::deque<int> q;
+q.push_front(s);
+
+while (!q.empty()) {
+  int v = q.front();
+  q.pop_front();
+
+  for (auto edge : adj[v]) {
+    int u = edge.first;
+    int w = edge.second;
+    if (d[v] + w < d[u]) {
+      d[u] = d[v] + w;
+      if (w == 1) {
+        q.push_back(u);
+      }
+      else {
+        q.push_front(u);
+      }
+    }
+  }
+}
+```
+
+## 4. Floyd Warshall's Algorithm
 
 Floyd Warshall's Algorithm is used to find the shortest paths between between **all pairs of vertices** in a graph, where each edge in the graph has a weight which is positive or negative.
 
