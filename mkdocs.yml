@@ -57,6 +57,7 @@ nav:
       - Producer: distributed-system/kafka/producer.md
       - Consumer: distributed-system/kafka/consumer.md
       - Reliable Data Delivery: distributed-system/kafka/reliable_data_delivery.md
+      - Exactly-Once Semantics: distributed-system/kafka/exactly-once-semantics.md
     - Distributed System: distributed-system/distributed_system.md
     - Cohesion and coupling: distributed-system/cohesion_and_coupling.md
     - Microservice communication: distributed-system/microservice_communication.md
