@@ -52,3 +52,22 @@ What happens if our application just consumed a batch of records from Kafka and 
 
 After several heartbeats are missed, the application will be assumed dead and its partitions reassigned to another consumer in the consumer group. That consumer will reread that batch of records, process it. Meanwhile, the first instance of the application—the one that froze—may resume its activity: process the batch of records it recently consumed, and produce the results to the output topic.
 
+### What problems aren't solved by transaction
+
+**Side effects while streaming processing**
+
+Let's say that the record processing step in our stream processing app includes sending email to users. Enabling exactly-once semantics will not guarantee that the email will only be sent once. The guarantee only applies to records written to Kafka.
+
+**Reading from Kafka topic, and writing to database**
+
+In this case, the application is writing to an external database rather than to Kafka. We have 2 steps here:
+
+- Writing record to database
+- Update an offset to Kafka within the consumer 
+
+There is no mechanism that allows writing results to an external database and committing offset to Kafka within a single transaction. Instead we could manage offsets in the database and commit both data and offset to the database in a single transaction, this would rely on the database transaction guarantees rather than Kafka.
+**Reading data from database, writing to Kafka, and from there writing to another database**
+
+**Copy data from one Kafka cluster to another**
+
+**Publish/subscribe pattern**
