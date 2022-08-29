@@ -98,6 +98,9 @@ nav:
         - Coroutine basics: programming/kotlin/coroutine/basics.md
         - Coroutine context and dispatchers: programming/kotlin/coroutine/context_and_dispatchers.md
   - Devops:
+    - AWS:
+      - IAM: devops/aws/iam.md
+      - EC2: devops/aws/ec2.md
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
       - Controllers: devops/kubernetes/controllers.md
