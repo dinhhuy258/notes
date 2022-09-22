@@ -101,6 +101,7 @@ nav:
     - AWS:
       - IAM: devops/aws/iam.md
       - EC2: devops/aws/ec2.md
+      - Elastic Load Balancing and Auto Scaling groups: devops/aws/elb_asg.md
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
       - Controllers: devops/kubernetes/controllers.md
