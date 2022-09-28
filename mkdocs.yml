@@ -52,6 +52,8 @@ nav:
     - Bloom filter: algorithms/bloom_filter.md
     - Binary indexed tree: algorithms/binary_indexed_tree.md
   - Distributed System:
+    - ZooKeeper:
+      - Fundamentals: distributed-system/zookeeper/fundamentals.md
     - Kafka:
       - Installation: distributed-system/kafka/installation.md
       - Producer: distributed-system/kafka/producer.md
