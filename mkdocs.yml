@@ -54,6 +54,7 @@ nav:
   - Distributed System:
     - ZooKeeper:
       - Fundamentals: distributed-system/zookeeper/fundamentals.md
+      - Workflow: distributed-system/zookeeper/workflow.md
     - Kafka:
       - Installation: distributed-system/kafka/installation.md
       - Producer: distributed-system/kafka/producer.md
