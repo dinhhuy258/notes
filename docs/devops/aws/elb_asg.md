@@ -42,7 +42,7 @@ Use case:
 
 ### Cross zone load balancing
 
-![](../../assets/images/devops/cross-zone-load-balancing.png)
+![](https://user-images.githubusercontent.com/17776979/192680716-6a54d379-bc9d-4821-8480-8a52ec532436.png)
 
 Application Load Balancer:
 

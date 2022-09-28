@@ -29,7 +29,7 @@ RDS stands for Relational Database Service. It's allow you to create database in
 - **SYNC** replication
 - One DNS name - automatic app failover to standby
 - Increased the availability
-- Not used for scaling 
+- Not used for scaling
 - Multi-AZ replication is free
 
 ## Aurora
@@ -46,11 +46,11 @@ Aurora costs more than RDS (20% more)
 
 ### Aurora High Availability and Read scaling
 
-Aurora stores copies of the data in a DB cluster across multiple Availability Zones in a single AWS Region. When data is written to the primary DB instance, Aurora synchronously replicates the data across Availability Zones to six storage nodes associated with your cluster volume. 
+Aurora stores copies of the data in a DB cluster across multiple Availability Zones in a single AWS Region. When data is written to the primary DB instance, Aurora synchronously replicates the data across Availability Zones to six storage nodes associated with your cluster volume.
 
-![](../../assets/images/devops/aurora_ha.png) 
+![](https://user-images.githubusercontent.com/17776979/192680705-5bdc4aca-4188-401c-8304-df62492bcefc.png)
 
-![](../../assets/images/devops/aurora_cluster.png) 
+![](https://user-images.githubusercontent.com/17776979/192680686-c3e3bbe2-cfd9-4ef7-8394-f4949b27796d.png)
 
 ## Best practice in RDS
 - [https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_BestPractices.html](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_BestPractices.html)
