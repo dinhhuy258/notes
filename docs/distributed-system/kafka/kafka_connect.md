@@ -96,10 +96,3 @@ An error-handling feature is available that will route all invalid records to a 
 5. Converters put the records into a format suitable for the external data system
 6. Transforms adjust the records, such as filtering or relabelling them
 7. The sink connector is managed using KafkaConnectors or the Kafka Connect API
-2. A single worker initiates the sink connector instance
-3. The sink connector creates the tasks to stream data
-4. Tasks run in parallel to poll Kafka and return records
-5. Converters put the records into a format suitable for the external data system
-6. Transforms adjust the records, such as filtering or relabelling them
-7. The sink connector is managed using KafkaConnectors or the Kafka Connect API
-
