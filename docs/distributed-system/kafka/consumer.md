@@ -2,7 +2,7 @@
 
 Kafka producer is a component of the Kafka ecosystem which is used to pull messages from a Kafka topic.
 
-![](../../assets/images/distributed-system/kafka/kafka_consumer.png)
+![](https://user-images.githubusercontent.com/17776979/193178397-667469d8-d76c-493e-b088-bc81ae03d8b1.png)
 
 A consumer always reads data from a lower offset to a higher offset and cannot read data backwards.
 
@@ -16,11 +16,11 @@ When multiple consumers are subscribed to a topic and belong to the same consume
 
 For example: Let’s take topic `T1` with four partitions. Now suppose we created a new consumer, `C1`, which is the only consumer in group `G1`, and use it to subscribe to topic `T1`. Consumer `C1` will get all messages from all four `T1` partitions.
 
-![](../../assets/images/distributed-system/kafka/consumer_group_1.png)
+![](https://user-images.githubusercontent.com/17776979/193178220-d4421709-549a-47a1-8477-677742107336.png)
 
 If we add another consumer, `C2`, to group `G1`, each consumer will only get messages from two partitions. Perhaps messages from partition `0` and `2` go to `C1`, and messages from partitions `1` and `3` go to consumer `C2`
 
-![](../../assets/images/distributed-system/kafka/consumer_group_2.png)
+![](https://user-images.githubusercontent.com/17776979/193178264-45b5a949-6668-4b90-a238-28630e25cb71.png)
 
 **Note**: If we add more consumers to a single group with a single topic than we have partitions, some of the consumers will be idle and get no messages at all
 

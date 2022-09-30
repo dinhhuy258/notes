@@ -2,7 +2,7 @@
 
 Kafka producer is a component of the Kafka ecosystem which is used to publish messages onto a Kafka topic.
 
-![](../../assets/images/distributed-system/kafka/kafka_producer.png)
+![](https://user-images.githubusercontent.com/17776979/193178638-f2bc26c8-b605-4d9a-b11b-ef754e5a77d0.png)
 
 ## Message Keys
 
@@ -12,13 +12,13 @@ In case the key (key=null) is not specified by the producer, messages are distri
 
 If a key is sent (key != null), then all messages that share the same key will always be sent and stored in the same Kafka partition. A key can be anything to identify a message - a string, numeric value, binary value, etc.
 
-![](../../assets/images/distributed-system/kafka/kafka_message_key.png)
+![](https://user-images.githubusercontent.com/17776979/193178499-86742ff5-0cf5-46ff-a147-81b7b60a6fa1.png)
 
 ## Kafka Message Anatomy
 
 Kafka messages are created by the producer. A Kafka message consists of the following elements:
 
-![](../../assets/images/distributed-system/kafka/kafka_message.png)
+![](https://user-images.githubusercontent.com/17776979/193178539-4e4fabd1-5e43-453d-9ed5-674373fd3209.png)
 
 - **Key:** Mentioned above
 - **Value:** represents the content of the message and can also be null. The value format is arbitrary and is then also serialized into binary format.
@@ -31,11 +31,11 @@ Kafka messages are created by the producer. A Kafka message consists of the foll
 
 The data sent by the Kafka producers is serialized. This means that the data received by the Kafka consumers must be correctly deserialized in order to be useful within your application.Data being consumed must be deserialized in the same format it was serialized in.
 
-![](../../assets/images/distributed-system/kafka/kafka_serialize_deserialize.png)
+![](https://user-images.githubusercontent.com/17776979/193178674-25544e71-449d-447d-9fbf-48ce90ebfb58.png)
 
 ## Sending a message to Kafka
 
-![](../../assets/images/distributed-system/kafka/sending_messages_to_kafka.png)
+![](https://user-images.githubusercontent.com/17776979/193178745-a0481010-8c28-4a97-9d94-01660ff836f5.png)
 
 1. The producer passes the message to a configured list of interceptors. For example, an interceptor might mutate the message and return an updated version.
 2. Serializers convert record key and value to byte arrays
@@ -44,7 +44,7 @@ The data sent by the Kafka producers is serialized. This means that the data rec
 
 At this point, the message is still in memory and not sent to the Kafka broker. Record Accumulator groups messages in memory by topic and partition.
 
-![](../../assets/images/distributed-system/kafka/sending_messages_to_kafka_2.png)
+![](https://user-images.githubusercontent.com/17776979/193178700-c54b44bd-bc92-42a7-ab96-e5d026bf2716.png)
 
 Sender thread groups multiple batches with the same broker as a leader into requests and sends them. At this point, the message is sent to Kafka.
 
@@ -56,7 +56,7 @@ There are 3 primary method of sending messages:
 
 ## Delivery time
 
-![](../../assets/images/distributed-system/kafka/kafka_delivery_time.png)
+![](https://user-images.githubusercontent.com/17776979/193178464-151b14b3-434b-46bb-a433-a8680cfafb6e.png)
 
 ## Kafka producer configutation
 

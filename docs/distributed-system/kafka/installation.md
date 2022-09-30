@@ -4,7 +4,7 @@
 
 Apache Kafka uses Apache ZooKeeper to store metadata about the Kafka cluster, as well as consumer client details.
 
-![](../../assets/images/distributed-system/kafka/kafka_and_zookeeper.png)
+![](https://user-images.githubusercontent.com/17776979/193178369-e3edaa72-ea51-4c0f-bfa9-255284facb5d.png)
 
 We can download and install ZooKeeper from this [site](https://zookeeper.apache.org/releases.html). We can also using the docker image from [here](https://github.com/confluentinc/cp-docker-images/wiki/Getting-Started)
 
