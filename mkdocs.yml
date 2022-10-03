@@ -48,7 +48,7 @@ nav:
     - Shortest Path Algorithms: algorithms/shortest_path_algorithms.md
     - Articulation Points and Bridges: algorithms/articulation_points_and_bridges.md
     - Topological Sort: algorithms/topological_sort.md
-    - Rolling hash: algorithms/rolling_hash.md
+    - String Hashing: algorithms/string_hashing.md
     - Bloom filter: algorithms/bloom_filter.md
     - Binary indexed tree: algorithms/binary_indexed_tree.md
   - Distributed System:
