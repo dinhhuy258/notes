@@ -85,6 +85,7 @@ nav:
       - Transactions: web/database/transactions.md
       - NoSQL: web/database/nosql.md
       - Cassandra: web/database/cassandra.md
+      - LSM Tree: web/database/lsm_tree.md
     - WebRTC:
       - WebRTC: web/webrtc/webrtc.md
       - Signaling: web/webrtc/signaling.md
