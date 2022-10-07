@@ -125,6 +125,107 @@ int query(int node, int start, int end, int left, int right) {
 
 Time complexity: `O(logn)`.
 
+## Updating an interval (Lazy Propagation)
+
+Sometimes problems will ask you to update an interval from `l` to `r`, instead of a single element. One solution is to update all the elements one by one. Complexity of this approach will be `O(N)` per operation since where are `N` elements in the array and updating a single element will take `O(logN)` time.
+
+To avoid multiple call to update function, we can modify the update function to work on an interval.
+
+Let's be Lazy i.e., do work only when needed. How ? When we need to update an interval, we will update a node and mark its child that it needs to be updated and update it when needed. For this we need an array `lazy[]` of the same size as that of segment tree.
+
+Initially all the elements of the `lazy[]` array will be `0` representing that there is no pending update. If there is non-zero element `lazy[k]` then this element needs to update node `k` in the segment tree before making any query operation.
+
+To update an interval we will keep 3 things in mind.
+
+- If current segment tree node has any pending update, then first add that pending update to current node.
+- If the interval represented by current node lies completely in the interval to update, then update the current node and update the lazy[] array for children nodes.
+- If the interval represented by current node overlaps with the interval to update, then update the nodes as the earlier update function
+
+```cpp
+void updateRange(int node, int start, int end, int left, int right, int val)
+{
+  if(lazy[node] != 0) {
+      // this node needs to be updated
+      // update it
+      segmentTree[node] += (end - start + 1) * lazy[node];
+      if(start != end) {
+          // mark child as lazy
+          lazy[node * 2] += lazy[node];
+          lazy[node * 2 + 1] += lazy[node];
+      }
+
+      // reset it
+      lazy[node] = 0;
+  }
+
+  if(start > end || start > right || end < left) {
+    // current segment is not within range [left, right]
+    return;
+  }
+
+  if(start >= left and end <= right) {
+      // segment is fully within range
+      segmentTree[node] += (end - start + 1) * val;
+      if(start != end) {
+          // not leaf node
+          lazy[node * 2] += val;
+          lazy[node * 2 + 1] += val;
+      }
+      return;
+  }
+
+  int mid = (start + end) / 2;
+
+  // updating left child
+  updateRange(node * 2, start, mid, left, right, val);
+  // updating right child
+  updateRange(node * 2 + 1, mid + 1, end, left, right, val);
+
+  // updating root with max value
+  segmentTree[node] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
+}
+```
+
+Query
+
+```cpp
+int queryRange(int node, int start, int end, int left, int right) {
+  if(start > end || start > right || end < left) {
+    // out of range
+    return 0;
+  }
+
+  if(lazy[node] != 0) {
+    // this node needs to be updated
+    // update it
+    segmentTree[node] += (end - start + 1) * lazy[node];
+    if(start != end) {
+      // mark child as lazy
+      lazy[node * 2] += lazy[node];
+      // mark child as lazy
+      lazy[node * 2 + 1] += lazy[node];
+    }
+
+    // reset it
+    lazy[node] = 0;
+  }
+
+  if(start >= left && end <= right) {
+    // current segment is totally within range [l, r]
+    return tree[node];
+  }
+
+  int mid = (start + end) / 2;
+
+  // query the left child
+  int p1 = queryRange(node*2, start, mid, left, right);
+  // query the right child
+  int p2 = queryRange(node*2 + 1, mid + 1, end, left, right);
+
+  return (p1 + p2);
+}
+```
+
 ## Advanced versions of Segment Trees
 
 ### Finding the maximum
@@ -190,7 +291,7 @@ Instead, we can use the same idea as in the previous sections, and find the posi
 
 ### Finding subsegments with the maximal sum
 
-Here again we receive a range `arr[l..r]`  for each query, this time we have to find a subsegment `arr[l'..r']` such that `l <= l'` and `r' <= r` and the sum of the elements of this segment is maximal
+Here again we receive a range `arr[l..r]` for each query, this time we have to find a subsegment `arr[l'..r']` such that `l <= l'` and `r' <= r` and the sum of the elements of this segment is maximal
 
 This time we will store four values for each vertex:
 
