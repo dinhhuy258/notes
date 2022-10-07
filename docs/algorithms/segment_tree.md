@@ -15,7 +15,7 @@ Consider an array `arr` of size `n` and a corresponding Segment Tree `T`:
 
 We can take a divide-and-conquer approach when it comes to array segments. We compute and store the sum of the elements of the whole array, i.e. the sum of the segment `arr[0..n-1]`. We then split the array into two halves `arr[0..n / 2 - 1]` and `arr[n / 2..n - 1]` and compute the sum of each halve and store them. Each of these two halves in turn are split in half, and so on until all segments reach size `1`.
 
-![](https://user-images.githubusercontent.com/17776979/194463568-2f805647-d270-452a-929e-6de5d01424ff.png)
+![](https://user-images.githubusercontent.com/17776979/194563256-3e8adfbf-2632-465a-96c5-80d0d4a9fec8.png)
 
 ## Construction
 
