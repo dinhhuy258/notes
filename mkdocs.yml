@@ -71,6 +71,8 @@ nav:
     - API Gateway: distributed-system/api_gateway.md
     - Service Mesh: distributed-system/service_mesh.md
   - Database:
+    - PostgreSQL:
+      - How Postgres Stores Rows: database/postgres/how_postgres_stores_rows.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
