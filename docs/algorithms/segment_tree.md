@@ -45,7 +45,7 @@ void build(std::vector<int>& arr, int node, int start, int end) {
     // leaf node will have a single element
     segmentTree[node] = arr[start];
   } else {
-    int m = (start + end) / 2;
+    int mid = (start + end) / 2;
     // recurse on the start child
     build(arr, node * 2, start, mid);
     // recurse on the end child
@@ -75,19 +75,20 @@ void update(int node, int start, int end, int pos, int newVal) {
   if (start == end) {
     // leaf node
     segmentTree[node] = newVal;
-  } else {
-    int mid = (start + end) / 2;
-    if (pos <= mid) {
-      // if idx is in the start child, recurse on the left child
-      update(node * 2, start, mid, pos, newVal);
-    } else {
-      // if idx is in the end child, recurse on the end child
-      update(node * 2 + 1, mid + 1, end, pos, newVal);
-    }
-
-    // internal node will have the sum of both of its children
-    segmentTree[v] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
+    return;
   }
+
+  int mid = (start + end) / 2;
+  if (pos <= mid) {
+    // if idx is in the left child, recurse on the left child
+    update(node * 2, start, mid, pos, newVal);
+  } else {
+    // if idx is in the right child, recurse on the end child
+    update(node * 2 + 1, mid + 1, end, pos, newVal);
+  }
+
+  // internal node will have the sum of both of its children
+  segmentTree[v] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
 }
 ```
 
@@ -105,12 +106,12 @@ There are three possible cases.
 
 ```cpp
 int query(int node, int start, int end, int left, int right) {
-  if (left > right) {
+  if (right < start || end < left || start > end || left > right) {
     // range represented by a node is completely outside the given range
     return 0;
   }
 
-  if (left == start && right == end) {
+  if (left <= start && end <= right) {
     // range represented by a node is completely inside the given range
     return segmentTree[node];
   }
@@ -118,8 +119,8 @@ int query(int node, int start, int end, int left, int right) {
   // range represented by a node is partially inside and partially outside the given range
   int mid = (start + end) / 2;
 
-  return query(node * 2, start, mid, left, std::min(right, mid))
-         + query(node * 2 + 1, mid + 1, end, std::max(left, mid + 1), right);
+  return query(node * 2, start, mid, left, right)
+         + query(node * 2 + 1, mid + 1, end, left, right);
 }
 ```
 
@@ -145,17 +146,17 @@ To update an interval we will keep 3 things in mind.
 void updateRange(int node, int start, int end, int left, int right, int val)
 {
   if(lazy[node] != 0) {
-      // this node needs to be updated
-      // update it
-      segmentTree[node] += (end - start + 1) * lazy[node];
-      if(start != end) {
-          // mark child as lazy
-          lazy[node * 2] += lazy[node];
-          lazy[node * 2 + 1] += lazy[node];
-      }
+    // this node needs to be updated
+    // update it
+    segmentTree[node] += (end - start + 1) * lazy[node];
+    if(start != end) {
+        // mark child as lazy
+        lazy[node * 2] += lazy[node];
+        lazy[node * 2 + 1] += lazy[node];
+    }
 
-      // reset it
-      lazy[node] = 0;
+    // reset it
+    lazy[node] = 0;
   }
 
   if(start > end || start > right || end < left) {
@@ -163,15 +164,15 @@ void updateRange(int node, int start, int end, int left, int right, int val)
     return;
   }
 
-  if(start >= left and end <= right) {
-      // segment is fully within range
-      segmentTree[node] += (end - start + 1) * val;
-      if(start != end) {
-          // not leaf node
-          lazy[node * 2] += val;
-          lazy[node * 2 + 1] += val;
-      }
-      return;
+  if(left <= start && end <= right) {
+    // segment is fully within range
+    segmentTree[node] += (end - start + 1) * val;
+    if(start != end) {
+        // not leaf node
+        lazy[node * 2] += val;
+        lazy[node * 2 + 1] += val;
+    }
+    return;
   }
 
   int mid = (start + end) / 2;
@@ -210,7 +211,7 @@ int queryRange(int node, int start, int end, int left, int right) {
     lazy[node] = 0;
   }
 
-  if(start >= left && end <= right) {
+  if(left <= start && end <= right) {
     // current segment is totally within range [l, r]
     return tree[node];
   }
