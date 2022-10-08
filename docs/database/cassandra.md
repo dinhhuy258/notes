@@ -16,7 +16,7 @@ Some of the features of Cassandra architecture are as follows:
 - Data is kept in memory and lazily written to the disk.
 - Hash values of the keys are used to distribute the data among nodes in the cluster.
 
-![](../../assets/images/database/cassandra_architecture_1.png)
+![](https://user-images.githubusercontent.com/17776979/194693704-c4c00093-fba4-4de3-9f5c-9ed37c94e13e.png)
 
 Additional features of Cassandra architecture are:
 
@@ -25,7 +25,7 @@ Additional features of Cassandra architecture are:
 
 You can keep three copies of data in one data center and the fourth copy in a remote data center for remote backup. Data reads prefer a local data center to a remote data center.
 
-![](../../assets/images/database/cassandra_architecture_2.png)
+![](https://user-images.githubusercontent.com/17776979/194693707-7798d7f9-27f1-4b60-a2ea-f25ffd053993.png)
 
 ### Node
 
@@ -35,7 +35,7 @@ Node is the place where data is stored. It is the basic component of Cassandra.
 
 A rack is a group of machines housed in the same physical box.
 
-![](../../assets/images/database/cassandra_rack.png)
+![](https://user-images.githubusercontent.com/17776979/194693714-323a5334-2b98-4d5b-89bf-ccfd08696708.png)
 
 - All machines in the rack are connected to the network switch of the rack
 - The rack’s network switch is connected to the cluster.
@@ -50,7 +50,7 @@ A datacenter is a logical set of racks/ nodes. A common use case is AWS-EAST vs 
 
 The cluster is the collection of many data centers.
 
-![](../../assets/images/database/cassandra_architecture_3.png)
+![](https://user-images.githubusercontent.com/17776979/194693710-c6591d84-897b-43f0-9074-3888874b0f00.png)
 
 ## 2. Data distribution and replication
 
@@ -68,11 +68,11 @@ node3: 67-99
 
 If there are nodes added or removed, the token range distribution should be shuffled to suit the new topology. This process takes a lot of calculation and configuration change for each cluster operation.
 
-![](../../assets/images/database/cassandra_token_ring.png)
+![](https://user-images.githubusercontent.com/17776979/194693720-65ee5bd1-2995-46d8-b48a-7f401037c584.png)
 
 If one node is removed, data in removed node is placed on the next neighbor node in clockwise manner.
 
-![](../../assets/images/database/cassandra_token_ring_2.png)
+![](https://user-images.githubusercontent.com/17776979/194693719-45504380-e566-4cd4-8008-7b47010c99e5.png)
 
 ### 2.2 Virtual nodes/Vnodes
 
@@ -82,7 +82,7 @@ The default number of Vnodes owned by a node in Cassandra is `256`, which is set
 
 In your case you have 6 nodes, each set with 256 token ranges so you have 6\*256 token ranges and each psychical node contains 256 token ranges.
 
-![](../../assets/images/database/cassandra_virtual_node.png)
+![](https://user-images.githubusercontent.com/17776979/194693722-80eb7483-13b9-46f4-99d1-461e2300621d.png)
 
 ### 2.3 Replication
 
@@ -98,7 +98,7 @@ There are two settings that mainly impact replica placement:
 SimpleStrategy: does not consider racks and multiple data centers. It places data replicas on nodes sequentially.
 NetworkTopologyStrategy: is rack aware and data center aware
 
-![](../../assets/images/database/cassandra_replication.png)
+![](https://user-images.githubusercontent.com/17776979/194693715-7355476a-bd35-4c67-88e8-5bba69d6168f.png)
 
 ### 2.4 Consistency level
 
@@ -106,7 +106,7 @@ The Cassandra consistency level is defined as the minimum number of Cassandra no
 
 You can find all cassandra's consistency level [here](https://docs.scylladb.com/getting-started/consistency/#consistency-levels-reference)
 
-![](../../assets/images/database/cassandra_consistency.png)
+![](https://user-images.githubusercontent.com/17776979/194693713-4298e5bc-2336-4e39-8ff2-82641e39546d.png)
 
 **Write Consistency**
 
@@ -131,7 +131,7 @@ Cassandra processes data at several stages on the write path, starting with the 
 - Flushing data from the memtable
 - Storing data on disk in SSTables
 
-![](../../assets/images/database/cassandra_write_path.png)
+![](https://user-images.githubusercontent.com/17776979/194693723-3cfcca3e-65e8-4a9b-8b70-b64163ef9c64.png)
 
 - **Commitlogs** are an append only log of all mutations local to a Cassandra node. Any data written to Cassandra will first be written to a commit log before being written to a memtable. This provides durability in the case of unexpected shutdown. On startup, any mutations in the commit log will be applied to memtables.
 - **Memtables** are in-memory structures where Cassandra buffers writes. In general, there is one active memtable per table. Eventually, memtables are flushed onto disk and become immutable SSTables. This can be triggered in several ways:
@@ -170,7 +170,7 @@ Create keyspace University with replication={'class':SimpleStrategy,'replication
 
 **Column Family**
 
-![](../../assets/images/database/cassandra_column_family.png)
+![](https://user-images.githubusercontent.com/17776979/194693711-da877545-188e-43b8-bc51-3015dbdb4a57.png)
 
 A row key in the column family must be unique and be used to identify rows. Although not the same, the column family can be analogous to a **table** in a relational database. Column families provide greater flexibility by allowing different columns in different rows.
 
@@ -232,7 +232,7 @@ Create index IndexName on KeyspaceName.TableName(ColumnName);
 
 Each row consists of a row key — also known as the primary key — and a set of columns, as shown in the following figure.
 
-![](../../assets/images/database/cassandra_row.png)
+![](https://user-images.githubusercontent.com/17776979/194693717-31a8cd7d-33ae-4176-b426-bc0d9f203ae0.png)
 
 Each row may have different column names. That is why Cassandra is row-oriented and column-oriented. There are no timestamps for the row.
 
@@ -240,7 +240,7 @@ Each row may have different column names. That is why Cassandra is row-oriented 
 
 A column is the smallest data model element in Cassandra. Although it also exists in a relational database, the column in Cassandra is different. The figure below shows that each column consists of a column name, column value, timestamp, and TTL ( Time-To-Live ).
 
-![](../../assets/images/database/cassandra_column.png)
+![](https://user-images.githubusercontent.com/17776979/194693712-75068a4a-7ef6-44b1-84f9-dcfb5671d318.png)
 
 The timestamp is used for conflict resolution by client applications during write operations.
 Time-To-Live is an optional expiration value that is used to mark columns that are deleted after expiration.

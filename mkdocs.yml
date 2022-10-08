@@ -70,6 +70,13 @@ nav:
     - Service discovery: distributed-system/service_discovery.md
     - API Gateway: distributed-system/api_gateway.md
     - Service Mesh: distributed-system/service_mesh.md
+  - Database:
+    - SQL cheat sheet: database/sql_cheat_sheet.md
+    - MySQL: database/mysql.md
+    - Transactions: database/transactions.md
+    - NoSQL: database/nosql.md
+    - Cassandra: database/cassandra.md
+    - LSM Tree: database/lsm_tree.md
   - Web:
     - HTTP: web/http.md
     - Networking:
@@ -80,13 +87,6 @@ nav:
       - OAuth2: web/security/oauth2.md
       - OpenId Connect: web/security/openid_connect.md
       - CORS: web/security/cors.md
-    - Database:
-      - SQL cheat sheet: web/database/sql_cheat_sheet.md
-      - MySQL: web/database/mysql.md
-      - Transactions: web/database/transactions.md
-      - NoSQL: web/database/nosql.md
-      - Cassandra: web/database/cassandra.md
-      - LSM Tree: web/database/lsm_tree.md
     - WebRTC:
       - WebRTC: web/webrtc/webrtc.md
       - Signaling: web/webrtc/signaling.md

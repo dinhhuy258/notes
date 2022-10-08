@@ -52,7 +52,7 @@ For example, suppose transaction T1 retrieves a set of rows that satisfy some se
 
 The isolation is guaranteed by MVCC (Multi-Version Consistency Control) and locks.
 
-![](../../assets/images/database/database_isolation.png) 
+![](https://user-images.githubusercontent.com/17776979/194693921-c6368a0c-f62a-4854-98c6-88de25217d82.png) 
 
 The diagram above takes Repeatable Read as an example to demonstrate how MVCC works:
 
