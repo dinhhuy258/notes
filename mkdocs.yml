@@ -74,6 +74,7 @@ nav:
     - PostgreSQL:
       - How Postgres Stores Rows: database/postgres/how_postgres_stores_rows.md
       - Concurrency Control: database/postgres/concurrency_control.md
+      - Vacuum Processing: database/postgres/vacuum_processing.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
