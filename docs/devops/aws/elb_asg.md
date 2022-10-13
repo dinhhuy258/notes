@@ -1,5 +1,7 @@
 # Elastic Load Balancing and Auto Scaling groups
 
+![](https://user-images.githubusercontent.com/17776979/195628626-d57e8b58-f520-41dd-b8b3-1547537d3d61.png)
+
 ## Elastic Load Balancing
 
 Load balancer are servers that forwards traffic to multiple servers downstream
