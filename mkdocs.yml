@@ -118,6 +118,7 @@ nav:
       - Route 53: devops/aws/s3.md
     - Docker:
       - Docker Overview: devops/docker/docker.md
+      - Docker Images: devops/docker/docker_images.md
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
       - Controllers: devops/kubernetes/controllers.md
