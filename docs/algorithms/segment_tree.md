@@ -62,6 +62,29 @@ void build(std::vector<int>& arr, int node, int start, int end) {
 
 In the main program this function will be called with the parameters `node = 1`, `left = 0`, `right = n - 1`
 
+**How to calculate segmentTree array size**
+
+If we have array of `n` elements, then the segment tree will have a leaf node for each of these `n` entries. Thus, we have `n` leaf nodes, and also `(n - 1)` internal nodes.
+
+Total number of nodes = `n + (n - 1) = 2n - 1`. Now, we know its a full binary tree and thus the height is: `std::ceil(std::log2(n)) + 1`
+
+Total no. of nodes = 2<sup>0</sup> + 2<sup>1</sup> + ... + 2<sup>h</sup>
+
+where h is the height of the segment tree
+
+We have [Sum of n Terms in GP](https://www.cuemath.com/algebra/sum-of-a-gp/):
+
+Sn = a * r<sup>0</sup> + a * <sup>r</sup> + a * r<sup>2</sup> + ... + a * r<sup>n - 1</sup> = a * (r<sup>n</sup> - 1) / (r - 1)
+
+Apply the formula we have
+
+Total no. of nodes = 2 * 2 <sup>std::ceil(std::log2(n))</sup> = 1
+
+```cpp
+auto heighSegmentTree = (int)(std::ceil(std::log2(n)));
+auto segmentTreeSize = 2 * std::pow(2, heighSegmentTree) - 1;
+```
+
 Time complexity: `O(n)`.
 
 ## Update
