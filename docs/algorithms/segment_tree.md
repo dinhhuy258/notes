@@ -88,7 +88,7 @@ void update(int node, int start, int end, int pos, int newVal) {
   }
 
   // internal node will have the sum of both of its children
-  segmentTree[v] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
+  segmentTree[node] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
 }
 ```
 
