@@ -78,7 +78,7 @@ Sn = a * r<sup>0</sup> + a * <sup>r</sup> + a * r<sup>2</sup> + ... + a * r<sup>
 
 Apply the formula we have
 
-Total no. of nodes = 2 * 2 <sup>std::ceil(std::log2(n))</sup> = 1
+Total no. of nodes = 2 * 2 <sup>std::ceil(std::log2(n))</sup> - 1
 
 ```cpp
 auto heighSegmentTree = (int)(std::ceil(std::log2(n)));
