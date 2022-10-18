@@ -120,6 +120,7 @@ nav:
       - Docker Overview: devops/docker/docker.md
       - Docker Images: devops/docker/docker_images.md
       - Docker Storage: devops/docker/docker_storage.md
+      - Docker Network: devops/docker/docker_network.md
     - Kubernetes:
       - Pods: devops/kubernetes/pods.md
       - Controllers: devops/kubernetes/controllers.md
