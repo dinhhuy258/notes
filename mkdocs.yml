@@ -52,6 +52,7 @@ nav:
     - Bloom filter: algorithms/bloom_filter.md
     - Binary indexed tree: algorithms/binary_indexed_tree.md
     - Segment tree: algorithms/segment_tree.md
+    - Submask Enumeration : algorithms/submask_nnumeration.md
   - Distributed System:
     - ZooKeeper:
       - Fundamentals: distributed-system/zookeeper/fundamentals.md
