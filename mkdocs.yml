@@ -78,6 +78,7 @@ nav:
       - Vacuum Processing: database/postgres/vacuum_processing.md
       - Heap Only Tuple and Index-Only Scans: database/postgres/heap_only_tuple_and_index_only_scans.md
       - Buffer Manager: database/postgres/buffer_manager.md
+      - Streaming Replication: database/postgres/streaming_replication.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
