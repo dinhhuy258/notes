@@ -130,6 +130,7 @@ nav:
       - RDS: devops/aws/rds.md
       - Route 53: devops/aws/route_53.md
       - S3: devops/aws/s3.md
+      - ECS: devops/aws/ecs.md
     - Docker:
       - Docker Overview: devops/docker/docker.md
       - Docker Images: devops/docker/docker_images.md
