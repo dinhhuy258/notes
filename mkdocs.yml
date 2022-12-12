@@ -140,6 +140,7 @@ nav:
       - Docker Network: devops/docker/docker_network.md
       - Docker Cheat Sheet: devops/docker/docker_cheat_sheet.md
     - Kubernetes:
+      - Cluster Architecture: devops/kubernetes/cluster_architecture.md
       - Pods: devops/kubernetes/pods.md
       - Controllers: devops/kubernetes/controllers.md
       - Service: devops/kubernetes/service.md
