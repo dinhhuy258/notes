@@ -1,6 +1,11 @@
 # Controllers
 
-## 1. ReplicaSet
+Controller are using to monitor k8s objects and respond accordingly.
+
+## 1. ReplicaSet (old term ReplicationController)
+
+- High availability
+- Load balancing + Scaling
 
 A ReplicaSet ensures that a specified number of pod replicas are running at any given time.
 
@@ -12,36 +17,32 @@ kind: ReplicaSet
 metadata:
   name: frontend
 spec:
-  replicas: 2
+  replicas: 2 # number of replicas
   selector:
     matchLabels:
       tier: frontend
   template:
+    # same as pod definition - begin
     metadata:
       labels:
         tier: frontend
     spec:
       containers:
-      - name: php-redis
-        image: gcr.io/google_samples/gb-frontend:v3
+        - name: php-redis
+          image: gcr.io/google_samples/gb-frontend:v3
+    # same as pod definition - end
 ```
 
-The `apiVersion`, `kind`, `metadata` fields are mandatory with all k8s objects.
+The selector in the ReplicaSet definition helps the ReplicaSet identify which pods belong to it. The selector enables the ReplicaSet to manage pods that were not created as part of the ReplicaSet creation.
 
-- Line 1: We specified that the `apiVersion` is `apps.v1`
-- Line 2-3: The `kind` is `ReplicaSet` and `metadata` has the `name` key set to `frontend`
-- Line 5-6: The first field we defined in the `spec` section is `replicas`. It sets the desired number of replicas of the pod. In this case the ReplicaSet should ensure that 2 pods should run concurrently.
-- Line 7: The next `spec` section is the `selector`. We use it to select which pods should be included in the ReplicaSet. If pods that match the `selector` exist, ReplicaSet will do nothing. If they don't, it will create as many as pods that match the value of the `replicas` field. Not only that ReplicaSet creates the pods that are missing, but also monitors the cluster and ensures that the desired number of `replicas` is always running.
-- Line 8-9: We used `spec.selector.matchLabels` to specify labels. They must match the labels defined in `spec.tempalte`. In our case, ReplicaSet will look for Pods with `tier` set to `frontend`. If pods with this label does not exist, it will create them using the `spec.template` section.
-- Line 10-13: The last section of the `spec` field is the `template` and it has the same schema as a Pod specification. At a minimum, the labels of the `spec.template.metadata.labels` section must match those specified in the `spec.selector.matchLabels`.
-- Line 14-17: Finally the `spec.template.spec` section the `containers` definition.
+For example, if there were pods created before the creation of the ReplicaSet that matched the labels specified in the selector, the ReplicaSet would also consider those pods when creating replicas.
 
-![](../../assets/images/kubernetes/replica_set.png)
+![](https://user-images.githubusercontent.com/17776979/222917753-7b914c80-7f9f-40f4-b56f-e0db6271a1b4.png)
 
 ### The process of creating ReplicaSet
 
 1. K8s client (kubectl) sent a request to the API server requesting the creation of ReplicaSet
-2. The controller is watching the API server for new events and it detected that there is a new ReplicaSet objecto
+2. The controller is watching the API server for new events and it detected that there is a new ReplicaSet object
 3. The controller creates 2 new pod definitions because we have configured replica value as 2 in the above example
 4. The scheduler is watching the API server for new events and it detected that there are 2 unasigned pods
 5. The scheduler decided which node to assign the Pod and sent that information to the API server
@@ -49,15 +50,15 @@ The `apiVersion`, `kind`, `metadata` fields are mandatory with all k8s objects.
 7. Kublet sent request to Docker requesting the creation of the containers that form the Pod.
 8. Finally, Kublet sent a request to the API server notifying it that the pods were created successfully
 
-![](../../assets/images/kubernetes/replica_set_creation.png)
-
-A ReplicaSet ensures that a specified number of pod replicas are running at any given time. However, a Deployment is a higher-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, k8s recommend using Deployments instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
-
-This actually means that you may never need to manipulate ReplicaSet objects: use a Deployment instead, and define your application in the spec section.
+![](https://user-images.githubusercontent.com/17776979/222917855-040c27d8-2d46-4d1a-b87f-14219a751074.png)
 
 ## 2. Deployments
 
-Kubernetes Deployment is the process of providing declarative updates to Pods and ReplicaSets.
+A ReplicaSet ensures that a specified number of pod replicas are running at any given time. However, a Deployment is a higher-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, k8s recommend using Deployments instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
+
+Deployment manages the overall lifecycle of an application, including rolling updates and rollbacks, while a ReplicaSet ensures that a specified number of identical replicas of the application are running at any given time. Deployments use ReplicaSets to manage scaling and ensure the desired state is achieved.
+
+This actually means that you may never need to manipulate ReplicaSet objects: use a Deployment instead, and define your application in the spec section.
 
 ### Define a zero-downtime deployment
 
@@ -88,20 +89,20 @@ spec:
         language: go
     spec:
       containers:
-      - name: api
-        image: vfarcic/go-demo-2
-        env:
-        - name: DB
-          value: go-demo-2-db
-        readinessProbe:
-          httpGet:
-            path: /demo/hello
-            port: 8080
-          periodSeconds: 1
-        livenessProbe:
-          httpGet:
-            path: /demo/hello
-            port: 8080
+        - name: api
+          image: vfarcic/go-demo-2
+          env:
+            - name: DB
+              value: go-demo-2-db
+          readinessProbe:
+            httpGet:
+              path: /demo/hello
+              port: 8080
+            periodSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /demo/hello
+              port: 8080
 ```
 
 - `spec.minReadySeconds`: defines the number of seconds before k8s starts considering the Pod healthy. The default value is `0`, meaning that the Pods will be considered available as soon as they are ready and, when specified `livenessProbe` returns OK.
@@ -114,7 +115,7 @@ spec:
 
 The recreate strategy is a dummy deployment which consists of shutting down version A then deploying version B after version A is turned off. This technique implies downtime of the service that depends on both shutdown and boot duration of the application.
 
-![](../../assets/images/kubernetes/recreate_strategy.gif)
+![](https://user-images.githubusercontent.com/17776979/223171910-eefe6615-e6fa-4230-b1ef-9270ce0dbf57.gif)
 
 Pros:
 
@@ -129,7 +130,7 @@ Cons:
 
 The rolling update deployment strategy consists of slowly rolling out a version of an application by replacing instances one after the other until all the instances are rolled out.
 
-![](../../assets/images/kubernetes/rolling_update_strategy.gif)
+![](https://user-images.githubusercontent.com/17776979/223172285-eeb87a2c-c1e8-434c-ae3e-725b143e39c6.gif)
 
 Pros:
 
