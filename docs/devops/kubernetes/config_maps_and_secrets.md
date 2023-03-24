@@ -1,6 +1,6 @@
-# ConfigMaps
+# ConfigMaps and Secrets
 
-## 1. Description
+## ConfigMap
 
 A ConfigMap is an API object used to store non-credential data in key-value pairs.
 
@@ -14,7 +14,7 @@ A ConfigMap allows you to decouple environment-specific configuration from your 
 
 Importantly, ConfigMaps are not suitalbe for storing a confidental data. They don't provide any kind of encryption, and all the data in them are visible to anyone who has access to the file.
 
-## 2. Define a ConfigMap
+### Define a ConfigMap
 
 ```yaml
 apiVersion: v1
@@ -52,7 +52,7 @@ In a ConfigMap, the required information can store in the `data` field. We can s
 - As individual key-value pair properties
 - In a granular format where they are fragments of a configuration format. (File Like Keys)
 
-## 3. Utilizing ConfigMaps in Pod
+### Utilizing ConfigMaps in Pod
 
 There are four ways that you can use a ConfigMap to configure a container inside a Pod:
 
@@ -76,10 +76,10 @@ spec:
       env:
         # Define the environment variable
         - name: PLAYER_INITIAL_LIVES # Notice that the case is different here
-                                     # from the key name in the ConfigMap.
+          # from the key name in the ConfigMap.
           valueFrom:
             configMapKeyRef:
-              name: game-demo           # The ConfigMap this value comes from.
+              name: game-demo # The ConfigMap this value comes from.
               key: player_initial_lives # The key to fetch.
         - name: UI_PROPERTIES_FILE_NAME
           valueFrom:
@@ -87,9 +87,9 @@ spec:
               name: game-demo
               key: ui_properties_file_name
       volumeMounts:
-      - name: config
-        mountPath: "/config"
-        readOnly: true
+        - name: config
+          mountPath: "/config"
+          readOnly: true
   volumes:
     # You set volumes at the Pod level, then mount them into containers inside that Pod
     - name: config
@@ -98,12 +98,12 @@ spec:
         name: game-demo
         # An array of keys from the ConfigMap to create as files
         items:
-        - key: "game.properties"
-          path: "game.properties"
-        - key: "user-interface.properties"
-          path: "user-interface.properties"
-        - key: "prometheus.yaml"
-          path: "prometheus.yaml"
+          - key: "game.properties"
+            path: "game.properties"
+          - key: "user-interface.properties"
+            path: "user-interface.properties"
+          - key: "prometheus.yaml"
+            path: "prometheus.yaml"
 ```
 
 For this example, defining a volume and mounting it inside the demo container as `/config` creates three files, `/config/game.properties`, `/config/user-interface.properties` and `prometheus.yaml`, even though there are four keys in the ConfigMap.
@@ -112,11 +112,11 @@ If you omit the `items` array entirely, every key in the ConfigMap becomes a fil
 
 ### Pods use ConfigMaps through environment variables and configMap volumes
 
-![](../../assets/images/kubernetes/config_map.png)
+![](https://user-images.githubusercontent.com/17776979/227540462-5cd28b58-29a0-407f-b12b-91e82b4fbb57.png)
 
 ### Pass ConfigMap entries to a pod as files in a volume
 
-![](../../assets/images/kubernetes/config_map_file.png)
+![](https://user-images.githubusercontent.com/17776979/227540517-eb3e86c8-7c9e-4edc-8a2c-edb81c9ec7ce.png)
 
 ### Pass a ConfigMap entry as a command-line argument
 
@@ -127,14 +127,73 @@ metadata:
   name: fortune-args-from-configmap
 spec:
   containers:
-  - image: luksa/fortune:args
-    env:
-    - name: INTERVAL
-      valueFrom:
-        configMapKeyRef:
-          name: fortune-config
-          key: sleep-interval
-    args: ["$(INTERVAL)"]
+    - image: luksa/fortune:args
+      env:
+        - name: INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: fortune-config
+              key: sleep-interval
+      args: ["$(INTERVAL)"]
 ```
 
-![](../../assets/images/kubernetes/config_map_command_line.png)
+![](https://user-images.githubusercontent.com/17776979/227540766-a601528c-e52a-4de5-9525-890ed0da3748.png)
+
+## Secrets
+
+A Secret is an object that contains a small amount of **sensitive** data such as a password, a token, or a key. Secrets are similar to ConfigMaps but are specifically intended to hold confidential data.
+
+### Define a Secrets
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+data:
+  DB_USER: YWRtaW4=
+  DB_PASS: MWYyZDFlMmU2N2Rm
+```
+
+Note:
+
+- Secrets are not encrypted. Only encoded (base64).
+- Secrets are not encrypted in etcd
+- Anyone able to create pods/ deployments in the same namespace can access the secrets
+
+In order to safely use Secrets, take at least the following steps:
+
+1. [Enable Encryption at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) for Secrets. (encrypt the data in etcd)
+2. [Enable or configure RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/authorization/) with least-privilege access to Secrets.
+3. Restrict Secret access to specific containers.
+4. [Consider using external Secret store providers](https://secrets-store-csi-driver.sigs.k8s.io/concepts.html#provider-for-the-secrets-store-csi-driver).
+
+### Uses for Secrets
+
+There are three main ways for a Pod to use a Secret:
+
+- As files in a volume mounted on one or more of its containers.
+- As container environment variable.
+- [By the kubelet when pulling images for the Pod](https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets).
+
+```yaml
+envFrom:
+  - secretRef:
+      name: app-config
+```
+
+```yaml
+env:
+  - name: DB_PASS
+    valueFrom:
+      secretRef:
+        name: app-config
+        key: DB_PASS
+```
+
+```yaml
+volumes:
+  - name: app-secret-volume
+    secret:
+      secretName: app-secret
+```

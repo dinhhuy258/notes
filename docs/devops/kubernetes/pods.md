@@ -26,6 +26,15 @@ Pods do not, by themselves, self-heal. If a Pod is scheduled to a node that then
 
 ## How can we create Pods in Kubernetes?
 
+Pod definition template
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: ...
+spec: ...
+```
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -42,6 +51,64 @@ spec:
 
 ```sh
 kubectl apply -f mypod.yaml
+```
+
+## Commands and Arguments
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper-pod
+spec:
+  containers:
+    - name: ubuntu-sleeper
+      image: ubuntu-sleeper # entry point: sleep
+      args: ["10"] # ~ cmd
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper-pod
+spec:
+  containers:
+    - name: ubuntu-sleeper
+      image: ubuntu-sleeper
+      command: ["sleep"] # ~ entry point
+      args: ["10"] # ~ cmd
+```
+
+## ENV variables
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-2
+  labels:
+    name: nginx-2
+    env: production
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+
+      envFrom:
+        - configMapRef:
+            name: env-configmap
+        - secretRef:
+            name: env-secrets
+  env:
+    - name: DEBUG
+      value: false
+    - name:
+      valueFrom:
+        configMapKeyRef:
+    - name:
+      valueFrom:
+        secretKeyRef:
 ```
 
 ## Useful commands
