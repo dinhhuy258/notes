@@ -112,3 +112,9 @@ git submodule add <remote_url> <folder>
 ```
 git submodule update --init --recursive
 ```
+
+### Adjust commit date
+
+```
+git commit --amend --date="Wed Apr 19 18:00 2023 +0700" --no-edit
+```
