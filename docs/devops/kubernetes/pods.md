@@ -111,6 +111,97 @@ spec:
         secretKeyRef:
 ```
 
+## Init containers
+
+A Pod can have multiple containers running apps within it, but it can also have one or more init containers, which are run before the app containers are started.
+
+Init containers are exactly like regular containers, except:
+
+- Init containers always run to completion.
+- Each init container must complete successfully before the next one starts.
+
+If any of the initContainers fail to complete, Kubernetes restarts the Pod repeatedly until the Init Container succeeds.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+  - name: init-mydb
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+```
+
+
+## Security context
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-pod
+spec:
+  securityContext: # security in the pod level
+    runAsUser: 1000
+  containers:
+    - name: ubuntu
+      image: ubuntu
+      command: ["sleep", "1000"]
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-pod
+spec:
+  containers:
+    - name: ubuntu
+      image: ubuntu
+      command: ["sleep", "1000"]
+      securityContext: # security in the container level
+        runAsUser: 1000
+        capabilities:
+          add: ["MAC_ADMIN"]
+```
+
+## Resource Requirements
+
+Kubernetes defines Limits as the maximum amount of a resource to be used by a container. This means that the container can never consume more than the memory amount or CPU amount indicated. By default K8s sets a limit of one vCPU and 512 Mebibyte to containers.
+
+Requests, on the other hand, are the minimum guaranteed amount of a resource that is reserved for a container. By default k8s assumes that a pod requires: 0.5 CPU, 256 Mi
+
+If you know that your application need more than this. You can modify these values by specifying them in your pod definition.
+
+![](https://user-images.githubusercontent.com/17776979/227699096-f6378c23-a5a4-4eeb-b160-c0c61abaee79.png)
+
+What does `cpu: 1` mean?
+
+- 1 AWS vCPU
+- 1 GCP Core
+- 1 Azure Core
+- 1 Hyperthread
+
+1000 milicores = 1 core
+1 core = 1024 shares
+100 milicores = 102 shares
+
+Memory
+
+- 1G (Gigabyte) (1.000.000.000 bytes), 1M (Megabyte) (1.000.000 bytes), 1K (Kilobyte) (1.000 bytes)
+- 1Gi (Gibibyte) (1.073.741.824 bytes), 1Mi (Mebibyte) (1.048.576 bytes), 1Ki (Kibibyte) (1.024 bytes)
+
 ## Useful commands
 
 ```sh
