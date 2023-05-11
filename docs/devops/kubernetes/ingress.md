@@ -65,6 +65,29 @@ spec:
 
 Ingress frequently uses annotations to configure some options depending on the Ingress controller, an example of which is the `rewrite-target` annotation. Different Ingress controllers support different annotations.
 
+Explain `rewrite-target` annotation. For example we have 2 services:
+
+1. `watch` app at `http://<watch-service>:<port>/`
+2. `wear` app at `http://<wear-service>:<port>/`
+
+We must configure Ingress to achieve the below:
+
+- http://<ingress-service>:<ingress-port>/watch –> http://<watch-service>:<port>/
+- http://<ingress-service>:<ingress-port>/wear –> http://<wear-service>:<port>/
+
+Without the `rewrite-target` option, this is what would happen:
+
+- http://<ingress-service>:<ingress-port>/watch –> http://<watch-service>:<port>/watch
+- http://<ingress-service>:<ingress-port>/wear –> http://<wear-service>:<port>/wear
+
+Notice `watch` and `wear` at the end of the target URLs. The target applications are not configured with `/watch` or `/wear` paths. They are different applications built specifically for their purpose, so they don’t expect `/watch` or `/wear` in the URLs
+
+To fix that we want to **ReWrite** the URL when the request is passed on to the `watch` or `wear` applications. We don’t want to pass in the same path that user typed in. So we specify the `rewrite-target` option. This rewrites the URL by replacing whatever is under `rules->http->paths->path` with the value in `rewrite-target`. This works just like a search and replace function.
+
+For example: replace(path, rewrite-target)
+
+In our case: replace("/testpath","/")
+
 **Ingress rules**
 
 Each HTTP each contains the following information:
