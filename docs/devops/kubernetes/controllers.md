@@ -2,7 +2,7 @@
 
 Controller are using to monitor k8s objects and respond accordingly.
 
-## 1. ReplicaSet (old term ReplicationController)
+## ReplicaSet (old term ReplicationController)
 
 - High availability
 - Load balancing + Scaling
@@ -52,7 +52,7 @@ For example, if there were pods created before the creation of the ReplicaSet th
 
 ![](https://user-images.githubusercontent.com/17776979/222917855-040c27d8-2d46-4d1a-b87f-14219a751074.png)
 
-## 2. Deployments
+## Deployments
 
 A ReplicaSet ensures that a specified number of pod replicas are running at any given time. However, a Deployment is a higher-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, k8s recommend using Deployments instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
 
