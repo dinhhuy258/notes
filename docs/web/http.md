@@ -1,6 +1,6 @@
 # HTTP
 
-## 1. An overview of HTTP
+## An overview of HTTP
 
 Hypertext Transfer Protocol (HTTP) is an application-layer protocol for transmitting hypermedia documents, such as HTML. It was designed for communication between web browsers and web servers, but it can also be used for other purposes.
 
@@ -103,7 +103,7 @@ HTTP status codes are grouped in five classed:
 4. Client errors (400-499)
 5. Server errors (500-599)
 
-## 2. HTTP pull
+## HTTP pull
 
 In the HTTP pull method, the client sends a request to the server and the server responds to that request (and the connection is closed). The client pulls the data from the server whenever it requires (by creating a new connection). And it keeps doing it over and over to fetch the updated data.
 
@@ -114,7 +114,7 @@ Also, excessive pulls by the clients have the potential to bring down the server
 
 ![](../assets/images/web/http_pull.png)
 
-## 3. HTTP push
+## HTTP push
 
 To overcome the problem with HTTP pull, an HTTP push was introduced. In the HTTP push method, the client opens a connection to the server by requesting a server only the first time and after that server keeps on pushing back updated content to the client, whenever there’s any.
 
