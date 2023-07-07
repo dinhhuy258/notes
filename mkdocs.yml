@@ -67,6 +67,7 @@ nav:
       - Workflow: distributed-system/zookeeper/workflow.md
       - Leader Election: distributed-system/zookeeper/leader_election.md
     - Kafka:
+      - Kafka Architecture: distributed-system/kafka/kafka_architecture.md
       - Installation: distributed-system/kafka/installation.md
       - Producer: distributed-system/kafka/producer.md
       - Consumer: distributed-system/kafka/consumer.md
