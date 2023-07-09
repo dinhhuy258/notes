@@ -33,6 +33,10 @@ This is the easy part. Add `enable.idempotence=true` to the producer configurati
 
 Transactions give us the ability to atomically update data in multiple topic partitions. All the records included in a transaction will be successfully saved, or none of them will be.
 
+**Prerequisite:**
+
+Topic must have `Replication Factor >= 3` and `min.insync.replicas >= 2`
+
 ### What Problems Do Transactions Solve?
 
 Consider a simple stream processing application: it reads events from a source topic, maybe processes them, and writes results to another topic. We want to be sure that for each message we process, the results are written exactly once. What can possibly go wrong?
@@ -63,7 +67,7 @@ Let's say that the record processing step in our stream processing app includes 
 In this case, the application is writing to an external database rather than to Kafka. We have 2 steps here:
 
 - Writing record to database
-- Update an offset to Kafka within the consumer 
+- Update an offset to Kafka within the consumer
 
 There is no mechanism that allows writing results to an external database and committing offset to Kafka within a single transaction. Instead we could manage offsets in the database and commit both data and offset to the database in a single transaction, this would rely on the database transaction guarantees rather than Kafka.
 **Reading data from database, writing to Kafka, and from there writing to another database**

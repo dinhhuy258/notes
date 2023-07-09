@@ -54,6 +54,26 @@ There are 3 primary method of sending messages:
 - **Synchronous send:** Technically, Kafka producer is always asynchronous, we send a message and the `send` method return a `Future` object. However, we use `get()` to wait on the `Future` and see if the `send()` as successful or not.
 - **Asynchronous send:** We call the `send()` method with a callback function, which gets triggered when it receives a response from the Kafka server.
 
+## Handling message delivery failure
+
+**Send message synchronously**
+
+```kt
+producer.send(...).get()
+```
+
+-> affect to network throughput
+
+**Producer callback**
+
+```kt
+producer.send(..., (recordMetadata, e) -> {
+    if (e != null) {
+        ...
+    }
+})
+```
+
 ## Delivery time
 
 ![](https://user-images.githubusercontent.com/17776979/193178464-151b14b3-434b-46bb-a433-a8680cfafb6e.png)
