@@ -38,6 +38,8 @@ The easiest way to commit offsets is to allow the consumer to do it for you. If 
 
 This method may lead to duplicate message processing.
 
+Use `auto.offset.reset` to define the behavior of the consumer when there is no committed position. You can choose either to reset the position to the `earliest` offset or the `latest` offset (the default). 
+
 ### Commit Current Offset
 
 By setting `enable.auto.commit=false`, offsets will only be committed when the application explicitly chooses to do so.
