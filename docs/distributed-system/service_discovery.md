@@ -86,8 +86,8 @@ The service registrar is a built‑in component of deployment environments. The 
 
 Pros:
 
-- Services are decoupled from service registry
-- No need to implement service‑registration logic for each programming language and framework used by your developers
+- Services are decoupled from service registry.
+- No need to implement service‑registration logic for each programming language and framework used by your developers.
 
 Cons:
 
