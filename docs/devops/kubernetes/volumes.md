@@ -33,7 +33,7 @@ Some use cases for an emptyDir are:
 - Scratch space, for a sort algorithm for example
 - Checkpointing a long computation for recovery from crashes
 - As a cache
-- Holding files that a content-manager container fetches while a webserver Container serves the data
+- Holding files that a content-manager container fetches while a webserver Container serves the data.
 
 Example:
 
