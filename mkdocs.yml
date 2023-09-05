@@ -62,6 +62,20 @@ nav:
     - Submask Enumeration : algorithms/submask_enumeration.md
     - Ternary Search: algorithms/ternary_search.md
   - Distributed System:
+    - Networking:
+      - TCP: distributed-system/networking/tcp.md
+      - Understanding socket and port in TCP: distributed-system/networking/understanding_socket_and_port_in_tcp.md
+    - Security:
+      - JWT: distributed-system/security/jwt.md
+      - OAuth2: distributed-system/security/oauth2.md
+      - OpenId Connect: distributed-system/security/openid_connect.md
+      - CORS: distributed-system/security/cors.md
+    - WebRTC:
+      - WebRTC: distributed-system/webrtc/webrtc.md
+      - Signaling: distributed-system/webrtc/signaling.md
+      - Connecting: distributed-system/webrtc/connecting.md
+      - Media communication: distributed-system/webrtc/media_communication.md
+      - Example: distributed-system/webrtc/example.md
     - ZooKeeper:
       - Fundamentals: distributed-system/zookeeper/fundamentals.md
       - Workflow: distributed-system/zookeeper/workflow.md
@@ -96,22 +110,6 @@ nav:
     - NoSQL: database/nosql.md
     - Cassandra: database/cassandra.md
     - LSM Tree: database/lsm_tree.md
-  - Web:
-    - HTTP: web/http.md
-    - Networking:
-      - TCP: web/networking/tcp.md
-      - Understanding socket and port in TCP: web/networking/understanding_socket_and_port_in_tcp.md
-    - Security:
-      - JWT: web/security/jwt.md
-      - OAuth2: web/security/oauth2.md
-      - OpenId Connect: web/security/openid_connect.md
-      - CORS: web/security/cors.md
-    - WebRTC:
-      - WebRTC: web/webrtc/webrtc.md
-      - Signaling: web/webrtc/signaling.md
-      - Connecting: web/webrtc/connecting.md
-      - Media communication: web/webrtc/media_communication.md
-      - Example: web/webrtc/example.md
   - Programming:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
