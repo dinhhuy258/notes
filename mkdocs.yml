@@ -68,6 +68,7 @@ nav:
       - TCP: distributed-system/networking/tcp.md
       - Understanding socket and port in TCP: distributed-system/networking/understanding_socket_and_port_in_tcp.md
     - Security:
+      - Web Security: distributed-system/security/web_security.md
       - JWT: distributed-system/security/jwt.md
       - OAuth2: distributed-system/security/oauth2.md
       - OpenId Connect: distributed-system/security/openid_connect.md
