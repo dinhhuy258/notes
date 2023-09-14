@@ -62,6 +62,8 @@ nav:
     - Submask Enumeration : algorithms/submask_enumeration.md
     - Ternary Search: algorithms/ternary_search.md
   - Distributed System:
+    - HTTP: distributed-system/http.md
+    - Causal Consistency: distributed-system/causal_consistency.md
     - Networking:
       - TCP: distributed-system/networking/tcp.md
       - Understanding socket and port in TCP: distributed-system/networking/understanding_socket_and_port_in_tcp.md
