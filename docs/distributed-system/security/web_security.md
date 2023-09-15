@@ -27,3 +27,21 @@ To control where your site can be embedded, use the `frame-ancestors` directive:
 - `Content-Security-Policy: frame-ancestors 'none'`
 - `Content-Security-Policy: frame-ancestors 'self'`
 - `Content-Security-Policy: frame-ancestors *uri*`
+
+## Cross-site scripting (XSS) and Reflected XSS
+
+[XSS](https://www.hacksplaining.com/exercises/xss-stored)
+
+[Reflected XSS](https://www.hacksplaining.com/exercises/xss-reflected)
+
+### Protection
+
+**Escape Dynamic Content**
+
+**Content Security Policy**
+
+XSS attacks rely on the attacker being able to run malicious scripts on a user’s web page - either by injecting inline <script> tags somewhere within the <html> tag of a page, or by tricking the browser into loading the JavaScript from a malicious third-party domain.
+
+By setting a content security policy in the response header, you can tell the browser to never execute inline JavaScript, and to lock down which domains can host JavaScript for a page:
+
+`Content-Security-Policy: script-src 'self' https://apis.google.com`
