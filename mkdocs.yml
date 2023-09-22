@@ -107,6 +107,7 @@ nav:
       - Write Ahead Logging: database/postgres/write_ahead_logging.md
       - Streaming Replication: database/postgres/streaming_replication.md
       - Query Processing: database/postgres/query_processing.md
+      - Bitmap Index Scan: database/postgres/bitmap_index_scan.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
