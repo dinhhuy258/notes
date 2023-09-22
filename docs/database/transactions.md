@@ -14,9 +14,13 @@ The data is in consistent state before and after transaction.
 
 Eg: We have a transaction to transfer money from account A to account B. The total amount before and after the transaction must be the same.
 
+The Consistency in data is defined by the user. Eg: unique constraint, foreign key constraint
+
 ### Isolation
 
 If the multiple transactions are running concurrently, they should not be affected by each other.
+
+(It depends on the isolation level that we are using)
 
 ### Durability
 
