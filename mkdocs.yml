@@ -108,6 +108,7 @@ nav:
       - Streaming Replication: database/postgres/streaming_replication.md
       - Query Processing: database/postgres/query_processing.md
       - Bitmap Index Scan: database/postgres/bitmap_index_scan.md
+      - Brin Index: database/postgres/brin_index.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
