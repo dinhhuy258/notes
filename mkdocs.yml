@@ -116,6 +116,7 @@ nav:
     - Cassandra: database/cassandra.md
     - LSM Tree: database/lsm_tree.md
     - Btree vs B+tree: database/btree_vs_b_plus_tree.md
+    - Offset is bad: database/offset_is_bad.md
   - Programming:
     - Golang:
       - Array and slice: programming/golang/array_and_slice.md
