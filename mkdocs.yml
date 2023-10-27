@@ -153,3 +153,4 @@ nav:
       - Ingress: devops/kubernetes/ingress.md
       - Volumes: devops/kubernetes/volumes.md
       - ConfigMaps and Secrets: devops/kubernetes/config_maps_and_secrets.md
+  - Blogs: blogs/index.md
