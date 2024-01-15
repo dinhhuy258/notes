@@ -128,6 +128,8 @@ nav:
       - Coroutine:
         - Coroutine basics: programming/kotlin/coroutine/basics.md
         - Coroutine context and dispatchers: programming/kotlin/coroutine/context_and_dispatchers.md
+    - Tips:
+      - Debugging Laravel Sail with XDebug: programming/tips/debugging-laravel-sail-with-xdebug.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
