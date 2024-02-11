@@ -67,6 +67,7 @@ nav:
     - Networking:
       - TCP: distributed-system/networking/tcp.md
       - Understanding socket and port in TCP: distributed-system/networking/understanding_socket_and_port_in_tcp.md
+      - SSH Tunnel: distributed-system/networking/ssh_tunnel.md
     - Security:
       - Web Security: distributed-system/security/web_security.md
       - JWT: distributed-system/security/jwt.md
