@@ -160,4 +160,5 @@ nav:
       - Terraform: devops/terraform/terraform.md
       - Input Variables: devops/terraform/input_variables.md
       - Locals: devops/terraform/locals.md
+      - Data Sources: devops/terraform/data_sources.md
   - Blogs: blogs/index.md
