@@ -23,3 +23,19 @@ A provider is responsible for understanding API interactions and exposing resour
 2. Variable declaration file (variables.tf or variables.tf.json): Here we declare the input variables required to provision resources
 3. Variable definition files (terraform.tfvars): Here we assign values to the input variables
 4. State file (terraform.tfstate): a state file is created once after Terraform is run. It stores state about our managed infrastructure.
+
+## Backend Configuration
+
+A backend defines where Terraform stores its state data files. Terraform uses persisted state data to keep track of the resources it manages. 
+
+By default, Terraform uses a backend called `local`, which stores state as a local file on disk. You can also configure one of the built-in backends supported by terraform.
+
+```terraform
+terraform {
+  backend "s3" {
+    bucket = "mybucket"
+    key    = "path/to/my/key"
+    region = "us-east-1"
+  }
+}
+```
