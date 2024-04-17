@@ -162,4 +162,5 @@ nav:
       - Locals: devops/terraform/locals.md
       - Data Sources: devops/terraform/data_sources.md
       - Resources: devops/terraform/resources.md
+      - Terragrunt: devops/terraform/terragrunt.md
   - Blogs: blogs/index.md
