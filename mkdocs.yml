@@ -129,6 +129,7 @@ nav:
       - Context: programming/golang/context.md
     - Git:
       - Git commands: programming/git/git_commands.md
+      - Find bug with Git Bisect command: programming/git/git_bisect.md
     - Kotlin:
       - Coroutine:
         - Coroutine basics: programming/kotlin/coroutine/basics.md
