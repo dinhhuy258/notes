@@ -49,6 +49,12 @@ Sort key is also known as range key. Ideally, we do not need a range key. It is 
 - NS, Number Set
 - BS, Binary Set
 
+## Time to Live (TTL)
+
+Time To Live (TTL) for DynamoDB is a cost-effective method for deleting items that are no longer relevant. TTL allows you to define a per-item expiration timestamp that indicates when an item is no longer needed. DynamoDB automatically deletes expired items within a few days of their expiration time, without consuming write throughput.
+
+To use TTL, first enable it on a table and then define a specific attribute to store the TTL expiration timestamp. The timestamp must be stored in Unix epoch time format at the seconds granularity. Each time an item is created or updated, you can compute the expiration time and save it in the TTL attribute.
+
 ## Capacity Units
 
 Amazon DynamoDB has two read/write capacity modes for processing reads and writes on your tables:
