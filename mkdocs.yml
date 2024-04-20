@@ -113,6 +113,7 @@ nav:
     - DynamoDB:
       - Data Model: database/dynamodb/data_model.md
       - Read & Write Data: database/dynamodb/read_write_data.md
+      - Secondary Index: database/dynamodb/secondary_index.md
     - SQL cheat sheet: database/sql_cheat_sheet.md
     - MySQL: database/mysql.md
     - Transactions: database/transactions.md
