@@ -147,6 +147,7 @@ nav:
       - CloudFront: devops/aws/cloud_front.md 
       - ECS: devops/aws/ecs.md
       - SQS/SNS: devops/aws/sqs_sns.md
+      - VPC: devops/aws/vpc.md
     - Docker:
       - Docker Overview: devops/docker/docker.md
       - Docker Images: devops/docker/docker_images.md
