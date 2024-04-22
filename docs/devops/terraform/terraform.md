@@ -9,12 +9,6 @@ Terraform lifecycle consists of – init, plan, apply, and destroy.
 3. **Terraform apply** executes the plan. This potentially changes the deployment.
 4. **Terraform destroy** deletes all resources that are governed by this specific terraform environment.
 
-## Terraform Providers
-
-A provider is responsible for understanding API interactions and exposing resources. It is an executable plug-in that contains code necessary to interact with the API of the service. Terraform configurations must declare which providers they require so that Terraform can install and use them.
-
-![](https://k21academy.com/wp-content/uploads/2020/11/Terraform-provider-api-call.png) 
-
 ## Terraform Configuration Files
 
 ![](https://k21academy.com/wp-content/uploads/2020/11/terraform-config-files-e1605834689106.png) 
@@ -23,6 +17,34 @@ A provider is responsible for understanding API interactions and exposing resour
 2. Variable declaration file (variables.tf or variables.tf.json): Here we declare the input variables required to provision resources
 3. Variable definition files (terraform.tfvars): Here we assign values to the input variables
 4. State file (terraform.tfstate): a state file is created once after Terraform is run. It stores state about our managed infrastructure.
+
+## Terraform Providers
+
+A provider is responsible for understanding API interactions and exposing resources. It is an executable plug-in that contains code necessary to interact with the API of the service. Terraform configurations must declare which providers they require so that Terraform can install and use them.
+
+![](https://k21academy.com/wp-content/uploads/2020/11/Terraform-provider-api-call.png) 
+
+```terraform
+# https://developer.hashicorp.com/terraform/language/providers/requirements
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.22"
+    }
+  }
+}
+
+# provider configuration
+# https://developer.hashicorp.com/terraform/language/providers/configuration 
+provider "aws" {
+  region = "ap-southeast-2"
+}
+```
+
+In the Terraform block above, we have defined a `required_providers` block. This required provider block allows us to specify extra properties for each of the providers we are using in the project. Under required providers, we open an AWS block. There, we specify a version constraint for the AWS provider.
+
+List of supported providers can be found [here](https://registry.terraform.io/browse/providers)
 
 ## Backend Configuration
 
