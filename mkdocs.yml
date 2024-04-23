@@ -169,5 +169,6 @@ nav:
       - Data Sources: devops/terraform/data_sources.md
       - Resources: devops/terraform/resources.md
       - Files: devops/terraform/files.md
+      - Modules: devops/terraform/modules.md
       - Terragrunt: devops/terraform/terragrunt.md
   - Blogs: blogs/index.md
