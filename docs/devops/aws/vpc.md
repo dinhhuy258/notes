@@ -45,10 +45,10 @@ An IP address has two parts:
 
 The classful arrangement was inefficient when allocating IP addresses and led to a waste of IP address spaces. For example, an organization with 300 devices couldn’t have used a Class C IP address, which only permitted 254 devices. So, the organization would’ve been forced to apply for a Class B IP address, which provided 65,534 unique host addresses. However, only 300 devices would’ve been connected, which would’ve left 65,234 unused IP address spaces.
 
-CIDR addresses use variable length subnet masking (VLSM) to alter the ratio between the network and host address bits in an IP address. 
+CIDR addresses use variable length subnet masking (VLSM) to alter the ratio between the network and host address bits in an IP address.
 
 A VLSM sequence allows network administrators to break down an IP address space into subnets of various sizes. Each subnet can have a flexible host count and a limited number of IP addresses. A CIDR IP address appends a suffix value stating the number of network address prefix bits to a normal IP address.
 
 For example, 192.0.2.0/24 is an IPv4 CIDR address where the first 24 bits, or 192.0.2, is the network address.
 
-We can convert CIDR to IPv4 using this [page](https://www.ipaddressguide.com/cidr) 
+We can convert CIDR to IPv4 using this [page](https://www.ipaddressguide.com/cidr)
