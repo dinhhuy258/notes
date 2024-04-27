@@ -108,7 +108,7 @@ data "aws_ami" "selected" {
 }
 ```
 
-If we provide invalid `instance_ami` the terraform plan output 
+If we provide invalid `instance_ami` the terraform plan output
 
 ```bash
 .
@@ -122,7 +122,7 @@ If we provide invalid `instance_ami` the terraform plan output
 Plan: 1 to add, 0 to change, 0 to destroy.
 ╷
 │ Error: Your query returned no results. Please change your search criteria and try again.
-│ 
+│
 │   with data.aws_ami.selected,
 │   on main.tf line 9, in data "aws_ami" "selected":
 │    9: data "aws_ami" "selected" {
