@@ -64,10 +64,6 @@ nav:
   - Distributed System:
     - HTTP: distributed-system/http.md
     - Causal Consistency: distributed-system/causal_consistency.md
-    - Networking:
-      - TCP: distributed-system/networking/tcp.md
-      - Understanding socket and port in TCP: distributed-system/networking/understanding_socket_and_port_in_tcp.md
-      - SSH Tunnel: distributed-system/networking/ssh_tunnel.md
     - Security:
       - Web Security: distributed-system/security/web_security.md
       - JWT: distributed-system/security/jwt.md
@@ -137,6 +133,10 @@ nav:
         - Coroutine context and dispatchers: programming/kotlin/coroutine/context_and_dispatchers.md
     - Tips:
       - Debugging Laravel Sail with XDebug: programming/tips/debugging-laravel-sail-with-xdebug.md
+  - Networking:
+    - TCP: networking/tcp.md
+    - Understanding socket and port in TCP: networking/understanding_socket_and_port_in_tcp.md
+    - SSH Tunnel: networking/ssh_tunnel.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
