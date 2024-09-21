@@ -1,7 +1,7 @@
 # Range Types
 
-When working on applications such as a reservation app or calendar app, you need to store the `start time` and `end time` of an event. 
-You may also need to query events occurring in a specific time frame or ensure that certain events do not overlap. 
+When working on applications such as a reservation app or calendar app, you need to store the `start time` and `end time` of an event.
+You may also need to query events occurring in a specific time frame or ensure that certain events do not overlap.
 
 ## The Problem with Traditional Date Columns
 
@@ -17,6 +17,7 @@ create table reservations (
 ```
 
 While this approach works, it has a few drawbacks:
+
 - Querying Complexity: Writing queries to find overlapping events or events within a specific period becomes complex and error-prone.
 - Data Integrity: Ensuring that reservations do not overlap is difficult.
 
@@ -45,9 +46,7 @@ create table reservations (
 ### Querying range columns
 
 ```sql
-select *
-	from reservations
-	where duration && '[2024-07-04 16:00, 2024-07-04 19:00)';
+select * from reservations where duration && '[2024-07-04 16:00, 2024-07-04 19:00)';
 ```
 
 Postgres provides more range-specific operators. The official Postgres documentation provides a complete list of [range operators](https://www.postgresql.org/docs/9.3/functions-range.html).
