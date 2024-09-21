@@ -134,6 +134,7 @@ nav:
     - Tips:
       - Debugging Laravel Sail with XDebug: programming/tips/debugging-laravel-sail-with-xdebug.md
   - Networking:
+    - Connecting to the Internet: networking/connecting_to_the_internet.md
     - TCP: networking/tcp.md
     - Understanding socket and port in TCP: networking/understanding_socket_and_port_in_tcp.md
     - SSH Tunnel: networking/ssh_tunnel.md
