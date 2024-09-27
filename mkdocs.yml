@@ -138,6 +138,8 @@ nav:
     - TCP: networking/tcp.md
     - Understanding socket and port in TCP: networking/understanding_socket_and_port_in_tcp.md
     - SSH Tunnel: networking/ssh_tunnel.md
+    - Home Network:
+      - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
