@@ -101,3 +101,61 @@ Create a mangle rule with the following concept: all packets destined for the ta
 
 ![imgur.png](https://i.imgur.com/9W6j7mV.png)
 ![imgur.png](https://i.imgur.com/z4U2uhQ.png)
+
+## Mikrotik script
+
+```rsc
+# Create Wireguard interface
+/interface wireguard
+add name=my-company-wireguard \
+    private-key="wireguard_interface_private_key" \
+    listen-port=13231 \ 
+    mtu=1420
+
+# Add a peer
+/interface wireguard peers
+add name=my-company-peer \
+    interface=my-company-wireguard \
+    public-key="peer_public_key" \
+    endpoint-address=peer_endpoint_address \
+    endpoint-port=peer_endpoint_port \
+    allowed-address=0.0.0.0/0,::/0 \
+    preshared-key="peer_preshared_key"
+
+# Create address list
+/ip address
+add interface=my-company-wireguard address=interface_address network=interface_address_network
+
+# Create routing table
+/routing table
+add disabled=no fib name=output-my-company-wireguad
+
+# Create route
+/ip route
+add disabled=no \
+    dst-address=0.0.0.0/0 \
+    gateway=my-company-wireguard \
+    routing-table=output-my-company-wireguad \
+    suppress-hw-offload=no
+
+# Create NAT rule
+/ip firewall nat
+add chain=srcnat \
+    out-interface=my-company-wireguard \
+    action=masquerade \
+    comment="My company's Wireguard"
+
+# Create address list
+/ip firewall address-list
+add list=my_company_address_list address=x.x.x.x comment="My company page"
+add list=my_company_address_list address=y.y.y.y comment="My company page"
+
+# Create mangle firewall
+/ip firewall mangle
+add action=mark-routing \
+    chain=prerouting \
+    dst-address-list=my_company_address_list \
+    new-routing-mark=output-my-company-wireguad \
+    passthrough=no \
+    comment="My company Wireguard"
+```
