@@ -1,6 +1,8 @@
 # Setup Wireguard VPN on Mikrotik router
 
-In this document, we will setup Wireguard VPN on Mikrotik router and use the tunnel on specific IP only.
+In this document, we will set up a Wireguard VPN on a MikroTik router and configure the tunnel for use with a specific IP only.
+
+Please note: Enabling fasttrack along with Wireguard may cause slow requests to Wireguard. The current solution is to remove fasttrack rule.
 
 ## Setup Wireguard VPN
 
