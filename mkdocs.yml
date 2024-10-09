@@ -141,6 +141,7 @@ nav:
     - Install Certbot on Debian with Cloudflare DNS: networking/install_certbot_on_debian.md
     - Home Network:
       - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
+      - Setup Wireguard VPN on Mikrotik router: networking/home_network/setup_wireguard_vpn_on_mikrotik_router.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
