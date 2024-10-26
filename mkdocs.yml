@@ -143,6 +143,7 @@ nav:
       - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
       - Setup Wireguard VPN on Mikrotik router: networking/home_network/setup_wireguard_vpn_on_mikrotik_router.md
       - Setup ECMP on Mikrotik router: networking/home_network/setup_ecmp_on_mikrotik_router.md 
+      - Install Home Assistant on Proxmox: networking/home_network/install-home-assistant-on-proxmox.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
