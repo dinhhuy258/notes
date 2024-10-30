@@ -83,7 +83,7 @@ Let’s start by choosing the Synology model we want to impersonate, in this cas
 
 ![imgur.png](https://i.imgur.com/4Xyhaap.png)
 
-Select `No` to install addons.
+Select `No`.
 
 ![imgur.png](https://i.imgur.com/vCj1hkj.png)
 
@@ -104,5 +104,3 @@ After patching the DSM download, we get a final confirmation before rebooting
 Once rebooted, the default boot option will be `DSM mode`
 
 ![imgur.png](https://i.imgur.com/M3uD6OT.png)
-
-## Installing DSM
