@@ -68,3 +68,41 @@ Select your XPEnology VM and go to the `Hardware` tab. Select the `Unused Disk` 
 Finally, we just need to set the `sata0` drive as the boot drive
 
 ![imgur.png](https://i.imgur.com/6wJRwJD.png)
+
+## Configuring Arc
+
+Time to boot the VM and configure Arc. You can use the `Console` tab on the UI to interact with it.
+
+![imgur.png](https://i.imgur.com/axD9qxH.png)
+
+On first boot, it will automatically boot into `Config Mode` which is exactly what we need
+
+![imgur.png](https://i.imgur.com/80exdxX.png)
+
+Let’s start by choosing the Synology model we want to impersonate, in this case I will choose `DS920+`, then choose the latest DSM version and DSM build and press `OK`
+
+![imgur.png](https://i.imgur.com/4Xyhaap.png)
+
+Select `No` to install addons.
+
+![imgur.png](https://i.imgur.com/vCj1hkj.png)
+
+Select `No - Install with random Serial/Mac`
+
+Arc allows for a series of `add-ons` for things like removing limitations of DSM, or allow for extra hardware. I leave it default for now.
+
+![imgur.png](https://i.imgur.com/SrL4ZYf.png)
+
+We’re ready to build the loader - select `Yes`
+
+![imgur.png](https://i.imgur.com/ALh9UR5.png)
+
+After patching the DSM download, we get a final confirmation before rebooting
+
+![imgur.png](https://i.imgur.com/i7Z1A5J.png)
+
+Once rebooted, the default boot option will be `DSM mode`
+
+![imgur.png](https://i.imgur.com/M3uD6OT.png)
+
+## Installing DSM
