@@ -105,7 +105,9 @@ Once rebooted, the default boot option will be `DSM mode`
 
 ![imgur.png](https://i.imgur.com/M3uD6OT.png)
 
-## Adding a Storage Device to XPEnology VM in Proxmox
+## Configure HDD
+
+### Adding a Storage Device to XPEnology VM in Proxmox
 
 To add a storage device to your XPEnology VM in proxmox, follow these steps:
 
@@ -141,7 +143,7 @@ Replace `<VM_ID>` with your VM’s ID.
 
 Finally, restart the VM to apply the changes.
 
-## Passthrough HDD Serial Number
+### Passthrough HDD Serial Number
 
 Install lshw to verify the HDD serial:
 
@@ -193,7 +195,9 @@ Open `/etc/pve/qemu-server/<VM_ID>.conf`, locate the `sata3` configuration, and 
 sata3: /dev/disk/by-id/ata-WDC_WD20EFPX-68C4TN0_WD-WX32D94J0KY1,size=1953514584K,serial=WD-WX32D94J0KY1
 ```
 
-## Assign Static IP Address in Mikrotik
+## Note
+
+You can assign static IP address for XPEnology VM in mikrotik using following script
 
 ```rsc
 /ip dhcp-server lease
