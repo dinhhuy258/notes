@@ -146,6 +146,7 @@ nav:
       - Connecting to Cloudflare WARP with WireGuard: networking/home_network/connecting-cloudflare-warp-with-wireguard.md
       - Install Home Assistant on Proxmox: networking/home_network/install-home-assistant-on-proxmox.md
       - Install XPEnology on Proxmox: networking/home_network/install-xpenology-on-proxmox.md
+      - SSH into Proxmox: networking/home_network/ssh-into-proxmox.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
