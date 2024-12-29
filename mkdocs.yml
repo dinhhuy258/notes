@@ -67,6 +67,7 @@ nav:
     - Security:
       - Web Security: distributed-system/security/web_security.md
       - JWT: distributed-system/security/jwt.md
+      - JWE: distributed-system/security/jwe.md
       - OAuth2: distributed-system/security/oauth2.md
       - OpenId Connect: distributed-system/security/openid_connect.md
       - CORS: distributed-system/security/cors.md
