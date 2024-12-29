@@ -75,3 +75,7 @@ g_hE3pPLiSs9C60_WFQ-VP_mQ1BU00Z7Xg.
 5eym8mytxoXCBlYkhjBtkmmI.
 XFBoMYUZodetZdvTiFvSkQ
 ```
+
+## JWE decryption flow
+
+![](https://i.imgur.com/dtNFBAI.png)
