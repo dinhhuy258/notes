@@ -4,8 +4,6 @@ By default, JSON Web Tokens (JWTs) are base64url encoded JSON objects signed usi
 
 This is where JSON Web Encryption (JWE) comes in. JWE allows you to encrypt a JWT payload so that only the intended recipient can read it while still providing integrity and authentication checks.
 
-JSON Web Encryption (JWE) is an [IETF standard](https://datatracker.ietf.org/doc/html/rfc7516) for representing encrypted content using JSON
-
 ## JWE structure
 
 A JWE token is built with five key components, each separated by a period (`.`)
@@ -38,7 +36,6 @@ The CEK is the key used to encrypt the JWE payload. This key is encrypted using 
 
 - If the `alg` is `RSA-OAEP`, the `CEK` is encrypted using the `RSA-OAEP` algorithm with the recipient’s public key.
 - If the `alg` is `A128KW` or `A256KW`, a symmetric key wrap is used.
-
 
 The CEK is different for each token, generated for one-time use. It must never be re-used.
 
