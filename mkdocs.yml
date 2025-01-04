@@ -137,6 +137,7 @@ nav:
   - Networking:
     - Connecting to the Internet: networking/connecting_to_the_internet.md
     - TCP: networking/tcp.md
+    - NAT: networking/nat.md
     - Understanding socket and port in TCP: networking/understanding_socket_and_port_in_tcp.md
     - SSH Tunnel: networking/ssh_tunnel.md
     - Install Certbot on Debian with Cloudflare DNS: networking/install_certbot_on_debian.md
