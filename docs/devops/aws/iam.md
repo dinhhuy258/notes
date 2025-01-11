@@ -21,7 +21,7 @@ IAM is a service that controls access to AWS resources
     - Identity providers
     - Access Analyzer
  
-## How IAM works#
+## How IAM works
 
 When an entity requests access to any of the AWS services or resources, that request is first analyzed by IAM. IAM checks the credentials provided by the requesting entity to authenticate it. After the requesting entity has been authenticated, it analyzes the permissions granted to the entity and checks if the current request falls into that pool of permissions
 
@@ -54,7 +54,7 @@ Identity-based policies are attached to an IAM user, group, or role. These polic
 
 This policy allows the principal entity to create an S3 bucket by the name `demo-bucket`.
 
-### Resource-based policies#
+### Resource-based policies
 
 Resource-based policies are attached to a resource. For example, you can attach resource-based policies to Amazon S3 buckets, Amazon SQS queues... With resource-based policies, you can specify who has access to the resource and what actions they can perform on it.
 
@@ -72,6 +72,44 @@ Resource-based policies are attached to a resource. For example, you can attach 
 }
 ```
 This policy allows anyone to read `demo-object` stored in an S3 bucket by the name `demo-bucket`.
+
+
+## AWS IAM Roles
+
+![imgur.png](https://i.imgur.com/FeBCqE4.png)
+
+AWS IAM Roles are a feature of IAM that allows you to grant permissions to entities that you trust to access your AWS resources. An entity can be an AWS service, an IAM user, an IAM role, or an external identity provider. By using IAM roles, you can delegate access to your AWS resources without sharing your long-term credentials, such as your IAM username and password or access keys.
+
+### How IAM Roles Work
+
+An IAM role is an IAM identity that has a set of permissions attached to it. Unlike an IAM user, an IAM role does not have its own credentials. Instead, an entity that assumes an IAM role is temporarily granted the permissions of the role. The entity can then use those permissions to access your AWS resources.
+
+To assume an IAM role, an entity needs to have permission to do so. This permission is granted by a trust policy that is attached to the role. The trust policy defines which entities are allowed to assume the role. For example, you can create a trust policy that allows an EC2 instance to assume a role, or a trust policy that allows a user from another AWS account to assume a role.
+
+When an entity assumes an IAM role, it receives a set of temporary security credentials that consist of an access key ID, a secret access key, and a session token. The entity can use these credentials to make API requests to AWS services. The credentials are valid for a limited time, typically from a few minutes to several hours. When the credentials expire, the entity can request new credentials or stop using the role.
+
+![imgur.png](https://i.imgur.com/bsjvXuH.png)
+
+Example of trust policy 
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Principal": {
+                "Service": [
+                    "ec2.amazonaws.com"
+                ]
+            }
+        }
+    ]
+}
+```
 
 ## Best practices
 
