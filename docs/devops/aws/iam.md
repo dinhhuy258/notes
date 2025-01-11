@@ -76,7 +76,7 @@ This policy allows anyone to read `demo-object` stored in an S3 bucket by the na
 
 ## AWS IAM Roles
 
-![imgur.png](https://i.imgur.com/FeBCqE4.png)
+![imgur.png](https://i.imgur.com/4hFLLFx.png)
 
 AWS IAM Roles are a feature of IAM that allows you to grant permissions to entities that you trust to access your AWS resources. An entity can be an AWS service, an IAM user, an IAM role, or an external identity provider. By using IAM roles, you can delegate access to your AWS resources without sharing your long-term credentials, such as your IAM username and password or access keys.
 
@@ -88,7 +88,7 @@ To assume an IAM role, an entity needs to have permission to do so. This permiss
 
 When an entity assumes an IAM role, it receives a set of temporary security credentials that consist of an access key ID, a secret access key, and a session token. The entity can use these credentials to make API requests to AWS services. The credentials are valid for a limited time, typically from a few minutes to several hours. When the credentials expire, the entity can request new credentials or stop using the role.
 
-![imgur.png](https://i.imgur.com/bsjvXuH.png)
+![imgur.png](https://i.imgur.com/lhlBY5d.png)
 
 Example of trust policy 
 
