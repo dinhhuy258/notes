@@ -6,21 +6,23 @@ IAM is a service that controls access to AWS resources
 
 ![imgur.png](https://i.imgur.com/SQBo4HN.png)
 
-- **IAM entities**: These are the  IAM resources to authenticate the requesting entity. These include the following:
-    - IAM users
-    - IAM roles
+- **IAM entities**: These are the IAM resources to authenticate the requesting entity. These include the following:
+
+  - IAM users
+  - IAM roles
 
 - **IAM identities**: The IAM resources that IAM uses to check the permissions scope of the requesting entity. These include the following:
-    - IAM users
-    - IAM roles
-    - IAM groups
+
+  - IAM users
+  - IAM roles
+  - IAM groups
 
 - **Principal:** The user, service, or application that requests access to an IAM service or a resource. It can be both an external or an internal entity.
 - **Other IAM resources**: These are the IAM resources that do not fall into any of the above categories. These are used for a wide range of operations that deal with identity and access management. These include the following:
-    - IAM policies
-    - Identity providers
-    - Access Analyzer
- 
+  - IAM policies
+  - Identity providers
+  - Access Analyzer
+
 ## How IAM works
 
 When an entity requests access to any of the AWS services or resources, that request is first analyzed by IAM. IAM checks the credentials provided by the requesting entity to authenticate it. After the requesting entity has been authenticated, it analyzes the permissions granted to the entity and checks if the current request falls into that pool of permissions
@@ -37,18 +39,14 @@ Identity-based policies are attached to an IAM user, group, or role. These polic
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:CreateBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::demo-bucket"
-            ]
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:CreateBucket"],
+      "Resource": ["arn:aws:s3:::demo-bucket"]
+    }
+  ]
 }
 ```
 
@@ -60,19 +58,19 @@ Resource-based policies are attached to a resource. For example, you can attach 
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::demo-bucket/demo-object",
-            "Principal": "*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::demo-bucket/demo-object",
+      "Principal": "*"
+    }
+  ]
 }
 ```
-This policy allows anyone to read `demo-object` stored in an S3 bucket by the name `demo-bucket`.
 
+This policy allows anyone to read `demo-object` stored in an S3 bucket by the name `demo-bucket`.
 
 ## AWS IAM Roles
 
@@ -90,26 +88,42 @@ When an entity assumes an IAM role, it receives a set of temporary security cred
 
 ![imgur.png](https://i.imgur.com/lhlBY5d.png)
 
-Example of trust policy 
+Example of trust policy
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Principal": {
-                "Service": [
-                    "ec2.amazonaws.com"
-                ]
-            }
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["sts:AssumeRole"],
+      "Principal": {
+        "Service": ["ec2.amazonaws.com"]
+      }
+    }
+  ]
 }
 ```
+
+## Restricting Policies
+
+### Permission boundary
+
+AWS supports permissions boundaries for IAM entities (users or roles). A permissions boundary is an advanced feature for using a managed policy to set the maximum permissions that an identity-based policy can grant to an IAM entity. An entity's permissions boundary allows it to perform only the actions that are allowed by both its identity-based policies and its permissions boundaries.
+
+![imgur.png](https://i.imgur.com/YZYfwyU.png)
+
+### Session policy
+
+Similar to permission boundaries, a session policy is a restricting policy. Its application is however different from that of permission boundary. Session policies are used to set an upper bound on the permissions of a session which is created when a **role is assumed**. It can only be attached when a role is assumed programatically.
+
+**When do we need a session policy?**
+
+An IAM role can be used to create multiple sessions at once. By default, the permissions of each session are the ones allowed by the IAM policy attached with the role. Consider a scenario where we've created a role to provide temporary access to external individuals in different roles. We have an admin access policy attached with the role that allows the assuming entities to perform all the actions within that account. What we want next is a tool to limit the permissions of each session based on the role of the individuals assuming the role. This is where session policy comes in. We can attach a session policy with each session, based on the role of the individual allowing them to perform only the actions that should be allowed to that entity.
+
+So if we're creating a session for an entity to manage DynamoDB operations, we'll attach a session policy that'll restrict that entity from doing anything out of the scope of their role.
+
+![imgur.png](https://i.imgur.com/5SB2h2Z.png)
 
 ## Best practices
 
