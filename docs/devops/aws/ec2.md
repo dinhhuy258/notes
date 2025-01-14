@@ -1,32 +1,22 @@
 # EC2
 
-EC2 is a part of Amazon.com's cloud-computing platform, that allows users to rent virtual computers on which to run their own computer applications.
+Amazon Elastic Compute Cloud (EC2) is a resizable cloud computing capacity. It allows users to run virtual servers, known as instances, for various computing tasks. EC2 offers different benefits besides being a flexible computing capacity. It allows us to deploy instances in multiple Availability Zones (AZs) within a region in combination with different services such as elastic load balancer and auto scaling group to offer high availability within a region. 
 
-## EC2 sizing & configuration options
+![imgur.png](https://i.imgur.com/TOc56fE.png)
 
-- Operating System: Linux, Window or MAC OS
-- How much computer power and cores (CPU)
-- How much RAM
-- How much storage space
-- Network card: Speed of the card, Public IP address
-- Firewall rules: security group
-- Bootstrap script (configure at first launch): EC2 User Data
+## Instance
 
-### EC2 User data
+An EC2 instance is a virtual server in the cloud. It can run different operating systems, including Linux, Windows, and CentOS. Instances are categories based on their computing power, memory, and networking capabilities. We can select any instance type based on our requirements.
 
-It's possible to bootstrap our instances using EC2 User Data script. It will run only once at the instance first start.
-EC2 User Data is used to automate boot tasks such as:
+Each instance contains a root volume to boot the instance. After launching, an instance works similarly to a server and keeps running until it is stopped, hibernated, terminated, or failed.
 
-- Installing updates
-- Installing software
-- Download common files from the internet
-- Anything you can think of
+## Amazon Machine Image (AMI)
 
-The EC2 User data scripts run with the root user
+An Amazon Machine Image (AMI) is a pre-configured virtual machine template that contains software configurations like operating systems and other packages used to launch an instance. AMIs serve as a blueprint for creating EC2 instances, allowing for easy replication and scaling of virtual servers. Multiple instances can be launched from a single AMI. AWS offers different AMIs to cater to user requirements, including the popular Amazon Linux, Ubuntu, and Windows.
 
-### EC2 instance types
+## Instance types
 
-AWS privides us following instance types:
+Instance type specifies the type of hardware for the virtual server in the cloud. AWS offers different types of instances based on their hardware capabilities:
 
 **General Purpose**
 
@@ -62,6 +52,20 @@ Great for storage-intensive tasks that require high, sequential read and write a
 - Data warehousing applications
 - Distributed file systems
 
+![imgur.png](https://i.imgur.com/MrG2mOf.png)
+
+## EC2 User data
+
+It's possible to bootstrap our instances using EC2 User Data script. It will run **ONLY ONCE** at the instance first start.
+EC2 User Data is used to automate boot tasks such as:
+
+- Installing updates
+- Installing software
+- Download common files from the internet
+- Anything you can think of
+
+The EC2 User data scripts run with the root user
+
 ## Security Group
 
 - Security Group are the fundamental of network security in AWS
@@ -74,17 +78,6 @@ Great for storage-intensive tasks that require high, sequential read and write a
 ```sh
 ssh -i /path/key-pair-name.pem instance-user-name@instance-public-dns-name
 ```
-
-## AMI
-
-An Amazon Machine Image (AMI) is a master image for the creation of virtual servers (EC2).
-
-AMI are customization of an EC2 instances
-
-- You can add your own software, configuration, operating system, monitoring...
-- Faster boot/ configuration time because all your software is pre-packaged
-
-AMI are built for a specific region (and can be copied across regions)
 
 ## EBS
 
