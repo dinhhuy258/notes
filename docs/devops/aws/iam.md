@@ -37,6 +37,15 @@ AM policy is a JSON document attached to the AWS resource that is used by the lo
 
 Identity-based policies are attached to an IAM user, group, or role. These policies let you specify what that identity can do (its permissions).
 
+**The structure of Identity-based policy**
+
+| Column1   | Explanation                                                                                                |
+| --------- | ---------------------------------------------------------------------------------------------------------- |
+| Effect    | This specifies if the associated actions are allowed or denied. Its value can either be `Allow` or `Deny`. |
+| Action    | This contains a list of actions.                                                                           |
+| Resource  | This contains resources on which the actions will be effective.                                            |
+| Condition | This contains resources on which the actions will be effective.                                            |
+
 ```json
 {
   "Version": "2012-10-17",
@@ -55,6 +64,16 @@ This policy allows the principal entity to create an S3 bucket by the name `demo
 ### Resource-based policies
 
 Resource-based policies are attached to a resource. For example, you can attach resource-based policies to Amazon S3 buckets, Amazon SQS queues... With resource-based policies, you can specify who has access to the resource and what actions they can perform on it.
+
+**The structure of Resource-based policy**
+
+| Column1   | Explanation                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Effect    | This specifies if the associated actions are allowed or denied. Its value can either be `Allow` or `Deny`.               |
+| Action    | This contains a list of actions.                                                                                         |
+| Resource  | This contains resources on which the actions will be effective.                                                          |
+| Principal | This specifies the principal (such as an IAM user, roles, and others) who is allowed (or denied) access to the resource. |
+| Condition | This contains resources on which the actions will be effective.                                                          |
 
 ```json
 {
@@ -124,6 +143,30 @@ An IAM role can be used to create multiple sessions at once. By default, the per
 So if we're creating a session for an entity to manage DynamoDB operations, we'll attach a session policy that'll restrict that entity from doing anything out of the scope of their role.
 
 ![imgur.png](https://i.imgur.com/5SB2h2Z.png)
+
+## Permission intersections
+
+### Permissions boundary with identity-based policy
+
+**Permissions boundary as a superset of identity-based policy**: Only the permissions that are common in both the identity-based policy and permissions boundary are effective. Any additional permissions in the permissions boundary are ineffective.
+
+![imgur.png](https://i.imgur.com/MKjzr7v.png)
+
+**Permissions boundary as a subset of identity-based policy**: Only the permissions that are common in both the identity-based policy and permissions boundary are effective. Any additional permissions in the identity-based policy are ineffective
+
+![imgur.png](https://i.imgur.com/iJYE4Bt.png)
+
+**Overlapping permissions boundary and identity-based policy**: Only the permissions that are common in both the identity-based policy and permissions boundary are effective. Any additional permissions in the identity-based policy or permissions boundary are ineffective.
+
+![imgur.png](https://i.imgur.com/DeLX4uL.png)
+
+**Denial effect in permissions boundary or identity-based policy**: The deny permissions defined in the permissions boundary always take precedence. However, other than that, only the common permissions in the identity-based policy and permissions boundary are effective.
+
+**_NOTE:_** The denial effect in any policy always takes precedence, even if the action is common in all the relevant policies.
+
+**Permissions boundary, identity-based policy and resource-based policy**: The deny action also takes precedence in this case. Apart from that, the common permissions in both the identity-based policy and permissions boundary are allowed, **AND** all the permissions mentioned in the resource-based policy are allowed.
+
+![imgur.png](https://i.imgur.com/CLqVYMi.png)
 
 ## Best practices
 
