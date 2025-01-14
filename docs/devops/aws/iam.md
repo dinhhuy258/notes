@@ -166,7 +166,7 @@ So if we're creating a session for an entity to manage DynamoDB operations, we'l
 
 **Permissions boundary, identity-based policy and resource-based policy**: The deny action also takes precedence in this case. Apart from that, the common permissions in both the identity-based policy and permissions boundary are allowed, **AND** all the permissions mentioned in the resource-based policy are allowed.
 
-![imgur.png](https://i.imgur.com/CLqVYMi.png)
+![imgur.png](https://i.imgur.com/dy6zr96.png)
 
 ## Best practices
 
