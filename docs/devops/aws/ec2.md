@@ -84,30 +84,47 @@ Security groups are used to secure EC2 instances from unwanted requests. We need
 
 We can also allow inbound traffic to a resource from certain security groups; this helps us secure the resource in a more efficient manner.
 
-## SSH to EC2
+## Elastic Network Interface
 
-```sh
-ssh -i /path/key-pair-name.pem instance-user-name@instance-public-dns-name
-```
+An Elastic Network Interface (ENI) is a virtual network card that can be attached to the EC2 instances. It functions like a network interface card (NIC) and provides networking capabilities to the EC2 instances, allowing them to communicate with other resources in the same Virtual Private Cloud (VPC) or over the internet.
 
-## EBS
+Every instance launched has a default network interface, known as the primary network interface; by default, it offers a private IP address to the instance. However, it can be configured to offer the public as well as the elastic IP address. A primary network interface can not be detached from an instance. However, we can attach more network interfaces to an instance. The number of network interfaces that can be attached to an instance depends upon the instance type and size. For example, `m1.xlarge` can have up to 4 network interfaces; similarly, `t2.micro` can have 2 network interfaces maximum.
 
-EBS is a network drive you can attach to your instances while they run. It's a network drive (not a physical drive) then it uses the network to communicate the instance, which means there might be a bit of latency.
+## Storage
 
-EBS is locked to an Availability Zone thus EBS volume in `us-east-1a` can not be attached to `us-east-1b`.
+AWS offers flexible and easy-to-use data storage options for EC2 instances to meet all the requirements. Each option has its performance perks and cost. Some storage options offer persistent storage, while others provide fast temporary storage for the instance.
 
-### EBS snapshots
+![imgur.png](https://i.imgur.com/TrzeMpS.png)
 
-EBS snapshots make a backup of your EBS volume at a point in time. We can copy snapshots across AZ or region.
+### Elastic Block Store
 
-### EBS volume types
+Elastic Block Store (EBS) is a highly reliable, durable block-level storage volume that can be attached to the EC2 instances. Multiple EBS blocks can be attached to an instance. It's a network drive (not a physical drive) then it uses the network to communicate the instance, which means there might be a bit of latency. EBS is locked to an Availability Zone thus EBS volume in `us-east-1a` can not be attached to `us-east-1b`. EBS offers different types of volumes based on different characteristics, such as gp2, gp3, io2 Block Express3, and io1. 
 
 - gp2/ gp3 (SSD): General purpose SSD volumes
 - io1/ io2 (SSD): Highest-performance SSD volume for mission-critical low-latency or high-throughput workloads
 - st1 (HDD): Low cost HDD volume designed for frequency accessed, throughput-intensive workloads
 - sc1 (HDD): Lowest cost HDD volume designed for less frequency accessed workloads
 
-**Note:** io1/io2 supports EBS multi-attach, that mean we can attach same EBS volume to multiple EC2 instances in the same AZ.
+> [!NOTE]
+> io1/io2 supports EBS multi-attach, that mean we can attach same EBS volume to multiple EC2 instances in the same AZ.
+
+#### EBS snapshots
+
+EBS snapshots make a backup of your EBS volume at a point in time. We can copy snapshots across AZ or region.
+
+### Instance store
+
+![imgur.png](https://i.imgur.com/zQh6elp.png)
+
+An instance store is a temporary block storage for an instance physically attached to the host. Instance storage is also known as ephemeral storage. It is the fastest storage block available for EC2 since it is physically attached to the host, but not all the EC2 instance families support instance stores; for example C6 , and R6 EC2 families don’t support instance stores, while M5 EC2 instance family supports instance stores.
+
+An instance store can not be attached or detached once the instance is launched and only exists during the lifetime of the instance. It is important to note that no two instances can be attached to a single ephemeral storage. The instance store is ideal for temporary memory and cache, offering high read-and-write IOPS  and high-performance hardware.
+
+## SSH to EC2
+
+```sh
+ssh -i /path/key-pair-name.pem instance-user-name@instance-public-dns-name
+```
 
 ### Commands
 
@@ -117,15 +134,6 @@ EBS snapshots make a backup of your EBS volume at a point in time. We can copy s
 - `sudo mount /dev/xvdf /newvolume/`: mount the volume to `newvolume` directory
 - `umount /dev/xvdf`: unmount the volume,
 - `df -h .`: summarize free disk space
-
-## EC2 instance store
-
-EBS volumes are network drives with good but `limited` performance. If you need a high performance hardware disk, use EC2 Instance Store.
-
-- Better I/O performance
-- EC2 Instance Store lose their storage if they're stopped (ephemeral)
-- Good for buffer/ cache/ scratch data/ temporary content
-- Risk of data loss if hardware fails
 
 ## EFS - Elastic File System
 
