@@ -68,10 +68,21 @@ The EC2 User data scripts run with the root user
 
 ## Security Group
 
-- Security Group are the fundamental of network security in AWS
-- They control how traffic is allowed into or out of our EC2 instances
-- Security groups only contain **allow** rules
-- Security groups rules can reference by IP or by security group
+Security groups are like firewalls to the associated resources; they control the inbound and outbound traffic for an associated resource.
+
+Security groups are used to secure EC2 instances from unwanted requests. We need to specify a security group to secure our EC2 instance whenever we launch an instance. If no security group is selected, EC2 uses the default security group of the VPC. The default security group allows all outbound traffic and only allows inbound requests from resources within the same security group.
+
+### Inbound rules
+
+- Inbound rules are used to define incoming traffic to the associated resources.
+- By default, all inbound traffic is denied.
+
+### Outbound rules
+
+- Outbound rules define the outgoing traffic from the associated resource to the internet.
+- All outgoing traffic from the associated resource is allowed by default.
+
+We can also allow inbound traffic to a resource from certain security groups; this helps us secure the resource in a more efficient manner.
 
 ## SSH to EC2
 
