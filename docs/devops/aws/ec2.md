@@ -1,6 +1,6 @@
 # EC2
 
-Amazon Elastic Compute Cloud (EC2) is a resizable cloud computing capacity. It allows users to run virtual servers, known as instances, for various computing tasks. EC2 offers different benefits besides being a flexible computing capacity. It allows us to deploy instances in multiple Availability Zones (AZs) within a region in combination with different services such as elastic load balancer and auto scaling group to offer high availability within a region. 
+Amazon Elastic Compute Cloud (EC2) is a resizable cloud computing capacity. It allows users to run virtual servers, known as instances, for various computing tasks. EC2 offers different benefits besides being a flexible computing capacity. It allows us to deploy instances in multiple Availability Zones (AZs) within a region in combination with different services such as elastic load balancer and auto scaling group to offer high availability within a region.
 
 ![imgur.png](https://i.imgur.com/TOc56fE.png)
 
@@ -94,11 +94,11 @@ Every instance launched has a default network interface, known as the primary ne
 
 AWS offers flexible and easy-to-use data storage options for EC2 instances to meet all the requirements. Each option has its performance perks and cost. Some storage options offer persistent storage, while others provide fast temporary storage for the instance.
 
-![imgur.png](https://i.imgur.com/TrzeMpS.png)
+![imgur.png](https://i.imgur.com/9KLxfZV.png)
 
 ### Elastic Block Store
 
-Elastic Block Store (EBS) is a highly reliable, durable block-level storage volume that can be attached to the EC2 instances. Multiple EBS blocks can be attached to an instance. It's a network drive (not a physical drive) then it uses the network to communicate the instance, which means there might be a bit of latency. EBS is locked to an Availability Zone thus EBS volume in `us-east-1a` can not be attached to `us-east-1b`. EBS offers different types of volumes based on different characteristics, such as gp2, gp3, io2 Block Express3, and io1. 
+Elastic Block Store (EBS) is a highly reliable, durable block-level storage volume that can be attached to the EC2 instances. Multiple EBS blocks can be attached to an instance. It's a network drive (not a physical drive) then it uses the network to communicate the instance, which means there might be a bit of latency. EBS is locked to an Availability Zone thus EBS volume in `us-east-1a` can not be attached to `us-east-1b`. EBS offers different types of volumes based on different characteristics, such as gp2, gp3, io2 Block Express3, and io1.
 
 - gp2/ gp3 (SSD): General purpose SSD volumes
 - io1/ io2 (SSD): Highest-performance SSD volume for mission-critical low-latency or high-throughput workloads
@@ -118,38 +118,29 @@ EBS snapshots make a backup of your EBS volume at a point in time. We can copy s
 
 An instance store is a temporary block storage for an instance physically attached to the host. Instance storage is also known as ephemeral storage. It is the fastest storage block available for EC2 since it is physically attached to the host, but not all the EC2 instance families support instance stores; for example C6 , and R6 EC2 families don’t support instance stores, while M5 EC2 instance family supports instance stores.
 
-An instance store can not be attached or detached once the instance is launched and only exists during the lifetime of the instance. It is important to note that no two instances can be attached to a single ephemeral storage. The instance store is ideal for temporary memory and cache, offering high read-and-write IOPS  and high-performance hardware.
+An instance store can not be attached or detached once the instance is launched and only exists during the lifetime of the instance. It is important to note that no two instances can be attached to a single ephemeral storage. The instance store is ideal for temporary memory and cache, offering high read-and-write IOPS and high-performance hardware.
 
-## SSH to EC2
+## Elastic File System
 
-```sh
-ssh -i /path/key-pair-name.pem instance-user-name@instance-public-dns-name
-```
+Amazon Elastic File System (Amazon EFS) provides serverless, fully elastic file storage so that you can share file data without provisioning or managing storage capacity and performance. EFS allows simultaneous access by **various EC2** instances across **different AZs** within the **same region**, facilitating a shared data source for applications operating on multiple servers.
 
-### Commands
+![imgur.png](https://i.imgur.com/5LElkiS.png)
 
-- `lsblk`: lists information about all available or the specified block devices
-- `sudo file -s /dev/xvdf`: check if the volume has any data
-- `sudo mkfs -t ext4(xfs) /dev/xvdf`: format the volume to the `ext4` or `xfs` filesystem
-- `sudo mount /dev/xvdf /newvolume/`: mount the volume to `newvolume` directory
-- `umount /dev/xvdf`: unmount the volume,
-- `df -h .`: summarize free disk space
+### EFS vs EBS
 
-## EFS - Elastic File System
-
-- Managed NFS (network file system) that can me mounted on many EC2
-- EFS works with EC2 instances in multiple AZ
-
-**EFS vs EBS**
-
-EBS:
+**EBS**
 
 - Can be attached to only one instance at a time
 - Are locked at the AZ
-- gp2: IO increases if disk size increases
-- io1: Can increase IO independently
+- Can not be directly accessed via Internet
+- Not a managed service. Resources should be provisioned beforehand by the user
+- Data remains in the same AZ and multiple replicas are created within the same AZ
 
-EFS:
+**EFS**
 
 - Mounting 100s of instances across AZ
 - Only for Linux instances
+- Can be accessed via Internet
+- A complete managed service, where the resources are provisioned by AWS
+- Data remains in the same region and multiple replicas are created within the same region
+- Pay as you go model
