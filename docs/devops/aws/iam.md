@@ -6,22 +6,24 @@ IAM is a service that controls access to AWS resources
 
 ![imgur.png](https://i.imgur.com/SQBo4HN.png)
 
-- **IAM entities**: These are the IAM resources to authenticate the requesting entity. These include the following:
+**IAM entities**: These are the IAM resources to authenticate the requesting entity. These include the following:
 
-  - IAM users
-  - IAM roles
+- IAM users
+- IAM roles
 
-- **IAM identities**: The IAM resources that IAM uses to check the permissions scope of the requesting entity. These include the following:
+**IAM identities**: The IAM resources that IAM uses to check the permissions scope of the requesting entity. These include the following:
 
-  - IAM users
-  - IAM roles
-  - IAM groups
+- IAM users
+- IAM roles
+- IAM groups
 
-- **Principal:** The user, service, or application that requests access to an IAM service or a resource. It can be both an external or an internal entity.
-- **Other IAM resources**: These are the IAM resources that do not fall into any of the above categories. These are used for a wide range of operations that deal with identity and access management. These include the following:
-  - IAM policies
-  - Identity providers
-  - Access Analyzer
+**Principal:** The user, service, or application that requests access to an IAM service or a resource. It can be both an external or an internal entity.
+
+**Other IAM resources**: These are the IAM resources that do not fall into any of the above categories. These are used for a wide range of operations that deal with identity and access management. These include the following:
+
+- IAM policies
+- Identity providers
+- Access Analyzer
 
 ## How IAM works
 
