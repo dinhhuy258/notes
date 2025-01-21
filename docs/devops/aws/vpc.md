@@ -69,4 +69,4 @@ Let’s look at a few examples to further cement our understanding:
 
 - In `x.x.x.x/24`, `/24` represents the number of network bits, which means the given address block contains 2<sup>8</sup> or 256 hosts or IP addresses.
 - Similarly, in `x.x.x.x/20`, `/20` represents the number of network bits, which means the given address block contains 2 <sup>12</sup> or 4096 hosts or IP addresses
-- In the edge case of `/32` network bits, there would only be `1` host IP address. While `/0` represents all the 2<sup32 IP addresses in IPv4.
+- In the edge case of `/32` network bits, there would only be `1` host IP address. While `/0` represents all the 2<sup>32</sup> IP addresses in IPv4.
