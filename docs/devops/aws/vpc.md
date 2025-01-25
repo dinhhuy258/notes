@@ -22,29 +22,18 @@ By default, when you create an AWS account, AWS creates a default VPC for you in
 - **Security group and network ACL**: A default security group and network access control list (ACL) associated with the default VPC.
 - **DHCP options set**: The default DHCP options set for your AWS account is associated with your default VPC.
 
-## NAT gateways
+## Subnets
 
-A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+Subnets are vital components within VPC, allowing us to deploy our resources carefully and manage the network access effectively.
 
-When you create a NAT gateway, you specify one of the following connectivity types:
+### Types of Subnets
 
-- **Public** – (Default) Instances in private subnets can connect to the internet through a public NAT gateway, but cannot receive unsolicited inbound connections from the internet. You create a public NAT gateway in a public subnet and must associate an elastic IP address with the NAT gateway at creation. You route traffic from the NAT gateway to the internet gateway for the VPC. Alternatively, you can use a public NAT gateway to connect to other VPCs or your on-premises network. In this case, you route traffic from the NAT gateway through a transit gateway or a virtual private gateway.
+- **Public subnet**: This subnet is connected to an internet gateway, allowing resources within it to access the public internet.
+- **Private subnet**: The private subnet doesn’t have a direct route to the public internet. It requires a NAT device to allow its resources access to the public internet.
+- **VPN-only subnet**: This subnet routes to a Site-to-Site VPN using a virtual private gateway and does not have a direct route to the public internet.
+- **Isolated subnet**: Subnets of this type have no routes leading to destinations outside their VPC. Resources within an isolated subnet can solely communicate with other resources within the same VPC.
 
-- **Private** – Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway. You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway. You cannot associate an elastic IP address with a private NAT gateway. You can attach an internet gateway to a VPC with a private NAT gateway, but if you route traffic from the private NAT gateway to the internet gateway, the internet gateway drops the traffic.
-
-## Network Access Control List (NACL’s)
-
-A network access control list (ACL) allows or denies specific inbound or outbound traffic at the subnet level.
-
-| Security group                                                          | Network ACL                                                                                                                                      |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Operates at the instance level                                          | Operates at the subnet level                                                                                                                     |
-| Applies to an instance only if it is associated with the instance       | Applies to all instances deployed in the associated subnet (providing an additional layer of defense if security group rules are too permissive) |
-| Supports allow rules only                                               | Supports allow rules and deny rules                                                                                                              |
-| Evaluates all rules before deciding whether to allow traffic            | Evaluates rules in order, starting with the lowest numbered rule, when deciding whether to allow traffic                                         |
-| Stateful: Return traffic (outbound) is allowed, regardless of the rules | Stateless: Return traffic (outbound) must be explicitly allowed by the rules                                                                     |
-
-![](https://docs.aws.amazon.com/images/vpc/latest/userguide/images/security-diagram_updated.png)
+![imgur.png](https://i.imgur.com/j2lDMYY.png)
 
 ## Classless Inter-Domain Routing (CIDR)
 
@@ -70,3 +59,27 @@ Let’s look at a few examples to further cement our understanding:
 - In `x.x.x.x/24`, `/24` represents the number of network bits, which means the given address block contains 2<sup>8</sup> or 256 hosts or IP addresses.
 - Similarly, in `x.x.x.x/20`, `/20` represents the number of network bits, which means the given address block contains 2 <sup>12</sup> or 4096 hosts or IP addresses
 - In the edge case of `/32` network bits, there would only be `1` host IP address. While `/0` represents all the 2<sup>32</sup> IP addresses in IPv4.
+
+## NAT gateways
+
+A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+
+When you create a NAT gateway, you specify one of the following connectivity types:
+
+- **Public** – (Default) Instances in private subnets can connect to the internet through a public NAT gateway, but cannot receive unsolicited inbound connections from the internet. You create a public NAT gateway in a public subnet and must associate an elastic IP address with the NAT gateway at creation. You route traffic from the NAT gateway to the internet gateway for the VPC. Alternatively, you can use a public NAT gateway to connect to other VPCs or your on-premises network. In this case, you route traffic from the NAT gateway through a transit gateway or a virtual private gateway.
+
+- **Private** – Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway. You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway. You cannot associate an elastic IP address with a private NAT gateway. You can attach an internet gateway to a VPC with a private NAT gateway, but if you route traffic from the private NAT gateway to the internet gateway, the internet gateway drops the traffic.
+
+## Network Access Control List (NACL’s)
+
+A network access control list (ACL) allows or denies specific inbound or outbound traffic at the subnet level.
+
+| Security group                                                          | Network ACL                                                                                                                                      |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Operates at the instance level                                          | Operates at the subnet level                                                                                                                     |
+| Applies to an instance only if it is associated with the instance       | Applies to all instances deployed in the associated subnet (providing an additional layer of defense if security group rules are too permissive) |
+| Supports allow rules only                                               | Supports allow rules and deny rules                                                                                                              |
+| Evaluates all rules before deciding whether to allow traffic            | Evaluates rules in order, starting with the lowest numbered rule, when deciding whether to allow traffic                                         |
+| Stateful: Return traffic (outbound) is allowed, regardless of the rules | Stateless: Return traffic (outbound) must be explicitly allowed by the rules                                                                     |
+
+![](https://docs.aws.amazon.com/images/vpc/latest/userguide/images/security-diagram_updated.png)
