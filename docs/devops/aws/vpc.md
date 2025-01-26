@@ -95,9 +95,8 @@ To use the NAT Gateway, assign a route in the private subnet, in lieu of a route
 
 When you create a NAT gateway, you specify one of the following connectivity types:
 
-- **Public** – (Default) Instances in private subnets can connect to the internet through a public NAT gateway, but cannot receive unsolicited inbound connections from the internet. You create a public NAT gateway in a public subnet and must associate an elastic IP address with the NAT gateway at creation. You route traffic from the NAT gateway to the internet gateway for the VPC. Alternatively, you can use a public NAT gateway to connect to other VPCs or your on-premises network. In this case, you route traffic from the NAT gateway through a transit gateway or a virtual private gateway.
-
-- **Private** – Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway. You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway. You cannot associate an elastic IP address with a private NAT gateway. You can attach an internet gateway to a VPC with a private NAT gateway, but if you route traffic from the private NAT gateway to the internet gateway, the internet gateway drops the traffic.
+- **Public connectivity type**: This is the default connectivity type used by NAT gateways, which enables instances in private subnets to access the internet through a public NAT gateway. However, these instances cannot receive unsolicited inbound connections from the internet. An elastic IP address must be associated with the NAT gateway during its creation in the public connectivity type.
+- **Private connectivity type**: It allows instances in private subnets to connect to other VPCs or on-premises networks through a private NAT gateway. An elastic IP address cannot be associated with the private NAT gateway.
 
 ## Network Access Control List (NACL’s)
 
