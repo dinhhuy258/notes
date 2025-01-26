@@ -60,6 +60,21 @@ Let’s look at a few examples to further cement our understanding:
 - Similarly, in `x.x.x.x/20`, `/20` represents the number of network bits, which means the given address block contains 2 <sup>12</sup> or 4096 hosts or IP addresses
 - In the edge case of `/32` network bits, there would only be `1` host IP address. While `/0` represents all the 2<sup>32</sup> IP addresses in IPv4.
 
+## Route Table
+
+The Route Table, also referred to as the routing table, is responsible for providing routing instructions within a network and is associated with specific subnets. By default, every VPC is created with a main route table, and each subnet in the VPC is automatically associated with this main route table. The main route table cannot be deleted. However, we can modify its routes. We do have the option of creating customized route tables for our subnet.
+
+For instance, in the scenario where a Virtual Private Cloud (VPC) is established with the network layer `10.10.0.0/16`, along with two subnets, `10.10.1.0/24` and `10.10.2.0/24`, each default subnet will be allocated a default route table.
+
+Inside the route table, there will exist a route entry with the following details:
+
+- Destination: 10.10.0.0/16
+- Target: local
+
+This particular route entry signifies that resources created within the same VPC can communicate with each other.
+
+![imgur.png](https://i.imgur.com/6xQYqzY.png)
+
 ## NAT gateways
 
 A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
