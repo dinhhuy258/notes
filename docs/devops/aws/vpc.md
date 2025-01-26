@@ -1,7 +1,5 @@
 # Virtual Private Cloud (VPC)
 
-![](https://www.uturndata.com/wp-content/uploads/2021/02/full-vpc-traffic.png)
-
 A VPC is a logically isolated section of a data center where you have complete control over your virtual networking environment, including the selection of IP address ranges, etc.
 
 ## Key components of VPC
@@ -75,15 +73,49 @@ This particular route entry signifies that resources created within the same VPC
 
 ![imgur.png](https://i.imgur.com/6xQYqzY.png)
 
+## Internet gateways
+
+An internet gateway is a component that facilitates communication between instances within a VPC and the internet. It essentially acts as a gateway for internet traffic to and from instances in the VPC. When attached to a VPC, the internet gateway enables instances to connect with resources outside the VPC, such as accessing the internet or communicating with other AWS services outside the VPC.
+
+An internet gateway scales horizontally, is highly available, and doesn’t cause bandwidth constraints for our VPC’s traffic. It facilitates outbound and inbound traffic flows for instances within your VPC.
+
+- **Outbound traffic**: The internet gateway enables instances within our VPC to communicate with resources and services outside the VPC boundaries, such as accessing websites, downloading updates, or interacting with external APIs. It serves as the conduit through which traffic from our VPC is routed to the internet, allowing the instances to interact with the global network.
+- **Inbound traffic**: With the appropriate security configurations, the internet gateway permits incoming traffic to reach your instances from the internet. This functionality is crucial for hosting services, websites, or applications that need to be publicly accessible. By properly configuring security groups and network access control lists, you can control and manage the types of inbound traffic allowed to reach your instances, enhancing security posture.
+
+> [!NOTE]  
+> Internet gateways don’t give access to the internet by themselves. We must create routes in our route table to allow the subnets in our VPCs to communicate with the internet.
+
 ## NAT gateways
 
+A private subnet is any subnet that doesn’t have a route to an Internet Gateway (that is, any subnet that is not public). As a result, they have no means to communicate with the Internet. This is where NAT Gateways and Instances come in to play, they allow a private subnet access to the Internet.
+
 A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+
+To use the NAT Gateway, assign a route in the private subnet, in lieu of a route to an Internet Gateway. Traffic destined for the Internet will flow from the private subnet to the NAT Gateway in the public subnet, and then out to the Internet through the Internet Gateway.
 
 When you create a NAT gateway, you specify one of the following connectivity types:
 
 - **Public** – (Default) Instances in private subnets can connect to the internet through a public NAT gateway, but cannot receive unsolicited inbound connections from the internet. You create a public NAT gateway in a public subnet and must associate an elastic IP address with the NAT gateway at creation. You route traffic from the NAT gateway to the internet gateway for the VPC. Alternatively, you can use a public NAT gateway to connect to other VPCs or your on-premises network. In this case, you route traffic from the NAT gateway through a transit gateway or a virtual private gateway.
 
 - **Private** – Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway. You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway. You cannot associate an elastic IP address with a private NAT gateway. You can attach an internet gateway to a VPC with a private NAT gateway, but if you route traffic from the private NAT gateway to the internet gateway, the internet gateway drops the traffic.
+
+## Putting it together
+
+For a public subnet to have Internet access, inbound and outbound, an account needs:
+
+- Internet Gateway attached to a VPC
+- Route to the Internet Gateway in the attached route table
+- Instances have public IP addresses (auto-assigned or attached Elastic IP address)
+- Appropriate security group and NACL allowances
+
+For a private subnet to have Internet access, the following will provide outbound Internet access but not inbound:
+
+- Internet Gateway attached to a VPC
+- NAT Gateway or Instance in a public subnet in the same VPC
+- Route to the NAT Gateway or Instance in the private subnet’s attached route table
+- Appropriate security group and NACL allowances
+
+![imgur.png](https://i.imgur.com/ilxpsuE.png)
 
 ## Network Access Control List (NACL’s)
 
