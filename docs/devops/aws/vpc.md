@@ -98,20 +98,6 @@ When you create a NAT gateway, you specify one of the following connectivity typ
 - **Public connectivity type**: This is the default connectivity type used by NAT gateways, which enables instances in private subnets to access the internet through a public NAT gateway. However, these instances cannot receive unsolicited inbound connections from the internet. An elastic IP address must be associated with the NAT gateway during its creation in the public connectivity type.
 - **Private connectivity type**: It allows instances in private subnets to connect to other VPCs or on-premises networks through a private NAT gateway. An elastic IP address cannot be associated with the private NAT gateway.
 
-## Network Access Control List (NACL’s)
-
-A network access control list (ACL) allows or denies specific inbound or outbound traffic at the subnet level.
-
-| Security group                                                          | Network ACL                                                                                                                                      |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Operates at the instance level                                          | Operates at the subnet level                                                                                                                     |
-| Applies to an instance only if it is associated with the instance       | Applies to all instances deployed in the associated subnet (providing an additional layer of defense if security group rules are too permissive) |
-| Supports allow rules only                                               | Supports allow rules and deny rules                                                                                                              |
-| Evaluates all rules before deciding whether to allow traffic            | Evaluates rules in order, starting with the lowest numbered rule, when deciding whether to allow traffic                                         |
-| Stateful: Return traffic (outbound) is allowed, regardless of the rules | Stateless: Return traffic (outbound) must be explicitly allowed by the rules                                                                     |
-
-![imgur.png](https://i.imgur.com/pAo19WR.png)
-
 ## Putting it together
 
 For a public subnet to have Internet access, inbound and outbound, an account needs:

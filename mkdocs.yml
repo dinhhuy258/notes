@@ -161,6 +161,7 @@ nav:
       - ECS: devops/aws/ecs.md
       - SQS/SNS: devops/aws/sqs_sns.md
       - VPC: devops/aws/vpc.md
+      - NACL and Security Groups: devops/aws/nacl-and-security-groups.md
     - Docker:
       - Docker Overview: devops/docker/docker.md
       - Docker Images: devops/docker/docker_images.md
