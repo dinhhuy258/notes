@@ -121,7 +121,6 @@ For a private subnet to have Internet access, the following will provide outboun
 VPC peering is a feature that allows us to connect different VPCs securely such that their resources communicate with each other as they reside in the same VPC.
 
 VPC peering uses the AWS global network to route traffic between VPCs. Because all communication happens through private IP addresses, VPC peering connections never go outside the private IP space and use the internet.
-
 ![imgur.png](https://i.imgur.com/y1JNSM7.png)
 
 ### VPC peering in AWS Regions
@@ -131,8 +130,31 @@ VPC peering allows to connect VPCs in the same and different AWS Regions.
 - **Intra-region connection**: When configuring a VPC peering connection between VPCs within the same region, we can use security groups to allow traffic to and from the security group of the peering VPCs.
 - **Inter-region connection**: If we connect the VPCs from different regions, we must use the CIDR address of the connecting VPC as the source or destination in the security group to control traffic. 
 
+### Advantages of VPC peering
+
+- Low cost since you need to pay only for data transfer.
+- No bandwidth limit.
+
+### Disadvantages of VPC peering
+
+- Complex at scale. Each new VPC increases the complexity of the network. Harder to maintain route tables compared to TGW.
+- No transit routing.
+- Maximum 125 peering connections per VPC.
+
 ## AWS Transit Gateway
 
 AWS Transit Gateway is a regional resource used to connect thousands of VPCs and on-premises resources.
 
-![imgur.png](https://i.imgur.com/6OnVUqb.png)
+![imgur.png](https://i.imgur.com/KZHVN6m.png)
+
+### Advantages of Transit Gateway
+
+- Simplified management of VPC connections. Each spoke VPC only needs to connect to the TGW to gain access to other connected VPCs.
+- Supports more VPCs compared to VPC peering.
+- TGW Route Tables per attachment allow for fine-grained routing.
+
+
+### Disadvantages of Transit Gateway
+
+- Additional hop introduces some latency.
+- Extra cost of hourly charge per attachment in addition to data fees.
