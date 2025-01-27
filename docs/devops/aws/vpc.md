@@ -128,7 +128,7 @@ VPC peering uses the AWS global network to route traffic between VPCs. Because a
 VPC peering allows to connect VPCs in the same and different AWS Regions.
 
 - **Intra-region connection**: When configuring a VPC peering connection between VPCs within the same region, we can use security groups to allow traffic to and from the security group of the peering VPCs.
-- **Inter-region connection**: If we connect the VPCs from different regions, we must use the CIDR address of the connecting VPC as the source or destination in the security group to control traffic. 
+- **Inter-region connection**: If we connect the VPCs from different regions, we must use the CIDR address of the connecting VPC as the source or destination in the security group to control traffic.
 
 ### Advantages of VPC peering
 
@@ -153,8 +153,37 @@ AWS Transit Gateway is a regional resource used to connect thousands of VPCs and
 - Supports more VPCs compared to VPC peering.
 - TGW Route Tables per attachment allow for fine-grained routing.
 
-
 ### Disadvantages of Transit Gateway
 
 - Additional hop introduces some latency.
 - Extra cost of hourly charge per attachment in addition to data fees.
+
+## VPC Endpoint
+
+![imgur.png](https://i.imgur.com/E3zWzHG.png)
+
+A Virtual Private Cloud (VPC) is an isolated network segment. Without an internet gateway or NAT gateway, the VPC remains completely isolated. AWS services that are not deployed directly within a VPC, such as S3, Systems Manager, SQS, Secrets Manager, etc., are accessible via a public address. This means that a VPC with EC2 instances in a private subnet must communicate with these AWS services through a NAT gateway. If no NAT gateway is available, communication with AWS services from the private subnet is not possible.
+
+![imgur.png](https://i.imgur.com/fU2Gy02.png)
+
+To resolve this issue, VPC Endpoints can be used. They enable communication between a VPC and AWS services without requiring an internet or NAT gateway. Moreover, since the traffic stays within the AWS network, this approach enhances both security and efficiency.
+
+There are two types of VPC endpoints:
+
+### VPC Interface Endpoints
+
+A VPC Interface Endpoint is a type of VPC Endpoint that enables private, secure communication between your VPC and supported AWS services using private IPs. Interface Endpoints create elastic network interfaces (ENIs) within your VPC that are assigned private IP addresses. These ENIs establish a direct, secure connection to AWS services, eliminating the need for an internet gateway, NAT gateway, or VPN connection.
+
+A VPC interface endpoint enables you to connect privately to services over AWS PrivateLink. These services can include:
+
+- AWS managed services (e.g., API Gateway, CloudWatch, SQS, SNS, etc.).
+- Provider services hosted by another AWS account as a [VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html).
+- Third-party services from AWS Marketplace partners.
+
+![imgur.png](https://i.imgur.com/yIoqxgw.png)
+
+### VPC Gateway Endpoint
+
+A VPC gateway endpoint enables your instances in a VPC to connect to **Amazon S3** and **DynamoDB** without requiring public IP addresses.
+
+![imgur.png](https://i.imgur.com/D1Llrcz.png)
