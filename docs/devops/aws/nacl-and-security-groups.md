@@ -28,6 +28,17 @@ A network access control list (NACL) is a VPC-based firewall that works on the s
 | 130    | ICMP        | ICMP     | N/A        | 0.0.0.0/0      | ALLOW  |
 | 150    | All traffic | All      | All        | 0.0.0.0/0      | DENY   |
 
+## Default inbound rules
+
+| Rule # | Type        | Protocol | Port Range | Source IP | Action |
+| ------ | ----------- | -------- | ---------- | --------- | ------ |
+| 100    | All traffic | All      | All        | 0.0.0.0/0 | ALLOW  |
+| \*     | All traffic | All      | All        | 0.0.0.0/0 | DENY   |
+
+Rule `100` is an `allow` rule that permits all types of traffic (regardless of protocol or port) from any source IP address to enter the subnet.
+
+The catch-all rule, denoted by `*` is a default rule that applies to any traffic that does not match the preceding rules. In this case, it denies all traffic. This is a common practice in security to ensure that any traffic not explicitly allowed is automatically denied, providing an additional layer of security.
+
 ## NACL Outbound Rules
 
 | Rule # | Type        | Protocol | Port Range | Destination IP | Action |
@@ -37,6 +48,17 @@ A network access control list (NACL) is a VPC-based firewall that works on the s
 | 120    | SSH         | TCP      | 22         | 192.168.0.0/24 | DENY   |
 | 130    | ICMP        | ICMP     | N/A        | 0.0.0.0/0      | ALLOW  |
 | 150    | All traffic | All      | All        | 0.0.0.0/0      | DENY   |
+
+## Default outbound rules
+
+| Rule # | Type        | Protocol | Port Range | Source IP | Action |
+| ------ | ----------- | -------- | ---------- | --------- | ------ |
+| 100    | All traffic | All      | All        | 0.0.0.0/0 | ALLOW  |
+| \*     | All traffic | All      | All        | 0.0.0.0/0 | DENY   |
+
+Rule `100` is an `allow` rule that permits all outbound traffic to any destination.
+
+The catch-all rule, denoted by `*` is a default rule that applies to any traffic that does not match the preceding rules. This ensures that if any modifications to rule `100` or additional rules are added above `*` only the specified traffic is allowed, and all other traffic is denied by default.
 
 ## Security group vs NACL
 
