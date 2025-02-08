@@ -12,7 +12,7 @@ The Domain Name System (DNS) is a hierarchical decentralized naming system that 
 - Below are top-level domains (TLDs) like `.com` and country-code TLDs. Each TLD is managed by its registry.
 - Second-level domains (SLDs) sit beneath TLDs and often represent organizations. Subdomains can extend from SLDs.
 
-![imgur.png](https://i.imgur.com/AvEsf14.png)
+![imgur.png](https://i.imgur.com/MIDL02c.png)
 
 ### DNS Zone
 
