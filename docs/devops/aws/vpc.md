@@ -118,9 +118,15 @@ For a private subnet to have Internet access, the following will provide outboun
 
 ## VPC peering
 
-VPC peering is a feature that allows us to connect different VPCs securely such that their resources communicate with each other as they reside in the same VPC.
+A VPC peering connection is a networking connection between two Virtual Private Clouds (VPCs) that enables resources in these VPCs to communicate with each other as if they were part of the same VPC. This allows for private communication without exposing resources to the public internet.
 
-VPC peering uses the AWS global network to route traffic between VPCs. Because all communication happens through private IP addresses, VPC peering connections never go outside the private IP space and use the internet.
+**Key Considerations**
+
+- **Non-overlapping CIDR Blocks**: When setting up a VPC peering connection, the CIDR blocks of the two VPCs must not overlap. This ensures proper routing and communication between VPCs.
+- **No Transitive Peering**: VPC peering is non-transitive, meaning that if VPC 1 is peered with VPC 2, and VPC 2 is peered with VPC 3, traffic cannot flow from VPC 1 to VPC 3 automatically. To enable communication between VPC 1 and VPC 3, you would need to set up a direct peering connection between them.
+
+Additionally, when creating a VPC peering connection, it's essential to update the route tables in each VPC to ensure that traffic can flow between the VPCs.
+
 ![imgur.png](https://i.imgur.com/y1JNSM7.png)
 
 ### VPC peering in AWS Regions
@@ -143,15 +149,15 @@ VPC peering allows to connect VPCs in the same and different AWS Regions.
 
 ## AWS Transit Gateway
 
-AWS Transit Gateway is a regional resource used to connect thousands of VPCs and on-premises resources.
+The AWS Transit Gateway (TGW) is a regional network hub that simplifies the management of network traffic between thousands of VPCs and on-premises resources. It acts as a central hub to route traffic across VPCs and on-premises networks, offering a scalable and efficient solution for large networks.
 
 ![imgur.png](https://i.imgur.com/KZHVN6m.png)
 
 ### Advantages of Transit Gateway
 
-- Simplified management of VPC connections. Each spoke VPC only needs to connect to the TGW to gain access to other connected VPCs.
-- Supports more VPCs compared to VPC peering.
-- TGW Route Tables per attachment allow for fine-grained routing.
+- **Simplified VPC Management**: With TGW, each spoke VPC only needs to connect to the Transit Gateway to gain access to other connected VPCs, simplifying the network architecture.
+- **Scalability**: TGW supports a significantly higher number of VPCs than VPC peering, making it ideal for larger, more complex network environments.
+- **Fine-Grained Routing**: TGW allows the use of Route Tables per attachment, enabling detailed and precise routing control between connected VPCs and on-premises networks.
 
 ### Disadvantages of Transit Gateway
 
