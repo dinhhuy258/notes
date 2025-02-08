@@ -26,118 +26,99 @@ For instance, the domain `example.com` can be part of a larger DNS zone. Within 
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SOA records**   | Provides authoritative information about a DNS zone, including details such as the primary name server for the zone, the email address of the zone administrator, and other zone management parameters.                 |
 | **NS records**    | Specifies the authoritative name servers for a domain. These servers are responsible for providing DNS information about the domain.                                                                                    |
-| **A records**     | Maps a domain name to an IPv4 address. For example, we might have an A record that maps "example.com" to "192.0.2.1".                                                                                                   |
-| **AAAA records**  | Maps a domain name to an IPv6 address. For example, we might have an A record that maps "example.com" to "2001:db8:3333:4444:5555:6666:7777:8888".                                                                      |
-| **CNAME records** | Maps one domain name to another. For instance, we might use a CNAME record to point "www.example.com" to "example.com".                                                                                                 |
-| **MX records**    | Specifies mail servers responsible for receiving email on behalf of a domain. MX records often point to mail servers like "mail.example.com".                                                                           |
+| **A records**     | Maps a domain name to an IPv4 address. For example, we might have an A record that maps `example.com` to `192.0.2.1`".                                                                                                  |
+| **AAAA records**  | Maps a domain name to an IPv6 address. For example, we might have an A record that maps `example.com` to `2001:db8:3333:4444:5555:6666:7777:8888`.                                                                      |
+| **CNAME records** | Maps one domain name to another. For instance, we might use a CNAME record to point `www.example.com` to `example.com`.                                                                                                 |
+| **MX records**    | Specifies mail servers responsible for receiving email on behalf of a domain. MX records often point to mail servers like `mail.example.com`.                                                                           |
 | **TXT records**   | Stores arbitrary text information associated with a domain name. This can be used for various purposes, such as verifying domain ownership or providing SPF (Sender Policy Framework) records for email authentication. |
 
 ## Amazon Route 53
 
-![](https://user-images.githubusercontent.com/17776979/193864638-68b6c7dc-c6ff-447a-a783-2c26a451941c.png)
+![imgur.png](https://i.imgur.com/L6dUAxH.png)
 
 ### Domain Registration
 
+AWS Route 53 enables you to register domain names, search for available domains, and manage DNS records all in one place. After registration, Route 53 integrates directly with its DNS service, simplifying domain management. It also offers optional WHOIS privacy protection, automatic domain renewal, and supports domain transfers from other registrars, making it easier to maintain control over your domains and associated resources.
 
-### Hosted zone
+Additionally, you can transfer domain registration from another registrar to AWS Route 53 for supported top-level domains (TLDs). It’s also possible to transfer domains between AWS accounts, streamlining management across different teams or organizations.
 
-A hosted zone in Route 53 is like a digital folder where we store all the important details about a website's address, known as DNS records. 
+### Hosted Zones
 
-
-### Route 53 - Records
-
-Each record contains:
-
-- Domain/ subdomain Name - eg: example.com
-- Record Type - eg: A, AAAA...
-- Value - eg: 12.12.23.34
-- Routing policy: how route 53 responds to queries
-- TTL: amount of time the record cached at DNS Resolvers
-
-### Route 53 - Record Types
-
-- A: maps a hostname to IPv4
-- AAAA: maps a hostname to IPv6
-- CNAME: maps a hostname to another hostname
-
-* The target is a domain name which must have an A or AAAA record
-* Can't create CNAME record for the top node of a DNS namespace (Zone Apex). Eg: You can not create for `example.com` but you can create for `xxx.example.com`
-
-- NS - Name Servers for the Hosted Zone
-
-* Control how traffic is routed for a domain
-
-### Route 53 - Hosted Zones
-
-A hosted zone is a container for records, and records contain information about how you want to route traffic for a specific domain, such as example.com, and its subdomains (acme.example.com, zenith.example.com). A hosted zone and the corresponding domain have the same name. There are two types of hosted zones:
+A hosted zone is a container for records, and records contain information about how you want to route traffic for a specific domain, such as `example.com`, and its subdomains (`acme.example.com`, `zenith.example.com`). A hosted zone and the corresponding domain have the same name. There are two types of hosted zones:
 
 - Public hosted zones contain records that specify how you want to route traffic on the internet.
 - Private hosted zones contain records that specify how you want to route traffic in an Amazon VPC
 
-![](https://user-images.githubusercontent.com/17776979/193867675-1d36f0e8-c999-4462-bea5-e2c539fb889c.png)
+![imgur.png](https://i.imgur.com/o2q1Mrt.png)
 
-### CNAME vs Alias
+### Health checks
 
-**CNAME**
+Route 53 health checks are a function that allow you to monitor the health of selected types of AWS resources or any endpoints that can respond to requests. Route 53 health checks can provide notifications of a change in the state of the health check and can help Route 53 to recognize when a record is pointing to an unhealthy resource, allowing Route 53 to failover to an alternate record.
 
-- Point a hostname to any other hostname (app.mydomain.com -> blabla.anything.com)
-- Only for non root domain
+![imgur.png](https://i.imgur.com/5vcKFmy.png)
 
-**Alias**
+Types of Route 53 health checks:
 
-- Point a hostname to an AWS Resource (app.mydomain.com -> blabla.amazonaws.co)
-- Works for root domain and non root domain
-- Free of charge
-- Native health check
-- Can not set the TTL
-- Can not set an alias record for an EC2 DNS name
+- **Endpoint health checks**: You can configure to monitor an endpoint that you specify by IP address or domain name. Within a fixed time interval that you specify. Route 53 submits automated requests over the Internet to your application, server, or other resources to verify that it is accessible, available, and functioning properly.
+- **Health checks that monitor other health checks**: This type of health check monitors other Route 53 health checks. Basically, a `parent` health check will monitor one or more `child` health checks. If the provided number of child health checks report as healthy, then parent health checks will also be healthy. If the number of healthy `child` checks falls below a set threshold, the `parent` check will be unhealthy.
+- **Health checks for Amazon CloudWatch Alarms**: You can also perform health checks associated with alarms created in the CloudWatch service. These types of Route 53 health checks monitor CloudWatch data streams sent to previously configured alarms. If the status of the CloudWatch alarm is OK, the health check will report as OK.
 
-### Route 53 - Routing Policies
+### Routing Policies
 
-Routing Policies defines how Route 53 responds to DNS queries. Route 53 provides following policies:
+Routing policies are the rules and algorithms that route traffic to different endpoints like IP addresses, AWS resources, or other domain names based on various criteria. These routing policies provide flexibility and control over how traffic is distributed to different endpoints, allowing users to optimize the performance, availability, and cost-effectiveness of their applications and services hosted on AWS.
 
-**Simple**
+#### **Routing strategies**
 
-- Typical route traffic to a single resource
-- Can specify multiple values in the same record (a random one is chosen by the client)
-- Can not be associated with Health Checks
+Route 53 offers several routing policies to allow users to implement sophisticated traffic routing strategies tailored to their specific requirements. In this lesson, we will explore the common routing policies provided by Route 53. Let’s explore the Routing Policies that are provided by Route 53.
 
-**Weight**
+**Simple routing policy**
 
-- Control % of the requests that go to each specific resource.
-- Can be associated with Health Checks
-- Use case: load balancing between regions, testing new application version...
+The Simple Routing Policy is used for a single resource that performs a specific function for your domain. For example, you might use it to route traffic to an Amazon EC2 instance serving content for the `example.com` website.
 
-**Latency based**
+With this policy, you can configure multiple values (such as multiple IP addresses or endpoints). When multiple values are configured, Route 53 will randomly choose one to route traffic to.
 
-- Redirect to the resource that has least latency close to us
-- Can be associated with Health Checks
+Note that the Simple Routing Policy cannot be used in conjunction with Health Checks.
 
-![](https://user-images.githubusercontent.com/17776979/193872163-a409d4b0-e0ea-4d3e-8280-ce784b87ff8e.png)
+![imgur.png](https://i.imgur.com/TLmWr8w.png)
 
-**Failover**
+**Failover routing policy**
 
-![](https://user-images.githubusercontent.com/17776979/193872361-31614a43-c40d-48c1-8442-d0190904c207.png)
+The Failover Routing Policy is designed to provide high availability by routing traffic to a backup resource when the primary resource becomes unavailable. It allows users to define a primary resource and a standby (failover) resource, along with health checks to monitor the availability of each resource.
 
-**Geolocation**
+When Route 53 detects that the primary resource is unhealthy, it automatically directs traffic to the failover resource, ensuring seamless failover in case of resource failures or disruptions.
 
-- This routing is based on user location
-- Specify location by continent, country
-- Should create `Default` record (in case there is no match on location)
-- Can be associated with Health Checks
+![imgur.png](https://i.imgur.com/UULI0gQ.png)
 
-**Geoproximity**
+**Weighted routing policy**
 
-- Route traffic to your resources based on the geographic location of users and resources
+Weighted routing policy enables users to control the distribution of traffic among multiple resources by assigning weights to each resource. This allows you to assign weights to resource record sets. For instance, you can specify `25` for one resource and `75` for another, meaning that `25%` of requests will go to the first resource and `75%` will be routed to the second.
 
-**Multi-Value Answer**
+![imgur.png](https://i.imgur.com/zV8EbY1.png)
 
-- Use when routing traffic to multiple resources
-- Up to 8 healthy records are returned for each Multi-Value query
-- Can be associated with Health Checks (returns only values for healthy resources)
+**Latency routing policy**
 
-### Route 53 - Health Checks
+Latency Routing Policy routes traffic to the resource with the lowest latency for the user, ensuring optimal performance and minimal response times.
 
-- HTTP Health Checks are only for public resources
-- About 15 global health checkers will check the endpoint health
-- Route 53 health checker are outside the VPC -> they can not access private endpoints (You can create CloudWatch Metric and associate a CloudWatch Alarm, then create a Health Check that checks the alarm itself)
+![imgur.png](https://i.imgur.com/CXitl2c.png)
+
+This policy best suits latency-sensitive applications such as online gaming platforms, video streaming services, or real-time communication applications, where minimizing latency is essential for user satisfaction.
+
+**Geolocation routing policy**
+
+Geolocation routing policy directs traffic based on the user’s geographic location, ensuring that users are routed to the nearest available resource or a resource optimized for their region.
+
+![imgur.png](https://i.imgur.com/qsbS69X.png)
+
+This policy best suits content delivery networks (CDNs), regional applications, or services with data sovereignty requirements, where serving content from geographically closer servers is essential.
+
+**Multivalue routing policy**
+
+Multivalue Routing Policy combines elements of simple routing and failover routing to improve availability and fault tolerance. With multivalue routing, users can create multiple records with the same name, each associated with its **health check**. When a user queries a domain, up to eight healthy records are returned, while unhealthy ones are excluded. If more than eight healthy records exist, they are returned randomly.
+
+![imgur.png](https://i.imgur.com/K7IlTaH.png)
+
+**IP-based routing policy**
+
+IP-based routing policy directs traffic based on the IP address of the requesting device or DNS resolver. It allows users to define routing rules based on IP addresses or ranges, ensuring that requests from specific devices or networks are directed to designated resources.
+
+![imgur.png](https://i.imgur.com/Bklk4Tc.png)
