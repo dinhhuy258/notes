@@ -1,29 +1,48 @@
 # Route 53
 
-## DNS
+Amazon Route 53 is an AWS web service that provides Domain Name System (DNS) functionality. Route 53 offers two main services: domain registration and domain hosting. Route 53 is a globally resilient service as the name servers are distributed globally and have the same datasets across all the servers. So, even if a region is affected by outages, Route 53 will still function.
 
-Domain Nam System which translates the human friendly hostnames into the machine IP addresses (google.com -> 172.217.18.36)
+## Domain Name System (DNS)
 
-### DNS Terminologies
+Every device connected to the internet has its unique IP address, enabling communication with it. When we browse the internet, we access web applications hosted on servers, each identified by a distinct IP address.
 
-- Domain Registrar: Amazon Route 53, GoDaddy...
-- DNS Record: A, AAAA, CNAME, NS...
-- Zone File: Contains DNS records
-- Name Server: resolves DNS queries
-- Top Level Domain (TLD): .com, .us, .vn,...
-- Second Level Domain (SLD): amazon.com, google.com,...
+The Domain Name System (DNS) is a hierarchical decentralized naming system that translates human-readable domain names, such as `dinhhuy258.dev`, into IP addresses. The DNS organizes domain names into a hierarchical tree-like structure:
 
-![](https://user-images.githubusercontent.com/17776979/193863900-b186858d-ed1a-4943-839b-f2d8283d9c40.png)
+- At the top are root domain servers, the highest authority in DNS.
+- Below are top-level domains (TLDs) like `.com` and country-code TLDs. Each TLD is managed by its registry.
+- Second-level domains (SLDs) sit beneath TLDs and often represent organizations. Subdomains can extend from SLDs.
 
-### How DNS works?
+![imgur.png](https://i.imgur.com/AvEsf14.png)
 
-![](https://user-images.githubusercontent.com/17776979/193864202-e903fc72-4bb9-44d7-8f88-88362e16b804.png)
+### DNS Zone
+
+A DNS zone is a distinct, logical segment within the domain namespace of the Domain Name System (DNS). It provides administrators, organizations, or other entities with fine-grained control over DNS records and configurations for specific parts of a domain.
+
+For instance, the domain `example.com` can be part of a larger DNS zone. Within this zone, subdomains like `blog.example.com` and `community.example.com` can exist. If `community.example.com` requires more specific or granular management—perhaps due to a large number of devices or high traffic—the administrator could decide to split it into its own DNS zone with a separate authoritative name server, thus giving independent control over its DNS records.
+
+### DNS Records
+
+| **Record Type**   | **Value**                                                                                                                                                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SOA records**   | Provides authoritative information about a DNS zone, including details such as the primary name server for the zone, the email address of the zone administrator, and other zone management parameters.                 |
+| **NS records**    | Specifies the authoritative name servers for a domain. These servers are responsible for providing DNS information about the domain.                                                                                    |
+| **A records**     | Maps a domain name to an IPv4 address. For example, we might have an A record that maps "example.com" to "192.0.2.1".                                                                                                   |
+| **AAAA records**  | Maps a domain name to an IPv6 address. For example, we might have an A record that maps "example.com" to "2001:db8:3333:4444:5555:6666:7777:8888".                                                                      |
+| **CNAME records** | Maps one domain name to another. For instance, we might use a CNAME record to point "www.example.com" to "example.com".                                                                                                 |
+| **MX records**    | Specifies mail servers responsible for receiving email on behalf of a domain. MX records often point to mail servers like "mail.example.com".                                                                           |
+| **TXT records**   | Stores arbitrary text information associated with a domain name. This can be used for various purposes, such as verifying domain ownership or providing SPF (Sender Policy Framework) records for email authentication. |
 
 ## Amazon Route 53
 
-Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service. Route 53 connects user requests to internet applications running on AWS or on-premises.
-
 ![](https://user-images.githubusercontent.com/17776979/193864638-68b6c7dc-c6ff-447a-a783-2c26a451941c.png)
+
+### Domain Registration
+
+
+### Hosted zone
+
+A hosted zone in Route 53 is like a digital folder where we store all the important details about a website's address, known as DNS records. 
+
 
 ### Route 53 - Records
 
