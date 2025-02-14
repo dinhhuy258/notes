@@ -9,17 +9,42 @@ Docker containers management on AWS
 - AWS Fargate (serverless)
 - Amazon ECR (store container images)
 
+## Amazon Elastic Container Registry
+
+Amazon Elastic Container Registry (ECR) is an AWS managed Docker container registry service. ECR provides a secure and scalable repository to store, manage, and deploy Docker images. ECR offers both public and private registries that can allow multiple repositories in the registries.
+
 ## Amazon ECS cluster
 
-An Amazon ECS cluster is a logical grouping of tasks or services. Your tasks and services are run on infrastructure that is registered to a cluster. The infrastructure capacity can be provided by:
-
-- AWS Fargate, which is serverless infrastructure that AWS manages
-- Amazon EC2 instances that you manage
-- On-premise server or virtual machine (VM) that you manage remotely
-
-A cluster may contain a mix of tasks hosted on AWS Fargate, Amazon EC2 instances, or external instances
-
 ![](https://user-images.githubusercontent.com/17776979/197403659-ac68aef5-55f7-4e0a-be95-d2ac4b242544.png)
+
+Amazon ECS is a fully managed service by AWS that helps you deploy, manage, and scale containerized applications. It uses Docker containers to run your apps and is divided into three key layers: Provisioning, Controller, and Capacity.
+
+### 1. Provisioning
+
+This layer is responsible for the tools that help you deploy and manage your containers. You can interact with ECS using:
+
+- AWS SDKs (for integration into custom apps)
+- Copilot (a command-line tool to simplify containerized app deployment)
+- AWS CLI (Command Line Interface)
+- ...
+
+### 2. Controller
+
+The controller layer is responsible for managing containers and their configurations. Here’s how it works:
+
+- **Task Definition**: Think of this as a blueprint for your container. It defines the container's image, CPU, memory, and other settings.
+- **Task/ Service**: A task is simply an instance of a task definition (i.e., a running container).
+- **Cluster**: A cluster is a group of tasks or services that run on shared infrastructure. You can run many services and tasks in the same cluster.
+
+### 3. Capacity
+
+This layer handles the infrastructure where containers are actually running. ECS supports three types of infrastructure:
+
+- **On-premises**: Containers can run on your local infrastructure.
+- **EC2 Instances**: Containers are deployed on AWS EC2 virtual machines.
+- **AWS Fargate**: A serverless option where AWS handles all the infrastructure for you, so you only focus on your containers.
+
+![imgur.png](https://i.imgur.com/tNBbZlD.png)
 
 ### EC2 Launch Type
 
