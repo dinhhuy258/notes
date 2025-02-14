@@ -6,36 +6,55 @@ Amazon Simple Queue Service (SQS) is a message queuing service that can help us 
 
 ### Standard Queue
 
-- Unlimited throughput, unlimited number of messages in queue
-- Default retention of messages: 4 days, maximum of 14 days
-- Low latency 
-- Limitation of 256KB per message sent
-- Can have duplicate message (at least once delivery)
-- Can have out of orders messages
+A Standard Queue in Amazon SQS provides a flexible messaging service with the following key characteristics:
+
+- **Unlimited Throughput**: There is no limit on the number of messages or the rate at which messages can be sent or received.
+- **Message Retention**: Default retention period: 4 days.
+- **Maximum retention period**: 14 days.
+- **Low Latency**: Standard queues offer low latency for message delivery, typically in the millisecond range.
+- **Message Size Limitation**: Each message can be up to 256 KB in size.
+- **At-Least-Once Delivery**: Messages are guaranteed to be delivered at least once, but duplicates may occur.
+- **Out-of-Order Delivery**: Messages may not always be delivered in the order they were sent.
+
+This queue type is suitable for scenarios where high throughput and availability are critical, and occasional duplicate or out-of-order messages are acceptable.
 
 ### FIFO queue
 
-FIFO queues have essentially the same features as standard queues, but provide the added benefits of supporting **ordering** and **exactly-once** processing and ensure that the order in which messages are sent and received is strictly preserved.
+FIFO (First-In-First-Out) queues provide the same core features as standard queues, with added benefits:
 
-- Limited throughput: 300 msg/s without batching, 3000 msg/s with batching
-- Exactly once
-- Ordering
+- **Strict Message Ordering**: Ensures that messages are sent and received in the exact order they are queued.
+- **Exactly-Once Processing**: Guarantees that each message is processed only once, without duplicates.
+
+**Key Characteristics**:
+
+- **Limited Throughput**:
+  - 300 messages/second without batching.
+  - 3,000 messages/second with batching.
+- **Ordering**: Messages are processed in the same sequence in which they are sent.
+- **Message Uniqueness**: FIFO queues ensure that duplicate messages are not delivered within a 5-minute deduplication window.
 
 **Deduplication**
 
-- De-duplication interval is 5 minutes
-- Two de-duplication method:
+FIFO queues prevent duplicate message delivery within a **5-minute deduplication** interval. There are two deduplication methods:
 
-+ Content-based de-duplication (SHA-256 hash of the message body)
-+ Explicitly provide a message 
+- Content-Based Deduplication: Uses a SHA-256 hash of the message body to automatically detect duplicates.
+- Explicit Deduplication: You can explicitly provide a `MessageDeduplicationId` for each message.
+
+> [!NOTE]  
+> When using JSON-encoded messages, deduplication may be affected if the ordering of fields in the JSON changes, even though the content remains the same. AWS treats such messages as different because the SHA-256 hash is computed on the raw message body.
 
 **Message Group ID**
 
-The tag indicates whether or not a message belongs to a particular message group. Messages from the same message group are always handled one by one, in the sequence in which they were received (however, messages that belong to different message groups might be processed out of order).
+The Message Group ID tag indicates if a message belongs to a specific group:
 
-![](https://user-images.githubusercontent.com/17776979/203588989-9a881daf-584c-4023-9f2f-d81b17e639ea.png) 
+- Messages within the same group are processed one-by-one, preserving strict order.
+- Messages in different groups can be processed independently and in parallel, potentially out of order.
 
-For SQS FIFO, if you don't use a Group ID, message are consumed in the order they are sent, **with only one consumer**
+Using Message Group IDs allows parallel processing of multiple message groups while still ensuring strict ordering within each group. This improves throughput and scalability by enabling more efficient use of resources, as different consumers can handle different message groups concurrently.
+
+If no Message Group ID is provided, all messages are handled in the order they are sent, with only one consumer processing them.
+
+![](https://user-images.githubusercontent.com/17776979/203588989-9a881daf-584c-4023-9f2f-d81b17e639ea.png)
 
 ## Features of SQS
 
@@ -72,7 +91,7 @@ While a consumer is processing a message in the queue, SQS temporary hides the m
 
 The default visibility timeout for a message is `30` seconds.
 
-![](https://user-images.githubusercontent.com/17776979/203337084-164448d2-e8ac-470b-b8f8-02f9564582fc.png) 
+![](https://user-images.githubusercontent.com/17776979/203337084-164448d2-e8ac-470b-b8f8-02f9564582fc.png)
 
 If the message is not processed within the visibility timeout, it will be processed twice. If visibility timeout is high, and consumer crashes, re-processing will take time; if visibility timeout is low, we may get duplicates
 
@@ -113,7 +132,7 @@ If you want to set a delay for individual messages (instead of applying a queue-
 
 ### Fanout
 
-![](https://user-images.githubusercontent.com/17776979/203590506-f8cca5b8-8389-4d1d-bc74-bd678d6eec36.png) 
+![](https://user-images.githubusercontent.com/17776979/203590506-f8cca5b8-8389-4d1d-bc74-bd678d6eec36.png)
 
 ### FIFO topic
 
@@ -125,4 +144,4 @@ If you want to set a delay for individual messages (instead of applying a queue-
 
 JSON policy used to filter messages sent to SNS topic's subscriptions
 
-![](https://user-images.githubusercontent.com/17776979/203591498-6cb5393f-f13f-4592-bf65-f7847f8eb626.png) 
+![](https://user-images.githubusercontent.com/17776979/203591498-6cb5393f-f13f-4592-bf65-f7847f8eb626.png)
