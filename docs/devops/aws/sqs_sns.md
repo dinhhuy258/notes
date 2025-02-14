@@ -124,24 +124,44 @@ If you want to set a delay for individual messages (instead of applying a queue-
 
 ## SNS
 
-- Pub/sub pattern
-- The producer only sends message to one SNS topic
-- Many subscribers can listen to that topic
-- Up to 12,500,000 subscribers per topic
-- 100,000 topics limit
+Amazon SNS is a messaging service that delivers messages from a publisher to one or more subscribers using a publish-subscribe (pub/sub) model.
 
-### Fanout
+- The producer sends messages to an SNS topic
+- Multiple subscribers can listen to messages from the same topic.
+- Maximum subscribers per topic: 12,500,000
+- Topic limit per account: 100,000
 
-![](https://user-images.githubusercontent.com/17776979/203590506-f8cca5b8-8389-4d1d-bc74-bd678d6eec36.png)
+### Standard topics
 
-### FIFO topic
+- Messages are delivered at least once, but duplicates can occur.
+- There is no guarantee of message order.
+- Duplicate messages may happen if the same message is published multiple times.
 
-- Similar features as FIFO queue
-- Can only have SQS FIFO queues as subscribers
-- Limited throughput (same as FIFO queue)
+### FIFO topics
+
+- Exactly-once delivery: Ensures each message is delivered only once to subscribers.
+- Strict ordering: Messages are delivered in the same order they are received.
+- Uses a deduplication ID to eliminate duplicates within a 5-minute window.
+
+### Subscriber endpoints in Amazon SNS
+
+Amazon SNS supports different types of endpoints for delivering messages, enabling both:
+
+- Application-to-Application (A2A) messaging (e.g., AWS Lambda, SQS, HTTP/S endpoints).
+- Application-to-Person (A2P) messaging (e.g., SMS, email, mobile push notifications).
+
+You can apply filter policies to control which messages are sent to each subscriber based on message content.
+
+![imgur.png](https://i.imgur.com/j4xo23R.png)
 
 ### Message filtering
 
-JSON policy used to filter messages sent to SNS topic's subscriptions
+By default, Amazon SNS forwards all messages published to a topic, to the topic’s subscribers. However, we can provide filter policies to ensure only a subset of the messages being published are sent to a subscriber.
 
 ![](https://user-images.githubusercontent.com/17776979/203591498-6cb5393f-f13f-4592-bf65-f7847f8eb626.png)
+
+### Fanout Pattern
+
+The fanout pattern sends a single message to multiple subscribers at the same time, enabling asynchronous processing.
+
+![](https://user-images.githubusercontent.com/17776979/203590506-f8cca5b8-8389-4d1d-bc74-bd678d6eec36.png)
