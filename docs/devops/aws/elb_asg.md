@@ -26,16 +26,6 @@ ELB acts as a single point of interaction for clients and distributes incoming t
 
 ### Types of load balancer on AWS
 
-AWS provides 4 kinds of managed load balancer:
-
-- Classic load balancer (v1 - old generation)
-  - HTTP, HTTPS, TCP, SSL
-- Application load balancer (v2 - new generation) - Layer 7
-  - HTTP, HTTPS, gRPC, WebSocket
-- Network load balancer (v2 - new generation) - Layer 4
-  - TCP (HTTP, HTTPS), TLS, UDP
-- Gateway load balancer - Layer 3
-
 1. **Application Load Balancers**: Ideal for routing HTTP/HTTPS traffic and performing advanced traffic routing and content-based routing - Layer 7
    - HTTP, HTTPS, gRPC, WebSocket
 2. **Network Load Balancers**: Designed for handling TCP/UDP traffic with high performance and low latency - Layer 4
