@@ -99,81 +99,99 @@ In the diagram above, traffic coming from the internet uses the internet gateway
 
 ### Sticky session
 
-- Its possible to implement stickiness so that the same client is always redirected to the same instance behind a load balancer.
-- This works for CLB and ALB
-- The cookie used for stickiness has an expiration date you control
-- Enabling stickiness may bring imbalance to the load over the backend EC2 instances
+Sticky sessions are a way to ensure that incoming requests, which belong to the same client session, land on the same target behind the load balancer. This feature is invaluable for applications that depend on server-side session state persistence.
 
-Use case:
+**Benefits of using sticky sessions**
 
-- Make sure the user does not lose his session data
+- **User experience consistency**: This means, across requests, the state of the sessions should be consistent, and therefore, users should always experience consistency in usage. This uniformity is key to building trust and reliability in the application, as it reassures users that their actions and data are persistently recognized across their journey.
+- **Improved performance**: This reduces the overhead of re-establishing the session state with each request and improves application performance. By streamlining session management, applications can serve users more swiftly and efficiently, leading to better overall performance and a more satisfying user experience.
+
+**Considerations for using sticky sessions**
+
+While sticky sessions offer significant benefits, they also present challenges that need careful consideration.
+
+- **Drawback**: Sticky sessions can significantly affect the scalability of an application and limit the load balancer’s ability to distribute traffic equally across all targets. This can lead to some servers being overburdened while others remain underutilized, potentially causing uneven resource consumption and performance issues across the infrastructure.
+- **Fault tolerance**: In cases where a session is sticky to a target, unless the application is designed to duplicate the session states, this could lead to lost sessions in the event of a server failure. Therefore, implementing mechanisms for session state redundancy is crucial to prevent data loss and ensure the continuity of user sessions.
+- **Session data management**: The application must be designed to manage session data effectively, especially in distributed environments where there is a need to replicate session data or centrally store it. This requires a well-thought-out strategy for session data synchronization and storage to facilitate a seamless user experience and robust data management practices.
+
+> [!NOTE]  
+> It's important to note that stickiness, or session affinity, is not supported by Network Load Balancer (NLB).
 
 ### Cross zone load balancing
 
+In Elastic Load Balancers, incoming traffic is distributed evenly across load balancer nodes in each AZ, which then forwards these requests to the targets registered within that AZ. However, Elastic Load Balancers allow us to enable cross-zone load balancing, where all load balancer nodes can distribute traffic to all available healthy targets, irrespective of their Availability Zone.
+
 ![](https://user-images.githubusercontent.com/17776979/192680716-6a54d379-bc9d-4821-8480-8a52ec532436.png)
 
-Application Load Balancer:
+**Cross-zone balancing in different load balancers**
 
-- Always on (can't be disabled)
-- No charges for inter AZ data
+Application Load Balancer (ALB)
 
-Network Load Balancer
+- Always enabled (cannot be disabled).
+- No inter-AZ data transfer charges.
 
-- Disabled by default
-- You pay charges ($) for inter AZ data if enabled
+Network Load Balancer (NLB)
 
-Classic Load Balancer
+- Disabled by default but can be enabled.
+- Enabling incurs inter-AZ data transfer charges.
 
-- Disabled by default
-- No charges for inter AZ data
+Gateway Load Balancer (GLB)
 
-### SSL/ TLS
+- Optionally enabled to distribute traffic across all AZs.
 
-Classic Load Balancer
+Classic Load Balancer (CLB)
 
-- Support only one SSL certificate
-
-Application Load Balancer
-
-- Support multiple listeners with multiple SSL certificate
-- Use Server Name Indication (SNI) to make it work
-
-Network Load Balancer
-
-- Support multiple listeners with multiple SSL certificate
-- Use Server Name Indication (SNI) to make it work
-
-### Connection draining
-
-It's a time to complete `in-flight` requests while the instance is de-registering or unhealthy.
-
-ELB will stop send new requests to the EC2 instance which is de-registering
+- Disabled by default but can be enabled.
+- No inter-AZ data transfer charges.
 
 ## Auto Scaling Groups
 
+Amazon Auto Scaling Groups (ASG) is a service provided by AWS that helps your applications automatically adjust the number of EC2 instances they are using based on the load and demand. This ensures your application has enough capacity to handle traffic while minimizing unnecessary costs.
+
 The goal of the ASG is to:
 
-- Scale out (add EC2 instances) to match an increased load
-- Scale in (remove EC2 instances) to match an decreased load
-- Ensure we have a minimum and a maximum number of EC2 instances running
-- Automatically register new instances to a load balancer
-- Re-create EC2 instance in case a previous one is terminated
+- **Scale out**: Automatically add more EC2 instances when there is increased load.
+- **Scale in**: Automatically remove EC2 instances when there is less load.
+- **Minimum and maximum instance limits**: Ensure there are always a minimum number of instances (to maintain uptime) and never more than a specified maximum (to control costs).
+- **Automatic load balancing**: Automatically register new instances with a load balancer to distribute traffic across all healthy instances.
+- **Instance replacement**: If an instance is terminated (e.g., due to failure or scaling in), ASG can automatically create a new instance to replace it.
 
-### Auto Scaling Groups attributes
+**Attributes of an Auto Scaling Group**
 
-- A launch template: contains template for creating a new EC2 instances
-- Min Size/ Max Size/ Initial Capacity
-- Scaling policy
+1. Launch Template:
 
-It's possible to scale an ASG based on CloudWatch alarm.
+   - A blueprint that defines the configuration for new EC2 instances.
+   - Includes settings such as the AMI (Amazon Machine Image), instance type, key pair, security groups, and any startup scripts.
 
-### Good metrics to scale on
+2. Minimum Size / Maximum Size / Initial Capacity
 
-- CPUUtilization: Average CPU utilization across your instances
-- RequetsCountPerTarget: to make sure the number of requests per EC2 instance is stable
-- Average Network In/ Out: if your application is network bound
-- Custom metric
+   - The minimum number of instances ASG will maintain.
+   - The maximum number of instances allowed in the group.
+   - The starting number of instances when the ASG is created.
 
-### Scaling cooldown
+3. Scaling Policies
 
-After a scaling activity happens, you are in the cooldown period (default 300 seconds), during cooldown period, ASG will not launch or terminate additional instances (to allow for metrics to stablize)
+   - Define how the ASG should respond to changes in load.
+   - Can be configured based on metrics like CPU usage, network activity, or custom metrics.
+
+ASG can also scale automatically based on CloudWatch alarms (e.g., if CPU utilization exceeds a threshold, ASG can trigger scaling).
+
+**Recommended Metrics for Scaling**
+
+- CPUUtilization: Monitors the average CPU usage across all instances in the ASG. Scaling out can occur when CPU usage is too high.
+- RequetsCountPerTarget: Ensures the number of requests per instance is stable. Useful for web applications or APIs.
+- Average Network In/ Out: Useful for applications that are network-intensive.
+- Custom metric: You can define custom metrics (e.g., queue length or memory usage) based on the unique needs of your application.
+
+**Scaling Cooldown Period**
+
+- After a scaling activity (either scaling out or scaling in), the ASG enters a cooldown period.
+- Default Cooldown: 300 seconds (5 minutes).
+- During this period, no further scaling actions will be taken to allow the system to stabilize. This helps prevent over-scaling or unnecessary actions due to temporary spikes or drops in metrics.
+
+**How It All Works Together**
+
+1. If traffic to your application increases, CloudWatch monitors metrics (e.g., high CPU usage or increased requests).
+2. ASG triggers a scale-out action and launches new EC2 instances using the launch template.
+3. New instances are automatically registered to a load balancer.
+4. When traffic decreases, ASG triggers a scale-in action and terminates excess instances.
