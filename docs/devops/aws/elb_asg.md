@@ -47,7 +47,7 @@ AWS provides 4 kinds of managed load balancer:
 
 ## Application Load Balancer
 
-ALBs are optimized for handling HTTP and HTTPS traffic. They use target groups and listener rules to determine how requests are routed.
+An Application Load Balancer operates on the application layer (the seventh layer of the OSI model) and handles HTTP/HTTPS/Web Socket requests.
 
 ### Target groups in ALB
 
@@ -75,6 +75,27 @@ Application Load Balancers use listeners, that check connection requests receive
 - **Source IP address conditions**: Rules can be created that route incoming requests based on the source IP address. This IP address must be specified in the CIDR format.
 
 ![imgur.png](https://i.imgur.com/bf1x54P.png)
+
+## Network Load Balancer
+
+Network Load Balancer (NLB) operates on the transport layer, the fourth layer of the OSI model, and is used to distribute incoming TCP and UDP traffic across multiple targets. NLB uses a single static IP address and is optimized to handle sudden and volatile traffic patterns.
+
+### Target groups in NLB
+
+Network Load Balancers support EC2 instances, private IP addresses, and Application Load Balancers as their targets. We can use on-premises servers as targets if the selected target type is IP by connecting them to the AWS cloud using AWS Direct Connect or AWS Site-to-Site VPN.
+
+Network Load Balancers can forward the requests it receives to an Application Load Balancer. Following are some use cases where ALBs are added as targets for NLBs:
+
+- **Multimedia services**: A combination of NLB and ALB can be used in multimedia services where a single endpoint is required for multiple protocols, such as HTTP for signaling and RTP to stream content.
+- **AWS PrivateLink**: An NLB can be used to create a route between clients and an ALB over AWS PrivateLink.
+
+## Gateway Load Balancer
+
+Gateway Load Balancers (GLB) operate on the network layer, the third layer of the OSI model, and allow us to maintain, scale, and deploy third-party virtual appliances, such as firewalls, intrusion detection and prevention systems, and deep packet inspection systems.
+
+![imgur.png](https://i.imgur.com/ma2EsxJ.png)
+
+In the diagram above, traffic coming from the internet uses the internet gateway to get to the GLB endpoint located in the consumer VPC. This endpoint routes this traffic to the Gateway Load Balancer, which distributes this traffic to the virtual appliance (the target of the GLB). Once the virtual appliance analyzes the traffic, it is sent back to the Gateway Load Balancer, which sends it to the application servers located in the consumer VPC.
 
 ### Sticky session
 
