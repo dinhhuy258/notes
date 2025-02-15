@@ -4,18 +4,25 @@
 
 ## Elastic Load Balancing
 
-Load balancer are servers that forwards traffic to multiple servers downstream
+ELB acts as a single point of interaction for clients and distributes incoming traffic across multiple targets (e.g., EC2 instances or IP addresses).
 
 **Why use a load balancer**
 
-- Spread load across multiple downstream instances
-- Expose a single point of access to your application
-- Seamlessly handle failures of downstream instances
-- Do regular health-check to your instances
-- Provide SSL termination (HTTPS) for your website
-- Enforce stickiness with cookies
-- High availability across zones
-- Separate public traffic from private traffic
+- **Distribute Traffic**: Spread load evenly across multiple instances.
+- **Single Access Point**: Expose a single endpoint for your app.
+- **Fault Tolerance**: Automatically handle failures of backend instances.
+- **Health Checks**: Monitor the health of instances and route traffic only to healthy targets.
+- **SSL Termination**: Manage HTTPS traffic with centralized SSL/TLS certificates.
+- **Sticky Sessions**: Keep sessions consistent using cookies.
+- **High Availability**: Distribute traffic across multiple availability zones.
+- **Public/Private Traffic Separation**: Manage internal and external traffic separately.
+
+**How ELB Work**
+
+1. The client sends a request to the load balancer.
+2. The listeners in your load balancer receive requests matching the protocol and port that you configure (e.g., HTTPS on port 443)..
+3. The receiving listener evaluates the incoming request against the rules you specify, and if applicable, routes the request to the appropriate target group. You can use an HTTPS listener to offload the work of TLS encryption and decryption to your load balancer.
+4. Healthy targets in one or more target groups receive traffic based on the load-balancing algorithm, and the routing rules you specify in the listener.
 
 ### Types of load balancer on AWS
 
@@ -29,7 +36,45 @@ AWS provides 4 kinds of managed load balancer:
   - TCP (HTTP, HTTPS), TLS, UDP
 - Gateway load balancer - Layer 3
 
-**Note**: when using ALB, the application servers don't see the IP of the client directly. The true IP of the client is inserted in the header `X-Forwarded-For`
+1. **Application Load Balancers**: Ideal for routing HTTP/HTTPS traffic and performing advanced traffic routing and content-based routing - Layer 7
+   - HTTP, HTTPS, gRPC, WebSocket
+2. **Network Load Balancers**: Designed for handling TCP/UDP traffic with high performance and low latency - Layer 4
+3. **Gateway Load Balancers**: Used for deploying third-party virtual appliances, such as firewalls, intrusion detection systems, and other network appliances - Layer 3
+4. **Classic Load Balancers**: An older type of load balancer that is still available for use, primarily for applications not yet migrated to the newer load balancer types.
+
+> [!NOTE]  
+> When using ALB, the application servers don't see the IP of the client directly. The true IP of the client is inserted in the header `X-Forwarded-For`
+
+## Application Load Balancer
+
+ALBs are optimized for handling HTTP and HTTPS traffic. They use target groups and listener rules to determine how requests are routed.
+
+### Target groups in ALB
+
+Target groups are used to define where an ALB routes the incoming requests from a client. While creating a target group, we define the type of targets, the protocols, and the ports. ALBs support EC2 instances, IP addresses, and Lambda functions as its target types, HTTP and HTTPS as its protocols, and ports 1-65535.
+
+![imgur.png](https://i.imgur.com/fj1EGg3.png)
+
+### Routing algorithms in ALB
+
+Application Load Balancers support various routing algorithms to distribute incoming requests across multiple target groups.
+
+- **Round robin**: This is the default algorithm used by ALBs and distributes incoming requests evenly across multiple targets in a sequential order.
+- **Least outstanding requests**: Here, incoming requests are sent to the target with the least number of requests whose status is in progress.
+- **Weighted random**: In this algorithm, weights are assigned randomly to requests that evenly distribute requests across targets in a random order.
+
+### Listeners in ALB
+
+Application Load Balancers use listeners, that check connection requests received from the client. We define rules in listeners that determine how our load balancer routes the requests it receives. A single listener can have multiple rules and are evaluated according to the priority we set up. Following are the conditions we can define in rules for our listeners:
+
+- **HTTP header conditions**: These rules are created to handle client requests based on their HTTP headers.
+- **HTTP request method conditions**: These rules are created to handle client requests based on their HTTP request methods.
+- **Host conditions**: Rules can be created to route requests based on the name of the host.
+- **Path conditions**: Path conditions in the URL of the request can be used to create rules to route requests to different targets.
+- **Query string conditions**: Key/value pairs in the query string of the incoming request can be used to create rules to route requests.
+- **Source IP address conditions**: Rules can be created that route incoming requests based on the source IP address. This IP address must be specified in the CIDR format.
+
+![imgur.png](https://i.imgur.com/bf1x54P.png)
 
 ### Sticky session
 
