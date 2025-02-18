@@ -27,6 +27,8 @@ Once requested and served from an edge location, objects stay in the cache until
 
 ## Origins
 
+Origins serve as the source locations for the content distributed through CloudFront. These can be:
+
 - S3 bucket (can be private, need to setup Origin Access Identity + S3 bucket policy)
 - S3 website
 - Application Load Balancer (ALB must be public, EC2 can be private)
@@ -55,18 +57,90 @@ S3 Region Replication
 - Read only
 - Great for dynamic content that needs to be available at low-latency in few regions
 
-## CloudFront Caching
+## TTL and Invalidations
 
-Reducing the number of requests to our origin server directly is one of the goals of using CloudFront. Due to CloudFront caching, more objects are served from CloudFront edge locations, which are nearer to users. This reduces latency and minimizes the load on our origin server.
+CloudFront’s architecture is centered around caching content at edge locations to enhance content delivery performance and reduce latency for end users. However, this caching mechanism introduces the risk of serving stale data if updates occur at the origin.
 
-We can cache on multiple things:
+### Time-to-Live (TTL)
 
-- Headers
-- Session Cookies
-- Query string parameters
+Time-to-Live (TTL) refers to the duration for which an object is considered valid and cached at edge locations. When an object’s TTL expires, CloudFront initiates an origin fetch to retrieve the latest version of the object from the origin server. If the object has been updated, CloudFront fetches the updated content from the origin server and refreshes its cache. If the object hasn’t been updated, CloudFront continues serving the cached content. This ensures that users receive up-to-date content, promoting a seamless browsing experience.
 
-![](https://user-images.githubusercontent.com/17776979/203322627-f72c5e9a-5183-469b-a303-96e3c89bc30a.png)
+CloudFront sets a TTL of 24 hours for cached objects by default. However, users can customize TTL values to align with their specific caching requirements.
 
-In the diagram, we can see that when a client makes a request to the CloudFront Edge Locations the cache will be checked on the basics of the values of headers and the cookies and the query string parameters. And then the cache has an expiry based on the time to live in the cache, and if the value is not in the cache, then the query, or the entire HTTPS request, is forwarded directly to the origin, and then the cache is filled by query response.
+In addition to this, CloudFront honors TTL directives specified by Cache-Control and Expires headers, allowing origin servers to exert control over caching behavior.
 
-This page shows us how to optimize caching in [CloudFront](https://docs.amazonaws.cn/en_us/AmazonCloudFront/latest/DeveloperGuide/ConfiguringCaching.html)
+- **Cache-Control header**: The Cache-Control header includes directives instructing CloudFront on caching and serving content. Directives such as `max-age` specify the maximum amount of time (in seconds) that an object should be considered fresh and cached. CloudFront interprets this directive to set the TTL for cached objects accordingly.
+- **Expires header**: The Expires header specifies an exact date and time when an object’s cached version should be considered stale and expire. CloudFront uses this information to determine the TTL for the cached object, ensuring it remains cached until the specified expiration date and time.
+
+## How CloudFront works
+
+Consider a scenario where Bob and Alice, two users in different regions, aim to access a popular video hosted in an Amazon S3 bucket. Bob resides near an edge location in Italy, while Alice is closer to an edge location in Spain, but they have the same regional cache.
+
+![imgur.png](https://i.imgur.com/KxizDYA.png)
+
+**Video available at edge location**: When Bob initiates a request to view the video, CloudFront checks if the content is cached in the edge location nearest to him. If the video is cached locally, Bob experiences a `cache hit`, resulting in immediate access to the content with minimal latency.
+
+![imgur.png](https://i.imgur.com/S58JxWQ.png)
+
+**Video available at regional edge location**: On the other hand, if the video is not cached in Bob’s nearby edge location, CloudFront triggers a `cache miss`. In this case, CloudFront retrieves the video from the regional edge cache, a larger cache shared by multiple edge locations within the same geographic area. If the video is found in the regional edge cache, it is promptly delivered to Bob’s edge location, ensuring efficient content delivery despite the cache miss.
+
+![imgur.png](https://i.imgur.com/kAuaojX.png)
+
+**Video not cached at edge or regional edge location**: However, if the video is not available in the regional edge cache, CloudFront performs an origin fetch, retrieving the video directly from the S3 bucket, the content’s origin. Once fetched, the video is stored in the regional edge cache for future requests, optimizing content delivery for subsequent users in the same geographic region.
+
+![imgur.png](https://i.imgur.com/n0bSVDK.png)
+
+**Future fetch requests**: When Alice initiates a request to fetch the same video, CloudFront can retrieve it from the regional edge cache.
+
+![imgur.png](https://i.imgur.com/VkwTnUJ.png)
+
+## Functions at Edge
+
+Functions at Edge (FaE) are lightweight serverless functions that execute at the edge locations of a content delivery network (CDN) like AWS CloudFront. These functions enable developers to execute code in proximity to end-users, and we can use these functions for several purposes:
+
+- **Implementing advanced HTTP logic**: CloudFront offers native features like redirecting from HTTP to HTTPS and routing to different origins based on request paths. Edge functions extend CloudFront’s capabilities, enabling the implementation of advanced HTTP logic such as cache key normalization, URL rewriting, and HTTP CRUD operations.
+- **Reducing application latency**: Offloading certain application logic from the origin to the edge leverages caching (e.g., A/B testing) and executes closer to users (e.g., HTTP redirections, URL shortening, HTML rendering). In microservices or micro-frontend architectures, edge functions centralize common logic (e.g., Authorization & Authentication) at the application entry point, streamlining development and reducing redundancy
+- **Protecting the application perimeter**: Edge functions enforce security controls like access control and advanced geoblocking at the edge, minimizing the attack surface of the origin and optimizing scalability.
+- **Request routing**: Edge functions enable routing each HTTP request to specific origins based on application logic, facilitating scenarios such as advanced failover, origin load balancing, multi-region architectures, migrations, and application routing.
+
+
+CloudFront offers two types of edge functions: `CloudFront Functions` and `Lambda@Edge`. `CloudFront Functions` offer sub-millisecond startup times and immediate scalability to handle millions of requests per second, making them ideal for lightweight tasks such as cache normalization, URL rewriting, request manipulation, and authorization.
+
+On the other hand, `Lambda@Edge` extends AWS Lambda functionality, distributing execution across Regional Edge Caches. While `Lambda@Edge` provides more computing power and advanced features like external network calls, it has higher costs and latency overhead.
+
+### Lambda@Edge
+
+Lambda@Edge is a powerful feature of CloudFront that enables the execution of lightweight Lambda functions at CloudFront edge locations.
+
+**Limitations of Lambda@Edge**
+
+- **Supported runtimes**: Lambda@Edge supports only Node.js and Python runtimes, limiting the programming languages available for function development.
+- **No VPC access**: Lambda@Edge functions execute within the AWS Public Zone, so they lack access to Virtual Private Cloud (VPC)-based resources, which might restrict certain use cases requiring VPC connectivity.
+- **No Lambda layers**: Lambda@Edge does not support Lambda layers, limiting the ability to reuse common code across multiple functions.
+- **Execution limits**: Lambda@Edge functions have distinct size and execution time limits compared to standard Lambda functions, imposing constraints on memory allocation and function timeout.
+
+**Use cases for Lambda@Edge**
+
+- **Dynamic content manipulation**: Lambda@Edge allows us to execute serverless functions at AWS edge locations, enabling dynamic content manipulation closer to the end user.
+- **Content personalization**: We can use Lambda@Edge to customize content based on user requests or device characteristics, such as geolocation or user-agent.
+- **Access control and authentication**: Implement access control policies, authentication mechanisms, or authorization logic at the edge to restrict access to resources or content.
+- **A/B testing and experimentation**: Conduct A/B testing or experimentation by routing requests to different origins or serving different versions of content based on predefined criteria.
+
+### CloudFront functions
+
+CloudFront Functions are lightweight serverless functions that run at the edge of the AWS CloudFront global network. They enable developers to customize and manipulate content delivery at the edge locations, allowing for real-time processing of requests as they are received and responses as they are generated. This helps optimize content delivery, implement security measures, and personalize content without provisioning or managing additional infrastructure.
+
+**Limitations of CloudFront Functions**
+
+- **Limited language support**: Currently, CloudFront Functions support only JavaScript (Node.js) as the programming language, limiting language choice for developers.
+- **Execution time limit**: Functions have a maximum execution time limit of 5 seconds, which may restrict the complexity of operations that can be performed within a single function.
+- **Limited libraries and dependencies**: CloudFront Functions have limited access to external libraries and dependencies compared to traditional serverless platforms like AWS Lambda, which may impact the ability to reuse existing code or libraries.
+- **Limited debugging tools**: Debugging CloudFront Functions can be challenging, as limited debugging tools and logging capabilities are available compared to other serverless platforms.
+- **Statelessness**: Functions are stateless by design, meaning they do not maintain state between invocations, which may require developers to implement additional mechanisms for state management if needed.
+
+**Use cases for CloudFront functions**
+
+- **Lightweight content transformation**: CloudFront Functions are lightweight JavaScript functions that execute at the edge locations, primarily for simple content transformations or modifications.
+- **Header manipulation**: Modify request or response headers, such as adding custom headers, removing sensitive headers, or altering caching directives.
+- **URL rewriting and redirection**: Implement URL rewriting rules, URL redirections, or URL-based routing logic to customize the behavior of content delivery.
+- **Content security policies**: Enforce security policies, such as cross-origin resource sharing (CORS), content security policies (CSP), or cookie attributes, to enhance security and mitigate common web vulnerabilities.
