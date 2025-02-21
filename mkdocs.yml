@@ -64,13 +64,6 @@ nav:
   - Distributed System:
     - HTTP: distributed-system/http.md
     - Causal Consistency: distributed-system/causal_consistency.md
-    - Security:
-      - Web Security: distributed-system/security/web_security.md
-      - JWT: distributed-system/security/jwt.md
-      - JWE: distributed-system/security/jwe.md
-      - OAuth2: distributed-system/security/oauth2.md
-      - OpenId Connect: distributed-system/security/openid_connect.md
-      - CORS: distributed-system/security/cors.md
     - WebRTC:
       - WebRTC: distributed-system/webrtc/webrtc.md
       - Signaling: distributed-system/webrtc/signaling.md
@@ -187,4 +180,11 @@ nav:
       - Files: devops/terraform/files.md
       - Modules: devops/terraform/modules.md
       - Terragrunt: devops/terraform/terragrunt.md
+  - Security:
+    - Web Security: security/web_security.md
+    - JWT: security/jwt.md
+    - JWE: security/jwe.md
+    - OAuth2: security/oauth2.md
+    - OpenId Connect: security/openid_connect.md
+    - CORS: security/cors.md
   - Blogs: blogs/index.md
