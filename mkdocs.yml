@@ -90,14 +90,14 @@ nav:
     - Service Mesh: distributed-system/service_mesh.md
   - Database:
     - PostgreSQL:
-      - How Postgres Stores Rows: database/postgres/how_postgres_stores_rows.md
-      - Concurrency Control: database/postgres/concurrency_control.md
-      - Vacuum Processing: database/postgres/vacuum_processing.md
-      - Heap Only Tuple and Index-Only Scans: database/postgres/heap_only_tuple_and_index_only_scans.md
-      - Buffer Manager: database/postgres/buffer_manager.md
+      # - How Postgres Stores Rows: database/postgres/how_postgres_stores_rows.md
+      # - Concurrency Control: database/postgres/concurrency_control.md
+      # - Vacuum Processing: database/postgres/vacuum_processing.md
+      # - Heap Only Tuple and Index-Only Scans: database/postgres/heap_only_tuple_and_index_only_scans.md
+      # - Buffer Manager: database/postgres/buffer_manager.md
       - Write Ahead Logging: database/postgres/write_ahead_logging.md
       - Streaming Replication: database/postgres/streaming_replication.md
-      - Query Processing: database/postgres/query_processing.md
+      # - Query Processing: database/postgres/query_processing.md
       - Bitmap Index Scan: database/postgres/bitmap_index_scan.md
       - Brin Index: database/postgres/brin_index.md
       - Range Types: database/postgres/range_types.md
@@ -134,6 +134,7 @@ nav:
     - Understanding socket and port in TCP: networking/understanding_socket_and_port_in_tcp.md
     - SSH Tunnel: networking/ssh_tunnel.md
     - Install Certbot on Debian with Cloudflare DNS: networking/install_certbot_on_debian.md
+    - Deep Packet Inspection: 
     - Home Network:
       - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
       - Setup Wireguard VPN on Mikrotik router: networking/home_network/setup_wireguard_vpn_on_mikrotik_router.md
