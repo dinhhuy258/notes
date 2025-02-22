@@ -83,6 +83,6 @@ Once DPI completes its analysis, the system takes appropriate actions:
 
 ## Reference
 
-[Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_inspection)
-[Deep packet inspection (DPI)](https://www.techtarget.com/searchnetworking/definition/deep-packet-inspection-DPI)
-[Unraveling the Secrets of Deep Packet Inspection: Decoding Network Traffic, Security, and Optimization](https://medium.com/@mustafabakla/unraveling-the-secrets-of-deep-packet-inspection-decoding-network-traffic-security-and-4260703366ff)
+- [Deep packet inspection](https://en.wikipedia.org/wiki/Deep_packet_inspection)
+- [Deep packet inspection (DPI)](https://www.techtarget.com/searchnetworking/definition/deep-packet-inspection-DPI)
+- [Unraveling the Secrets of Deep Packet Inspection: Decoding Network Traffic, Security, and Optimization](https://medium.com/@mustafabakla/unraveling-the-secrets-of-deep-packet-inspection-decoding-network-traffic-security-and-4260703366ff)
