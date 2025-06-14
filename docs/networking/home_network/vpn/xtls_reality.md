@@ -48,4 +48,4 @@ sequenceDiagram
 ```
 
 > [!NOTE]  
-> The SNI whitelist functions only with unencrypted SNI; if a user employs TLS 1.3 and ESNI, it will no longer work. In China, newer HTTPS technologies such as TLS 1.3 and ESNI are blocked, as noted [here](https://hide.me/en/blog/china-now-blocking-https-traffic-using-tls-1-3-and-esni/).
+> SNI whitelisting only works when the SNI is transmitted in plaintext. If a client uses TLS 1.3 with ESNI (Encrypted SNI) or ECH (Encrypted Client Hello), the SNI field is encrypted and cannot be inspected by intermediaries, rendering SNI whitelisting ineffective. In response, some censorship systems (such as the Great Firewall of China) block all connections using ESNI or ECH to maintain control over accessible domains
