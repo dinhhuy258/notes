@@ -29,6 +29,7 @@ extra:
 
 # Extensions
 markdown_extensions:
+  - admonition
   - pymdownx.highlight:
       linenums: true
   - pymdownx.superfences:
