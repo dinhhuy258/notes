@@ -49,3 +49,37 @@ sequenceDiagram
 
 > [!NOTE]  
 > SNI whitelisting only works when the SNI is transmitted in plaintext. If a client uses TLS 1.3 with ESNI (Encrypted SNI) or ECH (Encrypted Client Hello), the SNI field is encrypted and cannot be inspected by intermediaries, rendering SNI whitelisting ineffective. In response, some censorship systems (such as the Great Firewall of China) block all connections using ESNI or ECH to maintain control over accessible domains
+
+## TLS Handshake
+
+1. Client sends ClientHello (plaintext)
+
+- Includes the client's key share for key exchange (e.g., ECDHE public value) and SNI.
+
+2. Server sends ServerHello (plaintext)
+
+- Includes the server's key share for key exchange (e.g., ECDHE public value).
+
+3. Both client and server compute the shared secret (pre-master secret)
+
+- Using their own private key and the other party's public key, both sides compute the same pre-master secret via ECDHE
+
+4. Both sides create the master key and session keys
+
+- The client and server use the shared secret from the key exchange, combined with random numbers sent earlier, to generate the main encryption keys using a secure algorithm (HKDF).
+- This step happens before any encrypted handshake messages are sent.
+
+5. Server sends encrypted handshake messages
+
+- Server sends EncryptedExtensions, Certificate, CertificateVerify, and Finished messages, all encrypted with the handshake keys.
+
+6. Client verifies server and sends its own encrypted messages
+
+- Client verifies server certificate and Finished message, and (if requested) sends its own Certificate and CertificateVerify, then sends its Finished message—all encrypted.
+
+7. Subsequent handshake messages are encrypted
+
+- Both sides use the derived session keys to encrypt all further application data.
+
+> [!NOTE]  
+> The preMasterKey is only used for internal calculation of the master key and session keys; it is not used to encrypt, authenticate, or exchange any data directly over the network.
