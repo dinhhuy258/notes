@@ -52,6 +52,8 @@ sequenceDiagram
 
 ## TLS Handshake
 
+![picsur.png](https://img.dinhhuy258.dev/i/4fb00d49-1c3d-4151-b664-efc896df5ee1.jpg)
+
 1. Client sends ClientHello (plaintext)
 
 - Includes the client's key share for key exchange (e.g., ECDHE public value) and SNI.
