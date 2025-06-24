@@ -195,12 +195,101 @@ if err := uConn.HandshakeContext(ctx); err != nil {
 
 If the connection isn't verified (meaning it's likely being inspected), the function launches a sophisticated anti-detection mechanism:
 
-1. **HTTP/2 Client Setup** (lines 162-169):
+1. **HTTP/2 Client Setup**
+
+```go
+client := &http.Client{
+    Transport: &http2.Transport{
+        DialTLSContext: func(ctx context.Context, network, addr string, cfg *gotls.Config) (net.Conn, error) {
+            errors.LogInfo(ctx, fmt.Sprintf("REALITY localAddr: %v\tDialTLSContext\n", localAddr))
+            return uConn, nil
+        },
+    },
+}
+```
 
    - Creates an HTTP/2 client that reuses the TLS connection
    - This simulates normal browser behavior
 
-2. **Web Crawling Simulation** (lines 170-246):
+2. **Web Crawling Simulation**
+
+```go
+prefix := []byte("https://" + uConn.ServerName)
+maps.Lock()
+if maps.maps == nil {
+    maps.maps = make(map[string]map[string]struct{})
+}
+paths := maps.maps[uConn.ServerName]
+if paths == nil {
+    paths = make(map[string]struct{})
+    paths[config.SpiderX] = struct{}{}
+    maps.maps[uConn.ServerName] = paths
+}
+firstURL := string(prefix) + getPathLocked(paths)
+maps.Unlock()
+get := func(first bool) {
+    var (
+        req  *http.Request
+        resp *http.Response
+        err  error
+        body []byte
+    )
+    if first {
+        req, _ = http.NewRequest("GET", firstURL, nil)
+    } else {
+        maps.Lock()
+        req, _ = http.NewRequest("GET", string(prefix)+getPathLocked(paths), nil)
+        maps.Unlock()
+    }
+    if req == nil {
+        return
+    }
+    req.Header.Set("User-Agent", fingerprint.Client) // TODO: User-Agent map
+    if first && config.Show {
+        errors.LogInfo(ctx, fmt.Sprintf("REALITY localAddr: %v\treq.UserAgent(): %v\n", localAddr, req.UserAgent()))
+    }
+    times := 1
+    if !first {
+        times = int(crypto.RandBetween(config.SpiderY[4], config.SpiderY[5]))
+    }
+    for j := 0; j < times; j++ {
+        if !first && j == 0 {
+            req.Header.Set("Referer", firstURL)
+        }
+        req.AddCookie(&http.Cookie{Name: "padding", Value: strings.Repeat("0", int(crypto.RandBetween(config.SpiderY[0], config.SpiderY[1])))})
+        if resp, err = client.Do(req); err != nil {
+            break
+        }
+        defer resp.Body.Close()
+        req.Header.Set("Referer", req.URL.String())
+        if body, err = io.ReadAll(resp.Body); err != nil {
+            break
+        }
+        maps.Lock()
+        for _, m := range href.FindAllSubmatch(body, -1) {
+            m[1] = bytes.TrimPrefix(m[1], prefix)
+            if !bytes.Contains(m[1], dot) {
+                paths[string(m[1])] = struct{}{}
+            }
+        }
+        req.URL.Path = getPathLocked(paths)
+        if config.Show {
+            errors.LogInfo(ctx, fmt.Sprintf("REALITY localAddr: %v\treq.Referer(): %v\n", localAddr, req.Referer()))
+            errors.LogInfo(ctx, fmt.Sprintf("REALITY localAddr: %v\tlen(body): %v\n", localAddr, len(body)))
+            errors.LogInfo(ctx, fmt.Sprintf("REALITY localAddr: %v\tlen(paths): %v\n", localAddr, len(paths)))
+        }
+        maps.Unlock()
+        if !first {
+            time.Sleep(time.Duration(crypto.RandBetween(config.SpiderY[6], config.SpiderY[7])) * time.Millisecond) // interval
+        }
+    }
+}
+get(true)
+concurrency := int(crypto.RandBetween(config.SpiderY[2], config.SpiderY[3]))
+for i := 0; i < concurrency; i++ {
+    go get(false)
+}
+```
 
    - Maintains a map of discovered URLs for each server
    - Performs GET requests to simulate real browsing
@@ -209,6 +298,7 @@ If the connection isn't verified (meaning it's likely being inspected), the func
    - Sets realistic headers including User-Agent and Referer
 
 3. **Realistic Browsing Behavior**:
+
    - Random cookie padding
    - Multiple concurrent requests
    - Link following with proper referer headers
