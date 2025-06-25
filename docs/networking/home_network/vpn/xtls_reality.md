@@ -208,8 +208,8 @@ client := &http.Client{
 }
 ```
 
-   - Creates an HTTP/2 client that reuses the TLS connection
-   - This simulates normal browser behavior
+- Creates an HTTP/2 client that reuses the TLS connection
+- This simulates normal browser behavior
 
 2. **Web Crawling Simulation**
 
@@ -291,11 +291,11 @@ for i := 0; i < concurrency; i++ {
 }
 ```
 
-   - Maintains a map of discovered URLs for each server
-   - Performs GET requests to simulate real browsing
-   - Extracts links from responses to build a realistic browsing pattern
-   - Uses random delays and multiple concurrent requests
-   - Sets realistic headers including User-Agent and Referer
+- Maintains a map of discovered URLs for each server
+- Performs GET requests to simulate real browsing
+- Extracts links from responses to build a realistic browsing pattern
+- Uses random delays and multiple concurrent requests
+- Sets realistic headers including User-Agent and Referer
 
 3. **Realistic Browsing Behavior**:
 
@@ -303,6 +303,26 @@ for i := 0; i < concurrency; i++ {
    - Multiple concurrent requests
    - Link following with proper referer headers
    - Random timing intervals
+
+### Server
+
+The key to the [REALITY](https://github.com/XTLS/REALITY/) server processing TLS handshake is func Server in the file `tls.go`.
+
+1. **Client Hello Analysis**: Reads and validates the TLS Client Hello message
+2. **Key Exchange**: Uses X25519 key exchange with the client's key share
+3. **Session ID Decryption**:
+   - Derives an authentication key using HKDF
+   - Decrypts the client's session ID using AES-GCM
+   - Extracts client metadata (version, timestamp, short ID)
+4. **Validation**: Checks if the client meets configured criteria:
+   - Client version within allowed range
+   - Timestamp within acceptable time difference
+   - Valid short ID
+
+Based on authentication results:
+
+- **Valid Client**: Processes the TLS handshake and establishes a secure tunnel
+- **Invalid Client**: Forwards traffic directly to the target (appears as normal traffic)
 
 ## References
 
