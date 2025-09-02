@@ -192,6 +192,7 @@ nav:
       - Files: devops/terraform/files.md
       - Modules: devops/terraform/modules.md
       - Terragrunt: devops/terraform/terragrunt.md
+    - Automatically updating git submodules using GitHub Actions: devops/github-auto-update-submodules.md
   - Security:
     - Web Security: security/web_security.md
     - JWT: security/jwt.md
