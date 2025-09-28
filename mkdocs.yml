@@ -107,6 +107,7 @@ nav:
       - Bitmap Index Scan: database/postgres/bitmap_index_scan.md
       - Brin Index: database/postgres/brin_index.md
       - Range Types: database/postgres/range_types.md
+      - Advisory Locks: database/postgres/advisory_locks.md
     - DynamoDB:
       - Data Model: database/dynamodb/data_model.md
       - Read & Write Data: database/dynamodb/read_write_data.md
