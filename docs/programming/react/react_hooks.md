@@ -112,14 +112,6 @@ function handleClick() {
 }
 ```
 
-**🔍 Comparison: useRef vs useState vs let**
-
-| Type           | Persists after re-render? |
-| -------------- | ------------------------- |
-| `let` variable | ❌ No                     |
-| `useRef`       | ✅ Yes                    |
-| `useState`     | ✅ Yes                    |
-
 ## useMemo
 
 - Memoizes expensive computations.
