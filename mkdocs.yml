@@ -169,6 +169,7 @@ nav:
       - VPC: devops/aws/vpc.md
       - NACL and Security Groups: devops/aws/nacl-and-security-groups.md
       - AWS Secrets Manager vs Parameter Store vs KMS: devops/aws/secret_manager_vs_parameter_store_vs_kms.md
+      - AWS AppConfig: devops/aws/app_config.md
       - CloudWatch vs CloudTrail: devops/aws/cloud_watch_vs_cloud_trail.md
       - Configuring API Gateway to SQS Queue Using Terraform: devops/aws/terraform_api_gateway_to_sqs.md
       - Deploying a React Application on AWS Using Terraform: devops/aws/terraform_deploy_react_app.md
