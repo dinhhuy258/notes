@@ -1,0 +1,103 @@
+# Proxmox Networking
+
+## Network Interfaces
+
+A network interface is a thing on Linux that can send/receive network traffic. It can be:
+
+- Physical: a real NIC/port
+- Virtual: created by software (bridge, VLAN interface, VM tap device, container veth, etc.)
+
+> [!NOTE]
+> A network interface is like a **mailbox slot**. Each slot has its own label so the post office (Linux) knows which slot to deliver packets to.
+
+Modern Linux uses predictable network interface names (instead of old eth0, eth1, ...). These names are based on hardware location to make them stable across reboots and hardware changes.
+
+Example: `enp1s0`
+
+- en = Ethernet (wired networking)
+- p1 = device is on PCI bus path `1` (hardware location)
+- s0 = slot/function index at that PCI location
+
+**Common prefixes**
+
+| Prefix | Interface type                          |
+| ------ | --------------------------------------- |
+| en     | Wired Ethernet                          |
+| wl     | WLAN, wireless local area network, WiFi |
+| lo     | Loopback adapter.                       |
+
+> [!NOTE]
+> Loopback adapter is used for connections that should not be routed outside one computer.
+> Every computer calls itself "localhost", which resolves to IP address 127.0.0.1.
+> IPv4 local addresses are 127.0.0.1/8, and IPv6 local addresses are `::1/128`.
+
+**Examples of common network interface names**
+
+| Interface       | Explanation                                                                     |
+| --------------- | ------------------------------------------------------------------------------- |
+| wlp4s0          | WiFi card                                                                       |
+| enp1s0          | Wired ethernet card                                                             |
+| lo              | Loopback adapter                                                                |
+| enx738899738899 | Ethernet interface named by MAC address (very common for USB Ethernet adapters) |
+
+To view your interfaces, use the command `ip link show`. This lists all interfaces, their status (up/down), and MAC addresses.
+
+## Linux Bridges in Proxmox
+
+A Linux bridge (often named vmbr0, vmbr1, etc., in Proxmox) is a software-based Layer 2 (Ethernet) switch that runs inside your Proxmox host. It connects multiple network devices or interfaces together, allowing them to communicate as if they were on the same physical network segment.
+
+- Physical NIC (e.g., enp1s0): Acts as the uplink cable connecting to your real router or switch.
+- Bridge (e.g., vmbr0): A virtual switch inside Proxmox that multiple devices can plug into.
+- VMs or LXCs (Containers): Virtual devices connected to this switch, like computers plugged into a physical switch.
+
+The bridge enables efficient sharing of physical network resources among your virtual guests (VMs and containers).
+
+**What's Happening Under the Hood**
+
+When you attach a VM to a bridge like `vmbr0`:
+
+- Proxmox creates a virtual "port" called a TAP device (e.g., tap100i0 for VM ID 100).
+- For LXCs, it creates a veth pair (e.g., veth100i0 on the host side, connected to the container).
+- These virtual ports are added to the bridge, just like plugging Ethernet cables into switch ports.
+- The bridge forwards Ethernet frames (Layer 2 packets) based on MAC addresses, learning where devices are located (similar to how a real switch operates with a MAC address table).
+
+You can inspect bridges with `ip link show type bridge`.
+
+**Why Use a Bridge in Proxmox?**
+
+1. Guests on Your Real LAN:
+
+- VMs and containers can get IPs directly from your router's DHCP server, just like physical devices.
+- They're reachable from other LAN devices (e.g., your laptop can ping a VM).
+- Full internet access without extra configuration.
+
+2. Resource Sharing:
+
+- Multiple guests share one (or more) physical NICs efficiently.
+- Without a bridge, assigning a physical NIC to a single guest (passthrough) wastes resources, or you'd need complex routing setups.
+
+3. Flexibility:
+
+- Supports VLANs for network segmentation (e.g., tag traffic with VLAN IDs).
+- Can bond multiple physical NICs for redundancy or higher bandwidth (using Linux bonding).
+
+**Typical Proxmox Bridge Setup (in /etc/network/interfaces)**
+
+```bash
+auto lo
+iface lo inet loopback
+
+iface enp1s0 inet manual  # Physical NIC: Don't assign IP here; let the bridge handle it
+
+auto vmbr0
+iface vmbr0 inet static
+    address 192.168.88.10/24  # IP for the Proxmox host itself
+    gateway 192.168.88.1      # Your router's IP
+    bridge-ports enp1s0       # Attach the physical NIC as a port
+    bridge-stp off            # Disable Spanning Tree Protocol (usually not needed in simple setups)
+    bridge-fd 0               # Forwarding delay: 0 for instant forwarding
+```
+
+After editing, apply changes with `ifreload -a` or `systemctl restart networking`.
+
+This setup makes `vmbr0` the main interface for the host and guests. Attach VMs/LXCs to `vmbr0` in their network settings for bridged mode.

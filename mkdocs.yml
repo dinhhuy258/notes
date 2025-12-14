@@ -155,6 +155,7 @@ nav:
       - Install Home Assistant on Proxmox: networking/home_network/install-home-assistant-on-proxmox.md
       - Install XPEnology on Proxmox: networking/home_network/install-xpenology-on-proxmox.md
       - SSH into Proxmox: networking/home_network/ssh-into-proxmox.md
+      - Proxmox Networking: networking/home_network/proxmox_networking.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
