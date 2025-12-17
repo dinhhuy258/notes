@@ -149,6 +149,7 @@ nav:
         - VLESS: networking/home_network/vpn/vless.md
         - How Does XTLS REALITY Work?: networking/home_network/vpn/xtls_reality.md
       - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
+      - Configure Mikrotik: networking/home_network/configure-mikrotik.md
       - Setup Wireguard VPN on Mikrotik router: networking/home_network/setup_wireguard_vpn_on_mikrotik_router.md
       - Setup ECMP on Mikrotik router: networking/home_network/setup_ecmp_on_mikrotik_router.md 
       - Connecting to Cloudflare WARP with WireGuard: networking/home_network/connecting-cloudflare-warp-with-wireguard.md
