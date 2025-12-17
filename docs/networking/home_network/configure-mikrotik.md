@@ -20,12 +20,12 @@
 - Disable everything you don’t use
 - Keep only `WinBox` enabled
 
+![picsur.png](https://img.dinhhuy258.dev/i/eca6aa79-6fa9-4848-8382-db7c0428ac52.jpg)
+
 #### 2.2 Change admin password / user
 
 - `System` → `Users`
 - Set a strong password (or create a new admin user and disable admin)
-
-![picsur.png](https://img.dinhhuy258.dev/i/eca6aa79-6fa9-4848-8382-db7c0428ac52.jpg)
 
 ## Internet Connection
 
@@ -54,21 +54,21 @@ ping 8.8.8.8
 
 ## LAN Configuration
 
-### 5. Create Bridge
+### 6. Create Bridge
 
 - `Bridge` → `New`
   - Name: `bridge`
 
 ![picsur.png](https://img.dinhhuy258.dev/i/392d911f-7dc7-46ff-85b0-58599e7a2d13.jpg)
 
-### 6. Add LAN ports to bridge
+### 7. Add LAN ports to bridge
 
 - `Bridge` → `Ports` → `New`
   - Add `ether2`, `ether3`, `ether4`, `ether5` to `bridge`
 
 ![picsur.png](https://img.dinhhuy258.dev/i/a1046d55-175a-44ef-a3dc-01969fd0d385.jpg)
 
-### 7. Assign gateway IP to bridge
+### 8. Assign gateway IP to bridge
 
 - `IP` → `Addresses` → `New`
   - Address: `192.168.0.1/24`
@@ -76,24 +76,24 @@ ping 8.8.8.8
 
 ![picsur.png](https://img.dinhhuy258.dev/i/082ead58-28f6-4059-98b3-6ced736f58a4.jpg)
 
-### 7. Set DNS servers
+### 9. Set DNS servers
 
 - `IP` → `DNS`
   - Servers: `1.1.1.1` (or your preferred DNS)
 
 ![picsur.png](https://img.dinhhuy258.dev/i/023ce334-5074-4320-9aaa-6c10de4a841d.jpg)
 
-### 8. DHCP Server for LAN clients
+### 10. DHCP Server for LAN clients
 
 - `IP` → `DHCP Server` → `DHCP Setup`
   - **DHCP Server Interface**: `bridge`
   - **DHCP Address Space**: `192.168.0.0/24`
   - **Gateway**: `192.168.0.1`
-  - **Address Pool**: `192.168.0.20.168.0.254`
+  - **Address Pool**: `192.168.0.20-192.168.0.254`
   - **DNS Server**: `1.1.1.1`
   - **Lease Time**: `24:00:00` (24 hours for home use)
 
-### 9. Verify from a client PC
+### 11. Verify from a client PC
 
 - Connect to `ether2` → `ether5`
 - Test `ping 8.8.8.8`
