@@ -30,6 +30,8 @@ set ipv4-multipath-hash-policy=l4
 set multipath-hash-policy=l4
 ```
 
+**Why L4?** Layer 4 hashing provides better distribution by including port information, resulting in more effective load balancing across connections.
+
 2. Adjust Route Distances in the main Routing Table
 
 Set incremental distances for default routes in the `main` routing table.
@@ -39,17 +41,16 @@ Set incremental distances for default routes in the `main` routing table.
 If multiple routes in the `main` table have the same distance, the router will treat them as `ECMP` routes, and the `+` sign will appear, indicating that `ECMP` is active.
 By setting incremental distances, only the route with the lowest distance is used, while the others act as **failover routes**.
 
-This configuration is intentional. The `main` routing table is designed for stable, predictable routing, not load balancing.
-Certain traffic requires a consistent outbound path and source IP. Allowing `ECMP` in the `main` table could cause frequent path or IP changes, leading to issues with services such as:
+**Why disable ECMP in main table?**
 
-- Banking websites
-- VPN connections
+Certain traffic requires a consistent outbound path and source IP. ECMP in the `main` table could cause frequent path/IP changes, breaking:
+
+- Banking websites (IP-based fraud detection)
+- VPN connections (session persistence)
 - IP-sensitive or session-based applications
 
-For this reason, `ECMP` is explicitly disabled in the `main` table and enabled only in a dedicated `ECMP` routing table.
-
 > [!NOTE]
-> Traffic that must avoid ECMP is explicitly selected using routing rules and directed to the main table, while traffic that is safe to load-balance is routed to the ECMP table.
+> Traffic requiring stable routing is directed to the `main` table via routing rules, while general traffic uses the `ecmp` table for load balancing.
 
 3. Create a new routing table for ECMP.
 
@@ -60,7 +61,7 @@ add fib name=ecmp
 
 4. Add Routes to the ECMP Routing Table
 
-Add default routes with equal distances to enable ECMP.
+Add default routes with **equal distances** to enable ECMP:
 
 ```bash
 /ip route
@@ -73,11 +74,8 @@ add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out5 routing-table=ecmp
 
 5. Add Routing Rules to Control Traffic Flow
 
-Routing rules determine which traffic uses which routing table.
-
-**Route Traffic That Must Bypass ECMP**
-
-This rule should be placed at the top:
+Routing rules determine which traffic uses which table. Order matters - rules are processed top-to-bottom.
+Add a base rule to ensure all traffic is processed (must be in the top)
 
 ```bash
 /routing rule
