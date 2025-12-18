@@ -23,29 +23,46 @@ ECMP typically uses a hashing algorithm to determine the path for each flow, but
 
 1. Update the ip hash policy settings from `l3` (layer-3 hashing of src IP, dst IP) to `l4` (layer-3 hashing of src IP, dst IP). This allows for more efficient load balancing across multiple paths.
 
-```rsc
+```bash
 /ip settings
 set ipv4-multipath-hash-policy=l4
 /ipv6 settings
 set multipath-hash-policy=l4
 ```
 
-2. Adjust the route distances in the `main` routing table to ensure that the distances are set incrementally.
+2. Adjust Route Distances in the main Routing Table
+
+Set incremental distances for default routes in the `main` routing table.
 
 ![imgur.png](https://i.imgur.com/QQBWz0w.png)
 
-If the distances are not incremented, the `main` table will not show a `+` sign, indicating `ECMP` is not active. By default, the router selects the route with the lowest distance, and other paths are only used as fallback routes. We configure the `main` table this way because we do not want to apply `ECMP` in the main table. Some routing policies require specific traffic to avoid `ECMP` to prevent frequent IP changes, which could cause issues when connecting to certain services like banking...
+If multiple routes in the `main` table have the same distance, the router will treat them as `ECMP` routes, and the `+` sign will appear, indicating that `ECMP` is active.
+By setting incremental distances, only the route with the lowest distance is used, while the others act as **failover routes**.
+
+This configuration is intentional. The `main` routing table is designed for stable, predictable routing, not load balancing.
+Certain traffic requires a consistent outbound path and source IP. Allowing `ECMP` in the `main` table could cause frequent path or IP changes, leading to issues with services such as:
+
+- Banking websites
+- VPN connections
+- IP-sensitive or session-based applications
+
+For this reason, `ECMP` is explicitly disabled in the `main` table and enabled only in a dedicated `ECMP` routing table.
+
+> [!NOTE]
+> Traffic that must avoid ECMP is explicitly selected using routing rules and directed to the main table, while traffic that is safe to load-balance is routed to the ECMP table.
 
 3. Create a new routing table for ECMP.
 
-```rsc
+```bash
 /routing table
 add fib name=ecmp
 ```
 
-4. Add routes to the new ECMP routing table.
+4. Add Routes to the ECMP Routing Table
 
-```rsc
+Add default routes with equal distances to enable ECMP.
+
+```bash
 /ip route
 add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out1 routing-table=ecmp
 add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out2 routing-table=ecmp
@@ -54,30 +71,29 @@ add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out4 routing-table=ecmp
 add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out5 routing-table=ecmp
 ```
 
-Make sure the distance values for all routes in the ECMP table are the same to enable equal-cost multi-path routing.
+5. Add Routing Rules to Control Traffic Flow
 
-5. Add routing rules to control traffic behavior.
+Routing rules determine which traffic uses which routing table.
 
-This rule should be put at the top.
+**Route Traffic That Must Bypass ECMP**
 
-```rsc
+This rule should be placed at the top:
+
+```bash
 /routing rule
 add action=lookup disabled=no min-prefix=0 table=main
 ```
 
 Route all traffic that should bypass ECMP to the main table.
 
-```rsc
+```bash
 /routing rule
 add action=lookup dst-address=0.0.0.0/0 src-address=192.168.0.244/32 table=main comment="Thuy's IP"
-
-/routing rule
-add action=lookup dst-address=x.x.x.x/32 src-address=192.168.0.0/24 table=wireguard
 ```
 
-Define rules for routing traffic that should use ECMP.
+Traffic that is safe to load-balance can be explicitly routed to the ECMP table:
 
-```rsc
+```bash
 /routing rule
 add action=lookup dst-address=0.0.0.0/0 src-address=192.168.0.0/24 table=ecmp
 ```
