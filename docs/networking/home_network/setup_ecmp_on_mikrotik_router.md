@@ -21,7 +21,9 @@ ECMP typically uses a hashing algorithm to determine the path for each flow, but
 
 ## Setup ECMP
 
-1. Update the ip hash policy settings from `l3` (layer-3 hashing of src IP, dst IP) to `l4` (layer-3 hashing of src IP, dst IP). This allows for more efficient load balancing across multiple paths.
+### 1. Update IP hash policy
+
+Update the IP hash policy settings from `l3` (layer-3 hashing of src IP, dst IP) to `l4` (layer-3 hashing of src IP, dst IP). This allows for more efficient load balancing across multiple paths.
 
 ```bash
 /ip settings
@@ -32,11 +34,11 @@ set multipath-hash-policy=l4
 
 **Why L4?** Layer 4 hashing provides better distribution by including port information, resulting in more effective load balancing across connections.
 
-2. Adjust Route Distances in the main Routing Table
+### 2. Adjust Route Distances in the main Routing Table
 
 Set incremental distances for default routes in the `main` routing table.
 
-![imgur.png](https://i.imgur.com/QQBWz0w.png)
+![picsur.png](https://img.dinhhuy258.dev/i/e528f11d-b717-4fa7-9a0f-1b23d7d7b265.jpg)
 
 If multiple routes in the `main` table have the same distance, the router will treat them as `ECMP` routes, and the `+` sign will appear, indicating that `ECMP` is active.
 By setting incremental distances, only the route with the lowest distance is used, while the others act as **failover routes**.
@@ -52,14 +54,14 @@ Certain traffic requires a consistent outbound path and source IP. ECMP in the `
 > [!NOTE]
 > Traffic requiring stable routing is directed to the `main` table via routing rules, while general traffic uses the `ecmp` table for load balancing.
 
-3. Create a new routing table for ECMP.
+### 3. Create a new routing table for ECMP.
 
 ```bash
 /routing table
 add fib name=ecmp
 ```
 
-4. Add Routes to the ECMP Routing Table
+### 4. Add Routes to the ECMP Routing Table
 
 Add default routes with **equal distances** to enable ECMP:
 
@@ -72,24 +74,62 @@ add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out4 routing-table=ecmp
 add dst-address=0.0.0.0/0 gateway=ether1-pppoe-out5 routing-table=ecmp
 ```
 
-5. Add Routing Rules to Control Traffic Flow
+### 5. Traffic Steering (Routing Rules)
 
 Routing rules determine which traffic uses which table. Order matters - rules are processed top-to-bottom.
 Add a base rule to ensure all traffic is processed (must be in the top)
+
+**Rule 1:** The Local Bypass
+
+This rule ensures that internal traffic (LAN-to-LAN, LAN-to-Router, or VPNs) stays in the `main` table. Without it, your router may try to send a local print job or a file transfer out to the internet via your WAN gateways (`ecmp`).
 
 ```bash
 /routing rule
 add action=lookup disabled=no min-prefix=0 table=main
 ```
 
-Route all traffic that should bypass ECMP to the main table.
+**Understanding min-prefix=0 (The "Suppression" Secret)**
+
+In MikroTik routing rules, the `min-prefix` parameter acts as a **result filter**. It does not decide which route to look for, but rather decides whether to **accept** or **ignore** the route the router found.
+
+The Rule of Thumb: Look in the table. If the Prefix Length (the subnet mask) of the best matching route is <= the `min-prefix` value, the router will suppress (ignore) that result and move to the next routing rule.
+
+| min-prefix | The Router says...                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------- |
+| 0          | Ignore only the 0.0.0.0/0. Accept everything else (local LAN /24, VPNs, etc.).                                |
+| 24         | Ignore any route with a mask <= 24 (like /0, /16, /23, /24). Only accept very specific routes like /25 or /32 |
+
+Scenario A: A user at `192.168.10.5` wants to view a camera at `192.168.20.100`
+
+- Router Action: It looks in the main table for `192.168.20.100`
+- Best Match Found: `192.168.20.0/24`
+- Prefix Length: `24`
+- Logic Check: Is `24 <= 0`? No
+- Result: The router Accepts the route from the main table. The traffic is routed internally between VLANs. It is not sent to the ECMP load-balancer.
+
+Scenario C: The user at 192.168.10.5 goes to netflix.com (45.57.94.1)
+
+- **Router Action**: It looks in the main table for `45.57.94.1`
+- **Best Match Found**: None of the specific routes match, so it hits the Default Route `0.0.0.0/0`
+- **Prefix Length**: `0`
+- **Logic Check**: Is 0 <= 0? Yes
+- **Result**: The router Suppresses (ignores) this result. Because it "rejected" the internet route in the main table, it moves down to your next Routing Rule
+
+**Rule 2:** The VIP Exception
+
+Forces specific sensitive devices (like a work laptop for banking) to bypass load balancing and use the primary WAN defined in the `main` table.
 
 ```bash
 /routing rule
 add action=lookup dst-address=0.0.0.0/0 src-address=192.168.0.244/32 table=main comment="Thuy's IP"
 ```
 
-Traffic that is safe to load-balance can be explicitly routed to the ECMP table:
+> [!NOTE]  
+> My wife works remotely and connects to her company VPN, which uses strict IP-based session tracking. If ECMP shifts her traffic from WAN1 to WAN2, her public IP address changes instantly. To the company’s security system, this can look like a session hijacking attempt and may trigger an automatic security block on her account. This rule ensures her laptop maintains a persistent, single-IP identity on the primary WAN.
+
+**Rule 3:** The ECMP Catch-ALL
+
+Any traffic that wasn't local (skipped Rule 1) and wasn't a VIP (skipped Rule 2) is caught here and forced into the ecmp table to be load-balanced across all WANs
 
 ```bash
 /routing rule
