@@ -107,7 +107,7 @@ Scenario A: A user at `192.168.10.5` wants to view a camera at `192.168.20.100`
 - Logic Check: Is `24 <= 0`? No
 - Result: The router Accepts the route from the main table. The traffic is routed internally between VLANs. It is not sent to the ECMP load-balancer.
 
-Scenario C: The user at 192.168.10.5 goes to netflix.com (45.57.94.1)
+Scenario B: The user at 192.168.10.5 goes to netflix.com (45.57.94.1)
 
 - **Router Action**: It looks in the main table for `45.57.94.1`
 - **Best Match Found**: None of the specific routes match, so it hits the Default Route `0.0.0.0/0`
