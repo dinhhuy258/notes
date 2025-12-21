@@ -1,6 +1,6 @@
 # Proxmox Networking
 
-## Network Interfaces
+## Network Interfaces (NIC)
 
 A network interface is a thing on Linux that can send/receive network traffic. It can be:
 
@@ -101,3 +101,29 @@ iface vmbr0 inet static
 After editing, apply changes with `ifreload -a` or `systemctl restart networking`.
 
 This setup makes `vmbr0` the main interface for the host and guests. Attach VMs/LXCs to `vmbr0` in their network settings for bridged mode.
+
+## Linux Bond in Proxmox
+
+A bond combines 2+ physical NICs into one logical interface (e.g., bond0). Linux then treats bond0 like a normal interface.
+
+Typical Proxmox pattern:
+
+- VMs connect to `vmbr0` (bridge)
+- `vmbr0` uses `bond0` as its uplink to the network
+- `bond0` aggregates physical NICs
+
+VM → `vmbr0` (bridge) → `bond0` (`enp3s0` + `enp4s0`) → physical switch
+
+### Bonding modes
+
+| Name                     | Behavior                                             | Switch Config     | Use Case                            |
+| ------------------------ | ---------------------------------------------------- | ----------------- | ----------------------------------- |
+| active-backup            | Only one link active; automatic failover if it fails | None required     | Reliability with minimal complexity |
+| 802.3ad (LACP)           | Both links active and load balanced                  | LACP/LAG required | Performance + redundancy            |
+| balance-xor, balance-alb | Various load balancing methods                       | Varies by mode    | Special cases; has more gotchas     |
+
+### Quick decision guide
+
+- **Simple redundancy only** → active-backup (mode 1)
+- **Redundancy + performance** → 802.3ad (mode 4) — _requires managed switch with LACP_
+- **No switch control** → active-backup (mode 1)
