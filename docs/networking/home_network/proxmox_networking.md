@@ -127,3 +127,56 @@ VM → `vmbr0` (bridge) → `bond0` (`enp3s0` + `enp4s0`) → physical switch
 - **Simple redundancy only** → active-backup (mode 1)
 - **Redundancy + performance** → 802.3ad (mode 4) — _requires managed switch with LACP_
 - **No switch control** → active-backup (mode 1)
+
+## Linux VLAN in Proxmox
+
+A VLAN (Virtual LAN) splits one physical network into multiple isolated virtual networks using VLAN tags (IEEE 802.1Q). This enables network segmentation without requiring separate physical switches or cables.
+
+### What are VLANs?
+
+VLANs use **802.1Q tagging** to mark Ethernet frames with a VLAN ID (1-4094). Tagged packets can traverse the same physical cable while remaining logically separated.
+
+**Key concepts**:
+
+- **Tagged traffic**: Packets with VLAN ID in the header (for trunks between switches/hosts)
+- **Untagged traffic**: Normal packets (for end devices like VMs)
+- **Trunk port**: Carries multiple VLANs (tagged)
+- **Access port**: Carries one VLAN (untagged)
+
+In Proxmox: The bridge acts as a virtual switch that can handle VLAN-tagged traffic.
+
+### Why use VLANs in Proxmox?
+
+**Benefits**:
+
+- Isolate different types of traffic without separate hardware
+- Improve security by segmenting networks
+- Reduce broadcast domains
+
+**Common use cases**:
+
+| VLAN            | Purpose              | Typical ID | Why Separate?               |
+| --------------- | -------------------- | ---------- | --------------------------- |
+| Management      | Proxmox web UI, SSH  | 10         | Secure admin access         |
+| VMs/Services    | Production workloads | 20         | Isolate from management     |
+| Storage         | Ceph, NFS, iSCSI     | 30         | High bandwidth, low latency |
+| Guest/Untrusted | Test labs, guest VMs | 40         | Security isolation          |
+| Backup          | Backup traffic       | 50         | Prevent backup floods       |
+
+### VLAN-aware bridge
+
+Proxmox supports two approaches for VLANs:
+
+**Approach 1: VLAN-aware bridge** (recommended)
+
+- Single bridge (e.g., vmbr0) handles multiple VLANs
+- VMs specify VLAN tag in network config
+- Cleaner, more flexible
+
+**Approach 2: Separate bridge per VLAN**
+
+- Create vmbr10, vmbr20, vmbr30, etc.
+- More complex configuration
+- Useful for specific isolation needs
+
+**VLAN-aware is preferred** for most Proxmox setups.
