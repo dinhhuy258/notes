@@ -148,6 +148,7 @@ nav:
       - VPN:
         - VLESS: networking/home_network/vpn/vless.md
         - How Does XTLS REALITY Work?: networking/home_network/vpn/xtls_reality.md
+        - Domain Fronting: networking/home_network/vpn/domain_fronting.md
       - Unlock old ZTE modem: networking/home_network/unlock_old_zte_modem.md
       - Configure Mikrotik: networking/home_network/configure-mikrotik.md
       - AdguardHome Setup on Mikrotik: networking/home_network/adguard_home_setup_on_mikrotik.md
