@@ -1,85 +1,83 @@
 # Deep Packet Inspection
 
-Deep Packet Inspection (DPI) is an advanced network traffic analysis technique used to inspect the contents of data packets as they travel through a network. Unlike traditional packet inspection, which only examines packet headers, DPI analyzes the entire packet, including the payload. This allows DPI to detect and take action against security threats, enforce policies, and optimize network performance.
+Deep Packet Inspection (DPI) analyzes the entire packet—both headers and payload—unlike traditional inspection which only examines headers. This enables threat detection, policy enforcement, and traffic optimization.
 
-DPI operates across multiple layers of the OSI model, primarily at Layer 3 (Network), Layer 4 (Transport), and Layer 7 (Application).
+DPI operates at OSI Layers 3 (Network), 4 (Transport), and 7 (Application).
 
 ## How Deep Packet Inspection Works
 
-**Step 1: Packet Capture**
+### 1. Packet Capture
 
-- DPI begins with capturing network packets. These packets contain information about the communication between devices.
-- Each packet carries data, including the source and destination IP addresses, port numbers, and payload.
+Network packets are intercepted as they traverse the network. Each packet contains headers (source/destination IPs, ports, protocol) and payload (actual data).
 
-![imgur.png](https://i.imgur.com/DfVyzEz.png)
+**Packet Structure**:
 
-**Step 2: Header Analysis**
+![Packet structure showing headers and payload](https://i.imgur.com/DfVyzEz.png)
 
-- The system first examines the header (IP, TCP/UDP, and application-layer headers) to classify basic information, such as source and destination addresses, ports, and protocol type (HTTP, HTTPS, FTP, etc.).
-- This step is similar to how traditional firewalls work.
+*A typical packet contains multiple headers (Ethernet, IP, TCP/UDP) followed by the application payload. DPI inspects all layers.*
 
-**Step 3: Payload Inspection**
+### 2. Header Analysis
 
-Unlike traditional firewalls, DPI decodes the packet’s payload to analyze its contents:
+Examines IP and TCP/UDP headers to identify:
+- Source and destination addresses
+- Port numbers
+- Protocol type (HTTP, HTTPS, FTP, DNS, etc.)
 
-- DPI examines the payload to identify the protocol being used (e.g., HTTP, HTTPS, FTP, etc.).
-- It can also detect specific applications or services (e.g., streaming video, VoIP calls, file downloads).
+This step is similar to traditional firewall inspection.
 
-For example, if the packet is an HTTP request, DPI can extract:
+### 3. Payload Inspection & Pattern Matching
 
-- The URL being accessed.
-- Any keywords (e.g., login credentials, credit card numbers).
-- The file type being downloaded (e.g., .exe, .mp4).
+Decodes and analyzes packet payload by:
+- Identifying application protocols and services (streaming, VoIP, file downloads)
+- Matching against signature databases (malware, attacks, policy violations)
+- Extracting content (URLs, keywords, file types)
 
-**Step 4: Signature Matching**
+**Example**: For HTTP traffic, DPI can extract:
+- Requested URLs
+- Form data (credentials, sensitive information)
+- File types being transferred (.exe, .pdf, .mp4, etc.)
 
-- DPI compares packet data against a database of known attack patterns, viruses, or predefined rules (e.g., Snort rules for Intrusion Detection Systems).
-- Example: If a packet contains a known malware signature, it gets flagged or blocked.
+### 4. Content Classification
 
-**Step 5. Content Inspection**
+Categorizes traffic based on:
+- Application type (streaming, VoIP, P2P, gaming)
+- Security risk level
+- Compliance with policies
 
-- DPI can inspect the actual content within packets.
-- It can identify keywords, URLs, or even malware signatures.
-- This level of inspection allows DPI to enforce security policies or prioritize traffic.
+### 5. Policy Enforcement
 
-**Step 6: Policy Enforcement & Action**
-
-Once DPI completes its analysis, the system takes appropriate actions:
-
-- Allow: If the packet is normal and follows security policies, it is forwarded.
-- Block: If the packet is malicious (e.g., contains malware), it is dropped.
-- Rate-limit: If traffic is excessive (e.g., video streaming consuming bandwidth), the system can throttle it.
-- Redirect: If sensitive content is detected (e.g., unauthorized data transfer), DPI can redirect it to a logging or security system.
+Takes action based on analysis results:
+- **Allow**: Normal traffic following policies is forwarded
+- **Block**: Malicious or policy-violating packets are dropped
+- **Rate-limit**: Bandwidth-intensive traffic is throttled
+- **Log/Redirect**: Suspicious activity is logged or redirected for analysis
 
 ## Use Cases of Deep Packet Inspection
 
-1. Network Security
+**1. Network Security**
+- Detect and block malware, viruses, and suspicious activities
+- Prevent DDoS attacks by filtering malicious traffic
+- Identify phishing attacks by inspecting URLs inside packets
 
-- Detect and block malware, viruses, and suspicious activities.
-- Prevent DDoS attacks by filtering malicious traffic.
-- Identify phishing attacks by inspecting URLs inside packets.
+**2. Quality of Service (QoS)**
+- Identify and prioritize traffic for critical applications (VoIP, online meetings)
+- Throttle non-essential services (P2P file sharing, torrents) to conserve bandwidth
 
-2. Quality of Service (QoS)
+**3. Bandwidth Management**
+- Analyze traffic patterns to manage bandwidth effectively
+- Throttle or block bandwidth-intensive applications during peak hours
 
-- Identify and prioritize traffic for critical applications (VoIP, online meetings).
-- Throttle non-essential services (e.g., P2P file sharing, torrents) to conserve bandwidth.
+**4. Content Filtering & Monitoring**
+- Monitor and filter specific types of content
+- Enforce access policies and regional restrictions
 
-3. Bandwidth Management
+## DPI Analysis by OSI Layer
 
-- By analyzing traffic patterns, DPI helps manage bandwidth effectively.
-- It can throttle or block bandwidth-intensive applications during peak hours.
-
-4. Government Surveillance & Censorship
-
-- DPI can monitor and filter specific types of content (e.g., block websites, enforce regional restrictions).
-
-## How DPI Works at Each OSI Layer
-
-| **OSI Layer**                   | **DPI Functionality at This Layer**                                                                                                                                                                                                                                                        |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Layer 3 (Network Layer)**     | - Examines **IP headers** to determine the source and destination IP addresses. <br> - Can block or allow traffic based on IP address filtering.                                                                                                                                           |
-| **Layer 4 (Transport Layer)**   | - Analyzes **TCP/UDP headers** to inspect port numbers and connection status. <br> - Can detect unusual connection patterns (e.g., port scanning, SYN floods).                                                                                                                             |
-| **Layer 7 (Application Layer)** | - Inspects the **payload (content)** of the packet, analyzing application-layer protocols like HTTP, HTTPS, FTP, and DNS. <br> - Detects malware, data leaks, unauthorized applications, and policy violations. <br> - Can filter content based on keywords, file types, or specific URLs. |
+| Layer | Focus | What DPI Inspects | Common Actions |
+|-------|-------|-------------------|----------------|
+| **L3 (Network)** | IP Headers | Source/destination IPs | IP-based filtering, geo-blocking |
+| **L4 (Transport)** | TCP/UDP Headers | Ports, connection state | Port blocking, SYN flood detection |
+| **L7 (Application)** | Payload Content | HTTP/HTTPS/FTP/DNS data, file types, keywords | Malware detection, content filtering, data leak prevention |
 
 ## Reference
 
