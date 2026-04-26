@@ -159,6 +159,7 @@ nav:
       - Install XPEnology on Proxmox: networking/home_network/install-xpenology-on-proxmox.md
       - SSH into Proxmox: networking/home_network/ssh-into-proxmox.md
       - Proxmox Networking: networking/home_network/proxmox_networking.md
+      - Setup Tailscale Subnet Router on Proxmox: networking/home_network/setup_tailscale_subnet_router_on_proxmox.md
   - Devops:
     - AWS:
       - IAM: devops/aws/iam.md
