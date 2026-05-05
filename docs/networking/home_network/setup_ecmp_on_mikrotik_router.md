@@ -38,8 +38,6 @@ set multipath-hash-policy=l4
 
 Set incremental distances for default routes in the `main` routing table.
 
-![picsur.png](https://img.dinhhuy258.dev/i/e528f11d-b717-4fa7-9a0f-1b23d7d7b265.jpg)
-
 If multiple routes in the `main` table have the same distance, the router will treat them as `ECMP` routes, and the `+` sign will appear, indicating that `ECMP` is active.
 By setting incremental distances, only the route with the lowest distance is used, while the others act as **failover routes**.
 
