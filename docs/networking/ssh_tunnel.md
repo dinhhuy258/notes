@@ -7,6 +7,8 @@ It can be used to:
 - Add encryption to legacy application
 - VPN
 
+![imgnest](https://img.dinhhuy258.dev/i/0QUoX9QYNr.png)
+
 ## Local Port Forwarding
 
 When a user needs to access a resource or service located on a remote server but is unable to do so directly because of firewall settings, network configurations or private network limitations, local port forwarding is utilized.
@@ -20,7 +22,7 @@ What it actually means is:
 - On your machine, the SSH client will start listening on local_port (likely, on localhost).
 - Any traffic to this port will be forwarded to the `remote_private_addr:remote_port` on the machine you SSH-ed to.
 
-![picsur.png](https://img.dinhhuy258.dev/i/7b8151d4-1600-4cb4-940d-025c1a47ba34.jpg)
+![imgnest](https://img.dinhhuy258.dev/i/AaKmwliPFm.png)
 
 ## Remote Port Forwarding (Reverse Tunneling)
 
@@ -38,7 +40,7 @@ For example, suppose a user wants to allow access to a web server (running on po
 ssh -R 80:192.168.1.10:8080 user@123.45.67.89
 ```
 
-![picsur.png](https://img.dinhhuy258.dev/i/97455fd3-45cc-4acc-9c36-efff54bcbec5.jpg)
+![imgnest](https://img.dinhhuy258.dev/i/ybtuSy33x7.png)
 
 ## Dynamic Port Forwarding
 
