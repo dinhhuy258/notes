@@ -144,6 +144,7 @@ nav:
     - SSH Tunnel: networking/ssh_tunnel.md
     - Install Certbot on Debian with Cloudflare DNS: networking/install_certbot_on_debian.md
     - Deep Packet Inspection: networking/deep_packet_inspection.md
+    - Nmap: networking/nmap.md
     - Home Network:
       - VPN:
         - VLESS: networking/home_network/vpn/vless.md
